@@ -6,12 +6,17 @@ public class Board extends javax.swing.JFrame {
     
     private String playerCharacter = "";
     private final String [][]board = {{"NULO", "NULO", "NULO"}, {"NULO", "NULO", "NULO"}, {"NULO", "NULO", "NULO"}};
+    private boolean gameFinished = false;
     
     public Board() {
         initComponents();
     }
     
     public void FillLabel(javax.swing.JLabel label_object, int x, int y){
+        if(gameFinished){
+            return;
+        }
+        
         x = x - 1;
         y = y - 1;
 
@@ -21,6 +26,7 @@ public class Board extends javax.swing.JFrame {
             
             boolean victory = CheckVictory();
             if(victory){
+                DisableBoard();
                 InfoDialog info_window = new InfoDialog();
                 info_window.SetMessage("Parabéns, você ganhou!");
             }
@@ -113,6 +119,10 @@ public class Board extends javax.swing.JFrame {
                 break;
             }
         }
+    }
+    
+    public void DisableBoard(){
+        gameFinished = true;
     }
         
     public void SetPlayerCharacter(String value){
