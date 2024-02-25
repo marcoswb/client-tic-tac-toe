@@ -50,6 +50,13 @@ public class Board extends javax.swing.JFrame {
                 return true;
             }
         }
+        // checar vitória diagonal
+        if(board[0][0].equals(playerCharacter) & board[1][1].equals(playerCharacter) & board[2][2].equals(playerCharacter)){
+            return true;
+        }
+        if(board[0][2].equals(playerCharacter) & board[1][1].equals(playerCharacter) & board[2][0].equals(playerCharacter)){
+            return true;
+        }
         
         return false;
     }
