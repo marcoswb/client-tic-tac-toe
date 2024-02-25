@@ -3,18 +3,28 @@ package TicTacToe.view;
 public class Board extends javax.swing.JFrame {
     
     private String playerCharacter = "";
+    private final String [][]board = {{"NULO", "NULO", "NULO"}, {"NULO", "NULO", "NULO"}, {"NULO", "NULO", "NULO"}};
     
     public Board() {
         initComponents();
     }
     
-    public void FillLabel(javax.swing.JLabel label_object){
-        String current_text = label_object.getText();
-        if(current_text.equals(playerCharacter)){
+    public void FillLabel(javax.swing.JLabel label_object, int x, int y){
+        x = x - 1;
+        y = y - 1;
+
+        if(board[x][y].equals("NULO")){
+            board[x][y] = playerCharacter;
+            label_object.setText(playerCharacter);
+            
+            boolean victory = CheckVictory();
+            if(victory){
+                InfoDialog info_window = new InfoDialog();
+                info_window.SetMessage("Parabéns, você ganhou!");
+            }
+        } else {
             ErrorDialog error_window = new ErrorDialog();
             error_window.SetMessage("Posição ocupada, escolha outro campo");
-        } else {
-            label_object.setText(playerCharacter);
         }
     }
     
@@ -24,6 +34,24 @@ public class Board extends javax.swing.JFrame {
     
     public String GetPlayerCharacter(){
         return playerCharacter;
+    }
+    
+    public boolean CheckVictory(){
+        // checar vitória horizontal
+        for(int x = 0; x <= 2; x++){
+            if(board[x][0].equals(playerCharacter) & board[x][1].equals(playerCharacter) & board[x][2].equals(playerCharacter)) {
+                return true;
+            }
+        }
+        
+        // checar vitória vertical
+        for(int y = 0; y <= 2; y++){
+            if(board[0][y].equals(playerCharacter) & board[1][y].equals(playerCharacter) & board[2][y].equals(playerCharacter)) {
+                return true;
+            }
+        }
+        
+        return false;
     }
     
     @SuppressWarnings("unchecked")
@@ -222,39 +250,39 @@ public class Board extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void label_1_1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_1_1MouseClicked
-        FillLabel(label_1_1);
+        FillLabel(label_1_1, 1, 1);
     }//GEN-LAST:event_label_1_1MouseClicked
 
     private void label_2_1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_2_1MouseClicked
-        FillLabel(label_2_1);
+        FillLabel(label_2_1, 2, 1);
     }//GEN-LAST:event_label_2_1MouseClicked
 
     private void label_3_1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_3_1MouseClicked
-        FillLabel(label_3_1);
+        FillLabel(label_3_1, 3, 1);
     }//GEN-LAST:event_label_3_1MouseClicked
 
     private void label_1_2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_1_2MouseClicked
-        FillLabel(label_1_2);
+        FillLabel(label_1_2, 1, 2);
     }//GEN-LAST:event_label_1_2MouseClicked
 
     private void label_2_2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_2_2MouseClicked
-        FillLabel(label_2_2);
+        FillLabel(label_2_2, 2, 2);
     }//GEN-LAST:event_label_2_2MouseClicked
 
     private void label_3_2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_3_2MouseClicked
-        FillLabel(label_3_2);
+        FillLabel(label_3_2, 3, 2);
     }//GEN-LAST:event_label_3_2MouseClicked
 
     private void label_1_3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_1_3MouseClicked
-        FillLabel(label_1_3);
+        FillLabel(label_1_3, 1, 3);
     }//GEN-LAST:event_label_1_3MouseClicked
 
     private void label_2_3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_2_3MouseClicked
-        FillLabel(label_2_3);
+        FillLabel(label_2_3, 2, 3);
     }//GEN-LAST:event_label_2_3MouseClicked
 
     private void label_3_3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_3_3MouseClicked
-        FillLabel(label_3_3);
+        FillLabel(label_3_3, 3, 3);
     }//GEN-LAST:event_label_3_3MouseClicked
      
     
