@@ -1,19 +1,29 @@
 package TicTacToe.view;
 
 public class Board extends javax.swing.JFrame {
-
+    
+    private String playerCharacter = "";
+    
     public Board() {
         initComponents();
     }
     
     public void FillLabel(javax.swing.JLabel label_object){
         String current_text = label_object.getText();
-        if(current_text.equals("O")){
+        if(current_text.equals(playerCharacter)){
             ErrorDialog error_window = new ErrorDialog();
             error_window.SetMessage("Posição ocupada, escolha outro campo");
         } else {
-            label_object.setText("O");
+            label_object.setText(playerCharacter);
         }
+    }
+    
+    public void SetPlayerCharacter(String value){
+        playerCharacter = value;
+    }
+    
+    public String GetPlayerCharacter(){
+        return playerCharacter;
     }
     
     @SuppressWarnings("unchecked")
