@@ -105,7 +105,7 @@ public class LoginScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_jPasswordField1ActionPerformed
 
     private void jLabelSignOnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelSignOnMouseClicked
-        System.out.println("cadastrar");
+        // cadastrar
     }//GEN-LAST:event_jLabelSignOnMouseClicked
 
     /**
