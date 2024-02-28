@@ -6,7 +6,7 @@ import TicTacToe.utils.Functions;
 
 
 public class LoginScreen extends javax.swing.JFrame {
-        public Functions functions = new Functions();
+    public Functions functions = new Functions();
 
     public LoginScreen() {
         initComponents();
@@ -131,9 +131,15 @@ public class LoginScreen extends javax.swing.JFrame {
         String user = jFieldUser.getText();
         String password = jFieldPassword.getText();
         
-        if(functions.IsNull(user) || functions.IsNull(password)){
+        if(functions.IsNull(user)){
             InfoDialog info_window = new InfoDialog();
-            info_window.SetMessage("Preencha os campos de usuário e senha corretamente!");
+            info_window.SetMessage("Preencha o campo de usuário corretamente!");
+            jFieldUser.requestFocus();
+            return;
+        } else if(functions.IsNull(password)){
+            InfoDialog info_window = new InfoDialog();
+            info_window.SetMessage("Preencha o campo de senha corretamente!");
+            jFieldPassword.requestFocus();
             return;
         }
         
