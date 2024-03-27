@@ -2,6 +2,10 @@ package TicTacToe.view;
 
 import java.awt.Color;
 import TicTacToe.utils.Functions;
+import TicTacToe.controller.API;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class RegisterScreen extends javax.swing.JFrame {
     
@@ -170,9 +174,16 @@ public class RegisterScreen extends javax.swing.JFrame {
             return;
         }
         
-        System.out.println(nameUser);
-        System.out.println(user);
-        System.out.println(password);
+        API api = new API();
+        boolean response = false;
+        try {
+            response = api.CreateUser(nameUser, user, password);
+        } catch (Exception ex) {
+            System.out.println("Erro ao realizar post");
+        }
+        
+        System.out.println(response);
+            
     }//GEN-LAST:event_jButtonSignOnMouseClicked
 
     private void jLabelLoginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelLoginMouseClicked
