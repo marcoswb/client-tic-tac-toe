@@ -179,10 +179,19 @@ public class RegisterScreen extends javax.swing.JFrame {
         try {
             response = api.CreateUser(nameUser, user, password);
         } catch (Exception ex) {
-            System.out.println("Erro ao realizar post");
+            InfoDialog info_window = new InfoDialog();
+            info_window.SetMessage("Falha ao se comunicar com o servidor!");
         }
         
-        System.out.println(response);
+        InfoDialog info_window = new InfoDialog();
+        if(response == true){
+            info_window.SetMessage("Usuário criado com sucesso!");
+            jFieldName.setText("");
+            jFieldUser.setText("");
+            jFieldPassword.setText("");
+        } else{
+            info_window.SetMessage("Erro ao criar usuário!");
+        }
             
     }//GEN-LAST:event_jButtonSignOnMouseClicked
 
