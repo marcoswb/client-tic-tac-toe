@@ -13,6 +13,16 @@ public class RegisterScreen extends javax.swing.JFrame {
     
     public RegisterScreen() {
         initComponents();
+        
+        jFieldName.setForeground(Color.GRAY);
+        jFieldName.setText("Informe seu nome...");
+        
+        jFieldUser.setForeground(Color.GRAY);
+        jFieldUser.setText("Informe seu usuário...");
+        
+        jFieldPassword.setForeground(Color.GRAY);
+        jFieldPassword.setEchoChar((char) 0);
+        jFieldPassword.setText("Informe sua senha...");
     }
     
     @SuppressWarnings("unchecked")
@@ -29,8 +39,17 @@ public class RegisterScreen extends javax.swing.JFrame {
         setTitle("Sign On");
         setResizable(false);
 
+        jFieldUser.setForeground(new java.awt.Color(204, 204, 204));
         jFieldUser.setToolTipText("");
         jFieldUser.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        jFieldUser.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jFieldUserFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jFieldUserFocusLost(evt);
+            }
+        });
         jFieldUser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jFieldUserActionPerformed(evt);
@@ -57,6 +76,14 @@ public class RegisterScreen extends javax.swing.JFrame {
             }
         });
 
+        jFieldPassword.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jFieldPasswordFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jFieldPasswordFocusLost(evt);
+            }
+        });
         jFieldPassword.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jFieldPasswordActionPerformed(evt);
@@ -77,6 +104,16 @@ public class RegisterScreen extends javax.swing.JFrame {
             }
         });
 
+        jFieldName.setForeground(new java.awt.Color(204, 204, 204));
+        jFieldName.setText("Informe seu nome...");
+        jFieldName.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jFieldNameFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jFieldNameFocusLost(evt);
+            }
+        });
         jFieldName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jFieldNameActionPerformed(evt);
@@ -202,6 +239,50 @@ public class RegisterScreen extends javax.swing.JFrame {
         LoginScreen login_screen = new LoginScreen();
         login_screen.show();
     }//GEN-LAST:event_jLabelLoginMouseClicked
+
+    private void jFieldNameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFieldNameFocusGained
+        if (jFieldName.getText().equals("Informe seu nome...")) {
+            jFieldName.setText("");
+            jFieldName.setForeground(Color.BLACK);
+        }
+    }//GEN-LAST:event_jFieldNameFocusGained
+
+    private void jFieldNameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFieldNameFocusLost
+        if (jFieldName.getText().isEmpty()) {
+            jFieldName.setForeground(Color.GRAY);
+            jFieldName.setText("Informe seu nome...");
+        }
+    }//GEN-LAST:event_jFieldNameFocusLost
+
+    private void jFieldUserFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFieldUserFocusGained
+        if (jFieldUser.getText().equals("Informe seu usuário...")) {
+            jFieldUser.setText("");
+            jFieldUser.setForeground(Color.BLACK);
+        }
+    }//GEN-LAST:event_jFieldUserFocusGained
+
+    private void jFieldUserFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFieldUserFocusLost
+        if (jFieldUser.getText().isEmpty()) {
+            jFieldUser.setForeground(Color.GRAY);
+            jFieldUser.setText("Informe seu usuário...");
+        }
+    }//GEN-LAST:event_jFieldUserFocusLost
+
+    private void jFieldPasswordFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFieldPasswordFocusGained
+        if (String.valueOf(jFieldPassword.getPassword()).equals("Informe sua senha...")) {
+            jFieldPassword.setText("");
+            jFieldPassword.setEchoChar('•');
+            jFieldPassword.setForeground(Color.BLACK);
+        }
+    }//GEN-LAST:event_jFieldPasswordFocusGained
+
+    private void jFieldPasswordFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFieldPasswordFocusLost
+        if (String.valueOf(jFieldPassword.getPassword()).isEmpty()){
+            jFieldPassword.setForeground(Color.GRAY);
+            jFieldPassword.setEchoChar((char) 0);
+            jFieldPassword.setText("Informe sua senha...");
+        }
+    }//GEN-LAST:event_jFieldPasswordFocusLost
 
     /**
      * @param args the command line arguments
