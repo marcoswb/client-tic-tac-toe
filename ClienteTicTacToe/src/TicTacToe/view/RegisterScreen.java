@@ -3,9 +3,7 @@ package TicTacToe.view;
 import java.awt.Color;
 import TicTacToe.utils.Functions;
 import TicTacToe.controller.API;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import TicTacToe.utils.ResponseModel;
 
 public class RegisterScreen extends javax.swing.JFrame {
     
@@ -190,44 +188,42 @@ public class RegisterScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_jFieldNameActionPerformed
 
     private void jButtonSignOnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonSignOnMouseClicked
-        String nameUser = jFieldName.getText();
-        String user = jFieldUser.getText();
-        String password = jFieldPassword.getText();
-        
-        if(functions.IsNull(nameUser)){
-            InfoDialog info_window = new InfoDialog();
-            info_window.SetMessage("Preencha o campo de nome do usuário corretamente!");
-            jFieldName.requestFocus();
-            return;
-        } else if(functions.IsNull(user)){
-            InfoDialog info_window = new InfoDialog();
-            info_window.SetMessage("Preencha o campo de usuário corretamente!");
-            jFieldUser.requestFocus();
-            return;
-        } else if(functions.IsNull(password)){
-            InfoDialog info_window = new InfoDialog();
-            info_window.SetMessage("Preencha o campo de senha corretamente!");
-            jFieldPassword.requestFocus();
-            return;
-        }
-        
-        API api = new API();
-        boolean response = false;
         try {
-            response = api.CreateUser(nameUser, user, password);
-        } catch (Exception ex) {
+            String nameUser = jFieldName.getText();
+            String user = jFieldUser.getText();
+            String password = jFieldPassword.getText();
+            
+            if(functions.IsNull(nameUser)){
+                InfoDialog info_window = new InfoDialog();
+                info_window.SetMessage("Preencha o campo de nome do usuário corretamente!");
+                jFieldName.requestFocus();
+                return;
+            } else if(functions.IsNull(user)){
+                InfoDialog info_window = new InfoDialog();
+                info_window.SetMessage("Preencha o campo de usuário corretamente!");
+                jFieldUser.requestFocus();
+                return;
+            } else if(functions.IsNull(password)){
+                InfoDialog info_window = new InfoDialog();
+                info_window.SetMessage("Preencha o campo de senha corretamente!");
+                jFieldPassword.requestFocus();
+                return;
+            }
+            
+            API api = new API();
+            ResponseModel response = api.CreateUser(nameUser, user, password);
+            
             InfoDialog info_window = new InfoDialog();
-            info_window.SetMessage("Falha ao se comunicar com o servidor!");
-        }
-        
-        InfoDialog info_window = new InfoDialog();
-        if(response == true){
-            info_window.SetMessage("Usuário criado com sucesso!");
-            jFieldName.setText("");
-            jFieldUser.setText("");
-            jFieldPassword.setText("");
-        } else{
-            info_window.SetMessage("Erro ao criar usuário!");
+            if(response.getResponseCode() == 200){
+                info_window.SetMessage("Usuário criado com sucesso!");
+                jFieldName.setText("");
+                jFieldUser.setText("");
+                jFieldPassword.setText("");
+            } else{
+                info_window.SetMessage("Erro ao criar usuário!\nRetorno do servidor: "+response.getResponseText());
+            }
+        } catch (Exception ex) {
+            System.out.println("TESTEEEEEEE" + ex);
         }
             
     }//GEN-LAST:event_jButtonSignOnMouseClicked
