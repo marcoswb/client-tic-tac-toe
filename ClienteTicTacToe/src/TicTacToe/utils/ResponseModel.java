@@ -2,8 +2,8 @@ package TicTacToe.utils;
 
 
 public class ResponseModel {
-    public int responseCode;
-    public String responseText = "";
+    private int responseCode;
+    private String responseText = "";
 
     public void setResponseCode(int responseCode) {
         this.responseCode = responseCode;
