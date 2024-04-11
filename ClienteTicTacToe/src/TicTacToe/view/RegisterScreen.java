@@ -220,7 +220,7 @@ public class RegisterScreen extends javax.swing.JFrame {
                 jFieldUser.setText("");
                 jFieldPassword.setText("");
             } else{
-                info_window.SetMessage("Erro ao criar usuário!\nRetorno do servidor: "+response.getResponseText());
+                info_window.SetMessage("Erro ao criar usuário!\n"+response.getResponseText());
             }
         } catch (Exception ex) {
             System.out.println("TESTEEEEEEE" + ex);
