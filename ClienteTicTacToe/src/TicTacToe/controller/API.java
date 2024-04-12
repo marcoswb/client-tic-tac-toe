@@ -11,8 +11,9 @@ import java.io.IOException;
 
 public class API {
     
-    private static final String BASE_URL = "http://127.0.0.1:5000/register";
-    
+    private static final String BASE_URL = "http://127.0.0.1:5000";
+    private String endpoint = "";
+
     public ResponseModel CreateUser(String name, String nickname, String password) throws Exception {
         JsonData json = new JsonData();
         
@@ -20,6 +21,19 @@ public class API {
         json.addKeyJson("nickname", nickname);
         json.addKeyJson("password", password);
         
+        setEndpoint("/register");
+        ResponseModel response = SendPostRequest(json);
+        
+        return response;
+    }
+    
+    public ResponseModel Login(String nickname, String password) throws Exception {
+        JsonData json = new JsonData();
+        
+        json.addKeyJson("nickname", nickname);
+        json.addKeyJson("password", password);
+        
+        setEndpoint("/login");
         ResponseModel response = SendPostRequest(json);
         
         return response;
@@ -68,9 +82,18 @@ public class API {
     }
     
     private HttpURLConnection createConnection() throws IOException{
-        URL urlObj = new URL(BASE_URL);
+        URL urlObj = new URL(BASE_URL + getEndpoint());
         HttpURLConnection connection = (HttpURLConnection) urlObj.openConnection();
         
         return connection;
     }
+
+    public String getEndpoint() {
+        return endpoint;
+    }
+
+    public void setEndpoint(String endpoint) {
+        this.endpoint = endpoint;
+    }
+    
 }

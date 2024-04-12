@@ -1,8 +1,10 @@
 
 package TicTacToe.view;
 
+import TicTacToe.controller.API;
 import java.awt.Color;
 import TicTacToe.utils.Functions;
+import TicTacToe.utils.ResponseModel;
 
 
 public class LoginScreen extends javax.swing.JFrame {
@@ -10,6 +12,13 @@ public class LoginScreen extends javax.swing.JFrame {
 
     public LoginScreen() {
         initComponents();
+        
+        jFieldUser.setForeground(Color.GRAY);
+        jFieldUser.setText("Informe seu usuário...");
+        
+        jFieldPassword.setForeground(Color.GRAY);
+        jFieldPassword.setEchoChar((char) 0);
+        jFieldPassword.setText("Informe sua senha...");
     }
     
     @SuppressWarnings("unchecked")
@@ -27,12 +36,28 @@ public class LoginScreen extends javax.swing.JFrame {
 
         jFieldUser.setToolTipText("");
         jFieldUser.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        jFieldUser.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jFieldUserFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jFieldUserFocusLost(evt);
+            }
+        });
         jFieldUser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jFieldUserActionPerformed(evt);
             }
         });
 
+        jFieldPassword.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jFieldPasswordFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jFieldPasswordFocusLost(evt);
+            }
+        });
         jFieldPassword.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jFieldPasswordActionPerformed(evt);
@@ -128,23 +153,36 @@ public class LoginScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabelSignOnMouseExited
 
     private void jButtonLoginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonLoginMouseClicked
-        String user = jFieldUser.getText();
-        String password = jFieldPassword.getText();
-        
-        if(functions.IsNull(user)){
+        try{    
+            String user = jFieldUser.getText();
+            String password = jFieldPassword.getText();
+
+            if(functions.IsNull(user)){
+                InfoDialog info_window = new InfoDialog();
+                info_window.SetMessage("Preencha o campo de usuário corretamente!");
+                jFieldUser.requestFocus();
+                return;
+            } else if(functions.IsNull(password)){
+                InfoDialog info_window = new InfoDialog();
+                info_window.SetMessage("Preencha o campo de senha corretamente!");
+                jFieldPassword.requestFocus();
+                return;
+            }
+            
+            API api = new API();
+            ResponseModel response = api.Login(user, password);
+            
             InfoDialog info_window = new InfoDialog();
-            info_window.SetMessage("Preencha o campo de usuário corretamente!");
-            jFieldUser.requestFocus();
-            return;
-        } else if(functions.IsNull(password)){
-            InfoDialog info_window = new InfoDialog();
-            info_window.SetMessage("Preencha o campo de senha corretamente!");
-            jFieldPassword.requestFocus();
-            return;
+            if(response.getResponseCode() == 200){
+                info_window.SetMessage("passsouuuuu");
+                jFieldUser.setText("");
+                jFieldPassword.setText("");
+            } else{
+                info_window.SetMessage("Erro ao realizar Login!\n"+response.getResponseText());
+            }
+        } catch (Exception ex) {
+            System.out.println("TESTEEEEEEE" + ex);
         }
-        
-        System.out.println(user);
-        System.out.println(password);
     }//GEN-LAST:event_jButtonLoginMouseClicked
 
     private void jButtonLoginMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonLoginMouseEntered
@@ -154,6 +192,36 @@ public class LoginScreen extends javax.swing.JFrame {
     private void jButtonLoginMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonLoginMouseExited
         jButtonLogin.setBackground(Color.lightGray);
     }//GEN-LAST:event_jButtonLoginMouseExited
+
+    private void jFieldUserFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFieldUserFocusGained
+        if (jFieldUser.getText().equals("Informe seu usuário...")) {
+            jFieldUser.setText("");
+            jFieldUser.setForeground(Color.BLACK);
+        }
+    }//GEN-LAST:event_jFieldUserFocusGained
+
+    private void jFieldUserFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFieldUserFocusLost
+        if (jFieldUser.getText().isEmpty()) {
+            jFieldUser.setForeground(Color.GRAY);
+            jFieldUser.setText("Informe seu usuário...");
+        }
+    }//GEN-LAST:event_jFieldUserFocusLost
+
+    private void jFieldPasswordFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFieldPasswordFocusGained
+        if (String.valueOf(jFieldPassword.getPassword()).equals("Informe sua senha...")) {
+            jFieldPassword.setText("");
+            jFieldPassword.setEchoChar('•');
+            jFieldPassword.setForeground(Color.BLACK);
+        }
+    }//GEN-LAST:event_jFieldPasswordFocusGained
+
+    private void jFieldPasswordFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFieldPasswordFocusLost
+        if (String.valueOf(jFieldPassword.getPassword()).isEmpty()){
+            jFieldPassword.setForeground(Color.GRAY);
+            jFieldPassword.setEchoChar((char) 0);
+            jFieldPassword.setText("Informe sua senha...");
+        }
+    }//GEN-LAST:event_jFieldPasswordFocusLost
 
     public static void main(String args[]) {
         try {
