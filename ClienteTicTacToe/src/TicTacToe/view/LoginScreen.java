@@ -172,12 +172,13 @@ public class LoginScreen extends javax.swing.JFrame {
             API api = new API();
             ResponseModel response = api.Login(user, password);
             
-            InfoDialog info_window = new InfoDialog();
             if(response.getResponseCode() == 200){
-                info_window.SetMessage("passsouuuuu");
-                jFieldUser.setText("");
-                jFieldPassword.setText("");
+                dispose();
+                
+                MainScreen main_screen = new MainScreen();
+                main_screen.show();
             } else{
+                InfoDialog info_window = new InfoDialog();
                 info_window.SetMessage("Erro ao realizar Login!\n"+response.getResponseText());
             }
         } catch (Exception ex) {
