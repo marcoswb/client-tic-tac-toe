@@ -1,7 +1,8 @@
 package TicTacToe.view;
 
-import TicTacToe.utils.Functions;
 import javax.swing.table.DefaultTableModel;
+import TicTacToe.utils.Functions;
+import TicTacToe.controller.BoardController;
 
 public class MainScreen extends javax.swing.JFrame {
     
@@ -207,9 +208,17 @@ public class MainScreen extends javax.swing.JFrame {
     }
     
     private void jButtonStartGameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonStartGameMouseClicked
-        jLabelProgress.setText("Procurando jogador...");
-        spinnerProgressLoad.setValue(50);
-        spinnerProgressLoad.setIndeterminate(true);
+        try {
+            jLabelProgress.setText("Procurando jogador...");
+            spinnerProgressLoad.setValue(50);
+            spinnerProgressLoad.setIndeterminate(true);
+            
+            BoardController board = new BoardController();
+            board.startGame(jLabelProgress, spinnerProgressLoad);
+
+        } catch (Exception ex) {
+            System.out.println("TESTEEEEEEE" + ex);
+        }
     }//GEN-LAST:event_jButtonStartGameMouseClicked
 
     private void jButtonStartGameWithMachineMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonStartGameWithMachineMouseClicked
