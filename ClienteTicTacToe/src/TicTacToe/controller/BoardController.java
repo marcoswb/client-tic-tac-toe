@@ -7,33 +7,12 @@ import TicTacToe.utils.ResponseModel;
 import TicTacToe.view.Board;
 
 
-//interface OnEventListener {
-//    
-//    void handleEvent();
-//}
-//
-//
-//public class BoardController{
-//    
-//    private OnEventListener mListener;
-//    
-//    public void registerOnEventListener(OnEventListener mListener){
-//        this.mListener = mListener;
-//    }
-//    
-//    public void startGame(){
-//        
-//    }
-//}
-
 public class BoardController implements Runnable{
     
     private JLabel jLabelProgress;
     private SpinnerProgress spinnerProgressLoad;
     
     public void startGame(JLabel label, SpinnerProgress spinner){
-//        this.jLabelProgress = label;
-//        this.spinnerProgressLoad = spinner;
         
         BoardController board = new BoardController();
         board.setjLabelProgress(label);
