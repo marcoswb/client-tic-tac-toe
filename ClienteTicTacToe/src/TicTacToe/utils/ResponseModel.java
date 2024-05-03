@@ -6,29 +6,32 @@ import org.json.JSONObject;
 
 public class ResponseModel {
     private int responseCode;
-    private String responseText = "";
+    private Object responseText = "";
 
     public void setResponseCode(int responseCode) {
         this.responseCode = responseCode;
     }
 
     public void setResponseText(String responseText) throws JSONException {
-        this.responseText = getMessageKey(responseText);
+        this.responseText = getMessageKey(responseText, "message");
+    }
+    
+    public void setData(String responseText, String keySearch) throws JSONException {
+        this.responseText = getMessageKey(responseText, keySearch);
     }
     
     public int getResponseCode() {
         return responseCode;
     }
 
-    public String getResponseText() {
+    public Object getResponseText() {
         return responseText;
     }
     
-    private String getMessageKey(String body) throws JSONException{
+    private Object getMessageKey(String body, String keySearch) throws JSONException{
         String message = "";
         JSONObject obj = new JSONObject(body);
-        System.out.println(obj.getString("message"));
-        message = obj.getString("message");
+        message = obj.get(keySearch).toString();
         
         return message;
     }

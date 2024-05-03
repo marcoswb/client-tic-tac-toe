@@ -27,7 +27,8 @@ public class BoardController implements Runnable{
     public void run(){
         try{
             API api = new API();
-            ResponseModel response = api.Login("marcos", "marcos");
+            ResponseModel response = api.GetFreeUsers();
+            System.out.println(response.getResponseText());
             
             Board board = new Board();
             board.setDefaultCloseOperation(HIDE_ON_CLOSE);
@@ -41,17 +42,9 @@ public class BoardController implements Runnable{
             System.out.println("MARCOSSSS " + ex);
         }
     }
-    
-    public JLabel getjLabelProgress() {
-        return jLabelProgress;
-    }
 
     public void setjLabelProgress(JLabel jLabelProgress) {
         this.jLabelProgress = jLabelProgress;
-    }
-
-    public SpinnerProgress getSpinnerProgressLoad() {
-        return spinnerProgressLoad;
     }
 
     public void setSpinnerProgressLoad(SpinnerProgress spinnerProgressLoad) {

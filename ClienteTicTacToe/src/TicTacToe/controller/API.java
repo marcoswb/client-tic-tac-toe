@@ -8,11 +8,13 @@ import java.net.URL;
 import TicTacToe.utils.ResponseModel;
 import TicTacToe.utils.JsonData;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 
 public class API {
     
     private static final String BASE_URL = "http://127.0.0.1:5000";
     private String endpoint = "";
+    BufferedReader  wr;
 
     public ResponseModel CreateUser(String name, String nickname, String password) throws Exception {
         JsonData json = new JsonData();
@@ -35,6 +37,13 @@ public class API {
         
         setEndpoint("/login");
         ResponseModel response = SendPostRequest(json);
+        
+        return response;
+    }
+    
+    public ResponseModel GetFreeUsers() throws Exception {        
+        setEndpoint("/users/free");
+        ResponseModel response = SendGetRequest("users");
         
         return response;
     }
@@ -67,6 +76,44 @@ public class API {
                         }
                         response.setResponseText(responseText.toString());
                     }
+                }
+
+            } catch(Exception ex){
+                System.out.println("AAAAAAAAAAAAAA" + ex);
+            }
+
+            connection.disconnect();
+            return response;
+        } catch(Exception ex){
+            ResponseModel response = new ResponseModel();
+            return response;
+        }
+    }
+    
+    private ResponseModel SendGetRequest(String recoverKey)  throws Exception {        
+        try{
+            ResponseModel response = new ResponseModel();
+            HttpURLConnection connection = createConnection();
+
+            connection.setDoOutput(true);
+
+            try{
+
+                response.setResponseCode(connection.getResponseCode());
+
+                // Aqui começamos a ler o corpo da resposta
+                if(!recoverKey.isEmpty()){
+                    StringBuilder responseText = new StringBuilder();
+                    try (BufferedReader br = new BufferedReader(
+                                new InputStreamReader(connection.getInputStream(), "utf-8"))) {
+                            String responseLine = null;
+                            
+                            while ((responseLine = br.readLine()) != null) {
+                                responseText.append(responseLine);
+                            }
+                            
+                            response.setData(responseText.toString(), "users");
+                        }
                 }
 
             } catch(Exception ex){
