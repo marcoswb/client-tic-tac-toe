@@ -6,6 +6,7 @@ import TicTacToe.controller.BoardController;
 
 public class MainScreen extends javax.swing.JFrame {
     
+    private String nickname;
     public Functions functions = new Functions();
     
     public MainScreen() {
@@ -27,7 +28,6 @@ public class MainScreen extends javax.swing.JFrame {
         jButtonStartGameWithMachine = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTablePlayers = new javax.swing.JTable();
-        jButtonClose = new javax.swing.JButton();
         spinnerProgressLoad = new raven.swing.spinner.SpinnerProgress();
         jLabelProgress = new javax.swing.JLabel();
 
@@ -99,13 +99,6 @@ public class MainScreen extends javax.swing.JFrame {
         });
         jScrollPane3.setViewportView(jTablePlayers);
 
-        jButtonClose.setText("Sair");
-        jButtonClose.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButtonCloseMouseClicked(evt);
-            }
-        });
-
         spinnerProgressLoad.setBorder(null);
         spinnerProgressLoad.setToolTipText("");
 
@@ -124,10 +117,8 @@ public class MainScreen extends javax.swing.JFrame {
                 .addGap(149, 149, 149)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabelProgress, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jButtonClose, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButtonStartGameWithMachine, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-                        .addComponent(jButtonStartGame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jButtonStartGameWithMachine, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                    .addComponent(jButtonStartGame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -137,9 +128,7 @@ public class MainScreen extends javax.swing.JFrame {
                 .addComponent(jButtonStartGame)
                 .addGap(18, 18, 18)
                 .addComponent(jButtonStartGameWithMachine)
-                .addGap(18, 18, 18)
-                .addComponent(jButtonClose)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 93, Short.MAX_VALUE)
                 .addComponent(jLabelProgress)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(spinnerProgressLoad, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -214,6 +203,7 @@ public class MainScreen extends javax.swing.JFrame {
             spinnerProgressLoad.setIndeterminate(true);
             
             BoardController board = new BoardController();
+            board.setNickname(this.getNickname());
             board.startGame(jLabelProgress, spinnerProgressLoad);
 
         } catch (Exception ex) {
@@ -224,11 +214,6 @@ public class MainScreen extends javax.swing.JFrame {
     private void jButtonStartGameWithMachineMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonStartGameWithMachineMouseClicked
         System.out.println("Iniciar partida contra o computador");
     }//GEN-LAST:event_jButtonStartGameWithMachineMouseClicked
-
-    private void jButtonCloseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonCloseMouseClicked
-        setVisible(false);
-        dispose();
-    }//GEN-LAST:event_jButtonCloseMouseClicked
 
     public static void main(String args[]) {
         try {
@@ -255,8 +240,15 @@ public class MainScreen extends javax.swing.JFrame {
         });
     }
 
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonClose;
     private javax.swing.JButton jButtonStartGame;
     private javax.swing.JButton jButtonStartGameWithMachine;
     private javax.swing.JLabel jLabelProgress;

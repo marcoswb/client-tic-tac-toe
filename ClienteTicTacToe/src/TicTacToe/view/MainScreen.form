@@ -112,7 +112,6 @@
                       <EmptySpace min="-2" pref="149" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="jLabelProgress" pref="200" max="32767" attributes="0"/>
-                          <Component id="jButtonClose" max="32767" attributes="0"/>
                           <Component id="jButtonStartGameWithMachine" pref="200" max="32767" attributes="0"/>
                           <Component id="jButtonStartGame" max="32767" attributes="0"/>
                       </Group>
@@ -127,9 +126,7 @@
                       <Component id="jButtonStartGame" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                       <Component id="jButtonStartGameWithMachine" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="jButtonClose" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="50" max="32767" attributes="0"/>
+                      <EmptySpace pref="93" max="32767" attributes="0"/>
                       <Component id="jLabelProgress" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="spinnerProgressLoad" min="-2" pref="49" max="-2" attributes="0"/>
@@ -194,14 +191,6 @@
                 </Component>
               </SubComponents>
             </Container>
-            <Component class="javax.swing.JButton" name="jButtonClose">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Sair"/>
-              </Properties>
-              <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jButtonCloseMouseClicked"/>
-              </Events>
-            </Component>
             <Component class="raven.swing.spinner.SpinnerProgress" name="spinnerProgressLoad">
               <Properties>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">

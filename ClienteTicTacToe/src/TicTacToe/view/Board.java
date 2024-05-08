@@ -4,6 +4,8 @@ import java.awt.Color;
 
 public class Board extends javax.swing.JFrame {
     
+    private String player_01;
+    private String player_02;
     private String playerCharacter = "";
     private final String [][]board = {{"NULO", "NULO", "NULO"}, {"NULO", "NULO", "NULO"}, {"NULO", "NULO", "NULO"}};
     private boolean gameFinished = false;
@@ -133,6 +135,12 @@ public class Board extends javax.swing.JFrame {
         return playerCharacter;
     }
     
+    public void StartGame(){
+        System.out.println("Jogador 1 " + this.getPlayer_01());
+        System.out.println("Jogador 2 " + this.getPlayer_02());
+        
+        this.show();
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -363,6 +371,22 @@ public class Board extends javax.swing.JFrame {
                 new Board().setVisible(true);
             }
         });
+    }
+    
+    public String getPlayer_01() {
+        return player_01;
+    }
+
+    public void setPlayer_01(String player_01) {
+        this.player_01 = player_01;
+    }
+
+    public String getPlayer_02() {
+        return player_02;
+    }
+
+    public void setPlayer_02(String player_02) {
+        this.player_02 = player_02;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

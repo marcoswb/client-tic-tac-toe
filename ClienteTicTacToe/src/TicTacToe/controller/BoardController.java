@@ -3,12 +3,12 @@ package TicTacToe.controller;
 import javax.swing.JLabel;
 import raven.swing.spinner.SpinnerProgress;
 import static javax.swing.WindowConstants.HIDE_ON_CLOSE;
-import TicTacToe.utils.ResponseModel;
 import TicTacToe.view.Board;
 
 
 public class BoardController implements Runnable{
     
+    private String nickname;
     private JLabel jLabelProgress;
     private SpinnerProgress spinnerProgressLoad;
     
@@ -17,6 +17,7 @@ public class BoardController implements Runnable{
         BoardController board = new BoardController();
         board.setjLabelProgress(label);
         board.setSpinnerProgressLoad(spinner);
+        board.setNickname(this.getNickname());
         
         Thread thread = new Thread(board, "board");
         thread.start();
@@ -27,12 +28,15 @@ public class BoardController implements Runnable{
     public void run(){
         try{
             API api = new API();
-            ResponseModel response = api.GetFreeUsers();
-            System.out.println(response.getResponseText());
+            String nickname_oponent = api.GetFreeUser(this.getNickname());
             
             Board board = new Board();
+            
+            board.setPlayer_01(this.getNickname());
+            board.setPlayer_02(nickname_oponent);
+            
             board.setDefaultCloseOperation(HIDE_ON_CLOSE);
-            board.show();
+            board.StartGame();
 
             this.jLabelProgress.setText("");
             this.spinnerProgressLoad.setValue(0);
@@ -49,6 +53,14 @@ public class BoardController implements Runnable{
 
     public void setSpinnerProgressLoad(SpinnerProgress spinnerProgressLoad) {
         this.spinnerProgressLoad = spinnerProgressLoad;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
 }

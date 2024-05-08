@@ -176,6 +176,7 @@ public class LoginScreen extends javax.swing.JFrame {
                 dispose();
                 
                 MainScreen main_screen = new MainScreen();
+                main_screen.setNickname(user);
                 main_screen.show();
             } else{
                 InfoDialog info_window = new InfoDialog();

@@ -8,7 +8,6 @@ import java.net.URL;
 import TicTacToe.utils.ResponseModel;
 import TicTacToe.utils.JsonData;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 
 public class API {
     
@@ -41,11 +40,12 @@ public class API {
         return response;
     }
     
-    public ResponseModel GetFreeUsers() throws Exception {        
-        setEndpoint("/users/free");
-        ResponseModel response = SendGetRequest("users");
+    public String GetFreeUser(String nickname) throws Exception {        
+        setEndpoint("/users/free?nickname="+nickname);
+        ResponseModel response_api = SendGetRequest("users");
         
-        return response;
+        String[] users = response_api.getResponseText().toString().trim().replace("[", "").replace("]", "").replace("\"", "").split(",");
+        return users[0];
     }
     
     private ResponseModel SendPostRequest(JsonData json)  throws Exception {        
