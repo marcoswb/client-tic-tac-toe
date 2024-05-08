@@ -48,6 +48,16 @@ public class API {
         return users[0];
     }
     
+    public ResponseModel Logout(String nickname) throws Exception {  
+        JsonData json = new JsonData();
+        json.addKeyJson("nickname", nickname);
+        
+        setEndpoint("/logout");
+        ResponseModel response = SendPostRequest(json);
+        
+        return response;
+    }
+    
     private ResponseModel SendPostRequest(JsonData json)  throws Exception {        
         try{
             ResponseModel response = new ResponseModel();

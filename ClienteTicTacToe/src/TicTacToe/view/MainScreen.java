@@ -1,5 +1,6 @@
 package TicTacToe.view;
 
+import TicTacToe.controller.API;
 import javax.swing.table.DefaultTableModel;
 import TicTacToe.utils.Functions;
 import TicTacToe.controller.BoardController;
@@ -34,6 +35,14 @@ public class MainScreen extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sign On");
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         jTableHistory.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -214,6 +223,19 @@ public class MainScreen extends javax.swing.JFrame {
     private void jButtonStartGameWithMachineMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonStartGameWithMachineMouseClicked
         System.out.println("Iniciar partida contra o computador");
     }//GEN-LAST:event_jButtonStartGameWithMachineMouseClicked
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        
+    }//GEN-LAST:event_formWindowClosed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        try {
+            API api = new API();
+            api.Logout(this.getNickname());            
+        } catch (Exception ex) {
+            System.out.println("ERRROOOOOO 1: " + ex.toString());
+        }
+    }//GEN-LAST:event_formWindowClosing
 
     public static void main(String args[]) {
         try {
