@@ -17,7 +17,6 @@ public class BoardController implements Runnable{
     private final int port = 8000;
     private final byte[] data = new byte[1024];
     private Socket socket;
-    private String response;
     
     public void startGame(JLabel label, SpinnerProgress spinner){
         
@@ -36,18 +35,10 @@ public class BoardController implements Runnable{
         try{
 //            API api = new API();
 //            String nickname_oponent = api.GetFreeUser(this.getNickname());
-            
-//            board.setPlayer_01(this.getNickname());
-//            board.setPlayer_02(nickname_oponent);
-        
-//            Board board = new Board();
-//            
-//            board.setDefaultCloseOperation(HIDE_ON_CLOSE);
-//            board.StartGame();
-//
-//            this.jLabelProgress.setText("");
-//            this.spinnerProgressLoad.setValue(0);
-//            this.spinnerProgressLoad.setIndeterminate(false);
+            String nickname_oponent = "marcos2";
+                      
+            Board game = new Board();
+            game.setPlayer_01(this.getNickname());
 
             
             try{
@@ -57,26 +48,16 @@ public class BoardController implements Runnable{
                 
                 String firstResponse = this.awaitMessage();
                 System.out.println("Server first response: " + firstResponse);
-
-                OUTER:
-                while (true) {
-                    switch (firstResponse) {
-                        case "await":
-                            response = this.awaitMessage();
-                            System.out.println("Server response: " + response);
-                            this.sendMessage("entrar");
-                            break;
-                        case "play":
-                            this.sendMessage("entrar");
-                            response = this.awaitMessage();
-                            System.out.println("Server response: " + response);
-                            break;
-                        default:
-                            break OUTER;
-                    }
-                }
                 
-                System.out.println("SAIUUUUUUUUU");
+                game.setPlayer_02(nickname_oponent);
+
+                game.setDefaultCloseOperation(HIDE_ON_CLOSE);
+                game.StartGame(socket, firstResponse);
+
+                this.jLabelProgress.setText("");
+                this.spinnerProgressLoad.setValue(0);
+                this.spinnerProgressLoad.setIndeterminate(false);
+
             } catch (UnknownHostException ex) {
                 System.out.println("Server not found: " + ex.getMessage());
             } catch (IOException ex) {

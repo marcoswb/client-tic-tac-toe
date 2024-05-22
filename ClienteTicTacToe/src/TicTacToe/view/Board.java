@@ -1,6 +1,11 @@
 package TicTacToe.view;
 
 import java.awt.Color;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.*;
 
 public class Board extends javax.swing.JFrame {
     
@@ -9,32 +14,107 @@ public class Board extends javax.swing.JFrame {
     private String playerCharacter = "";
     private final String [][]board = {{"NULO", "NULO", "NULO"}, {"NULO", "NULO", "NULO"}, {"NULO", "NULO", "NULO"}};
     private boolean gameFinished = false;
+    private final byte[] data = new byte[1024];
+    private Socket socket;
+    private final InfoDialog info_window = new InfoDialog();;
+    private final ErrorDialog error_window = new ErrorDialog();
     
     public Board() {
         initComponents();
     }
-    
-    public void FillLabel(javax.swing.JLabel label_object, int x, int y){
-        if(gameFinished){
-            return;
+        
+    public void StartGame(Socket socket, String firstResponse) throws IOException{        
+        this.socket = socket;
+        this.show();
+
+        switch (firstResponse) {
+            case "await":
+                info_window.SetMessage("Jogador "+this.getPlayer_02()+" irá começar a partida!");
+                
+                this.DisableBoard();
+                this.awaitMoveOponent();
+                this.EnableBoard();
+                
+                break;
+            case "play":
+                info_window.SetMessage("Você começa a partida!");
+                break;
+            default:
+                break;
         }
         
-        x = x - 1;
-        y = y - 1;
+    }
+    
+    private void Move(int x, int y){        
+//        if(gameFinished){
+//            return;
+//        }
+//
+//        x = x - 1;
+//        y = y - 1;
+//
+//        if(board[x][y].equals("NULO")){
+//            board[x][y] = playerCharacter;
+//            this.FillLabel(x, y);
+//
+//            boolean victory = CheckVictory();
+//            if(victory){
+//                gameFinished = true;
+//                info_window.SetMessage("Parabéns, você ganhou!");
+//            }
+//        } else {
+//            error_window.SetMessage("Posição ocupada, escolha outro campo");
+//        }
 
-        if(board[x][y].equals("NULO")){
-            board[x][y] = playerCharacter;
-            label_object.setText(playerCharacter);
-            
-            boolean victory = CheckVictory();
-            if(victory){
-                DisableBoard();
-                InfoDialog info_window = new InfoDialog();
-                info_window.SetMessage("Parabéns, você ganhou!");
-            }
-        } else {
-            ErrorDialog error_window = new ErrorDialog();
-            error_window.SetMessage("Posição ocupada, escolha outro campo");
+        this.SendMoveOponent(x, y);
+    }
+    
+    private void SendMoveOponent(int x, int y){
+        try{
+            this.sendMessage(String.valueOf(x) + String.valueOf(y));   
+        } catch (IOException ex) {
+            System.out.println("ERROOOOOOOOOO2 "+ex);
+        }
+    }
+    
+    private void awaitMoveOponent(){
+        try {
+            String response = this.awaitMessage();
+            System.out.println("RETORNOU: "+response);
+        } catch (IOException ex) {
+            System.out.println("ERROOOOOOOOOO2 "+ex);
+        }
+    }
+    
+    public void FillLabel(int x, int y){
+        if(x == 0 && y == 0){
+            label_x1_y1.setText(playerCharacter);
+        }
+        if(x == 0 && y == 1){
+            label_x1_y2.setText(playerCharacter);
+        }
+        if(x == 0 && y == 2){
+            label_x1_y3.setText(playerCharacter);
+        }
+        
+        if(x == 1 && y == 0){
+            label_x2_y1.setText(playerCharacter);
+        }
+        if(x == 1 && y == 1){
+            label_x2_y2.setText(playerCharacter);
+        }
+        if(x == 1 && y == 2){
+            label_x2_y3.setText(playerCharacter);
+        }
+        
+        if(x == 2 && y == 0){
+            label_x3_y1.setText(playerCharacter);
+        }
+        if(x == 2 && y == 1){
+            label_x3_y2.setText(playerCharacter);
+        }
+        if(x == 2 && y == 2){
+            label_x3_y3.setText(playerCharacter);
         }
     }
     
@@ -71,12 +151,12 @@ public class Board extends javax.swing.JFrame {
     }
     
     private void FillVictoryPositions(int x1, int y1, int x2, int y2, int x3, int y3){
-        FillLabel(x1, y1);
-        FillLabel(x2, y2);
-        FillLabel(x3, y3);
+        FillForeground(x1, y1);
+        FillForeground(x2, y2);
+        FillForeground(x3, y3);
     }
     
-    private void FillLabel(int x, int y){
+    private void FillForeground(int x, int y){
         switch(x){
             case 0: {
                 switch(y){
@@ -124,7 +204,27 @@ public class Board extends javax.swing.JFrame {
     }
     
     public void DisableBoard(){
-        gameFinished = true;
+        label_x1_y1.setEnabled(false);
+        label_x1_y2.setEnabled(false);
+        label_x1_y3.setEnabled(false);
+        label_x2_y1.setEnabled(false);
+        label_x2_y2.setEnabled(false);
+        label_x2_y3.setEnabled(false);
+        label_x3_y1.setEnabled(false);
+        label_x3_y2.setEnabled(false);
+        label_x3_y3.setEnabled(false);
+    }
+    
+    private void EnableBoard(){
+        label_x1_y1.setEnabled(true);
+        label_x1_y2.setEnabled(true);
+        label_x1_y3.setEnabled(true);
+        label_x2_y1.setEnabled(true);
+        label_x2_y2.setEnabled(true);
+        label_x2_y3.setEnabled(true);
+        label_x3_y1.setEnabled(true);
+        label_x3_y2.setEnabled(true);
+        label_x3_y3.setEnabled(true);
     }
         
     public void SetPlayerCharacter(String value){
@@ -135,12 +235,38 @@ public class Board extends javax.swing.JFrame {
         return playerCharacter;
     }
     
-    public void StartGame(){
-        System.out.println("Jogador 1 " + this.getPlayer_01());
-        System.out.println("Jogador 2 " + this.getPlayer_02());
-        
-        this.show();
+    public void sendMessage(String message) throws IOException{
+        try{
+            OutputStream output = socket.getOutputStream();
+            output.write(message.getBytes());
+            output.flush();
+        } catch (Exception ex) {
+            System.out.println("MARCOSSSS 1 " + ex);
+        }
     }
+    
+    public String awaitMessage() throws IOException{
+        try{
+            InputStream input = socket.getInputStream();
+            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+
+            int nRead;
+            while ((nRead = input.read(data, 0, data.length)) != -1) {
+                buffer.write(data, 0, nRead);
+                if (input.available() == 0) {
+                    break;
+                }
+            }
+            
+            String response = buffer.toString("UTF-8");
+
+            return response;
+        } catch (Exception ex) {
+            System.out.println("MARCOSSSS 2 " + ex);
+        }
+        return null;
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -307,39 +433,67 @@ public class Board extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void label_x1_y1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_x1_y1MouseClicked
-        FillLabel(label_x1_y1, 1, 1);
+        System.out.println("marcos");
+        this.DisableBoard();
+        Move(1, 1);
+        this.awaitMoveOponent();
+        this.EnableBoard();
     }//GEN-LAST:event_label_x1_y1MouseClicked
 
     private void label_x2_y1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_x2_y1MouseClicked
-        FillLabel(label_x2_y1, 2, 1);
+        this.DisableBoard();
+        Move(2, 1);
+        this.awaitMoveOponent();
+        this.EnableBoard();
     }//GEN-LAST:event_label_x2_y1MouseClicked
 
     private void label_x3_y1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_x3_y1MouseClicked
-        FillLabel(label_x3_y1, 3, 1);
+        this.DisableBoard();
+        Move(3, 1);
+        this.awaitMoveOponent();
+        this.EnableBoard();
     }//GEN-LAST:event_label_x3_y1MouseClicked
 
     private void label_x2_y2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_x2_y2MouseClicked
-        FillLabel(label_x2_y2, 2, 2);
+        this.DisableBoard();
+        Move(2, 2);
+        this.awaitMoveOponent();
+        this.EnableBoard();
     }//GEN-LAST:event_label_x2_y2MouseClicked
 
     private void label_x1_y2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_x1_y2MouseClicked
-        FillLabel(label_x1_y2, 1, 2);
+        this.DisableBoard();
+        Move(1, 2);
+        this.awaitMoveOponent();
+        this.EnableBoard();
     }//GEN-LAST:event_label_x1_y2MouseClicked
 
     private void label_x2_y3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_x2_y3MouseClicked
-        FillLabel(label_x2_y3, 2, 3);
+        this.DisableBoard();
+        Move(2, 3);
+        this.awaitMoveOponent();
+        this.EnableBoard();
     }//GEN-LAST:event_label_x2_y3MouseClicked
 
     private void label_x3_y2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_x3_y2MouseClicked
-        FillLabel(label_x3_y2, 3, 2);
+        this.DisableBoard();
+        Move(3, 2);
+        this.awaitMoveOponent();
+        this.EnableBoard();
     }//GEN-LAST:event_label_x3_y2MouseClicked
 
     private void label_x1_y3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_x1_y3MouseClicked
-        FillLabel(label_x1_y3, 1, 3);
+        this.DisableBoard();
+        Move(1, 3);
+        this.awaitMoveOponent();
+        this.EnableBoard();
     }//GEN-LAST:event_label_x1_y3MouseClicked
 
     private void label_x3_y3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_x3_y3MouseClicked
-        FillLabel(label_x3_y3, 3, 3);
+        this.DisableBoard();
+        Move(3, 3);
+        this.awaitMoveOponent();
+        this.EnableBoard();
     }//GEN-LAST:event_label_x3_y3MouseClicked
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
