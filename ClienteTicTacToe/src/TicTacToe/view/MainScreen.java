@@ -3,7 +3,7 @@ package TicTacToe.view;
 import TicTacToe.controller.API;
 import javax.swing.table.DefaultTableModel;
 import TicTacToe.utils.Functions;
-import TicTacToe.controller.BoardController;
+import TicTacToe.controller.PrepareGame;
 
 public class MainScreen extends javax.swing.JFrame {
     
@@ -211,7 +211,7 @@ public class MainScreen extends javax.swing.JFrame {
             spinnerProgressLoad.setValue(50);
             spinnerProgressLoad.setIndeterminate(true);
             
-            BoardController board = new BoardController();
+            PrepareGame board = new PrepareGame();
             board.setNickname(this.getNickname());
             board.startGame(jLabelProgress, spinnerProgressLoad);
 

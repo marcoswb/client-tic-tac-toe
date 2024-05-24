@@ -1,110 +1,143 @@
+
 package TicTacToe.controller;
 
-import javax.swing.JLabel;
-import raven.swing.spinner.SpinnerProgress;
-import static javax.swing.WindowConstants.HIDE_ON_CLOSE;
-import java.io.*;
-import java.net.*;
 import TicTacToe.view.Board;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.Socket;
 
-
-public class BoardController implements Runnable{
+public class BoardController extends Thread{    
     
-    private String nickname;
-    private JLabel jLabelProgress;
-    private SpinnerProgress spinnerProgressLoad;
-    private final String host = "127.0.0.1";
-    private final int port = 8000;
     private final byte[] data = new byte[1024];
     private Socket socket;
+    private Board contextScreen;
+    private int position_x = 0;
+    private int position_y = 0;
     
-    public void startGame(JLabel label, SpinnerProgress spinner){
+    public void receiveMovementFromOpponent(Board context){
+        BoardController controller = new BoardController();
         
-        BoardController board = new BoardController();
-        board.setjLabelProgress(label);
-        board.setSpinnerProgressLoad(spinner);
-        board.setNickname(this.getNickname());
+        controller.setSocket(socket);
+        controller.setContextScreen(context);
         
-        Thread thread = new Thread(board, "board");
-        thread.start();
+        Thread t = new Thread(controller::awaitMoveOponent);
+        t.start();
     }
     
+    public void moveAndAwaitOponnet(Board context, int x, int y){
+        BoardController controller = new BoardController();
+        
+        controller.setSocket(socket);
+        controller.setContextScreen(context);
+        controller.setPosition_x(x);
+        controller.setPosition_y(y);
+        
+        Thread t = new Thread(controller::moveAndAwait);
+        t.start();
+    }
     
-    @Override
-    public void run(){
+    private void moveAndAwait(){
+        contextScreen.DisableBoard();
+        
+        Move(position_x, position_y);
+        this.awaitMoveOponent();
+        
+        contextScreen.EnableBoard();
+    }
+    
+    private void Move(int x, int y){        
+//        if(gameFinished){
+//            return;
+//        }
+//
+//        x = x - 1;
+//        y = y - 1;
+//
+//        if(board[x][y].equals("NULO")){
+//            board[x][y] = playerCharacter;
+//            this.FillLabel(x, y);
+//
+//            boolean victory = CheckVictory();
+//            if(victory){
+//                gameFinished = true;
+//                info_window.SetMessage("Parabéns, você ganhou!");
+//            }
+//        } else {
+//            error_window.SetMessage("Posição ocupada, escolha outro campo");
+//        }
+
+        this.SendMoveOponent(x, y);
+    }
+    
+        
+    private void awaitMoveOponent(){
+        try {
+            contextScreen.DisableBoard();
+            
+            String response = this.awaitMessage();
+            System.out.println("RETORNOU: "+response);
+            
+            contextScreen.EnableBoard();
+        } catch (IOException ex) {
+            System.out.println("ERROOOOOOOOOO2 "+ex);
+        }
+    }
+    
+    private void SendMoveOponent(int x, int y){
         try{
-//            API api = new API();
-//            String nickname_oponent = api.GetFreeUser(this.getNickname());
-            String nickname_oponent = "marcos2";
-                      
-            Board game = new Board();
-            game.setPlayer_01(this.getNickname());
+            this.sendMessage(String.valueOf(x) + String.valueOf(y));   
+        } catch (IOException ex) {
+            System.out.println("ERROOOOOOOOOO2 "+ex);
+        }
+    }
+    
+    private String awaitMessage() throws IOException{
+        try{
+            InputStream input = socket.getInputStream();
+            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 
-            
-            try{
-                socket = new Socket(host, port);
-                
-                this.sendMessage("entrar");
-                
-                String firstResponse = this.awaitMessage();
-                System.out.println("Server first response: " + firstResponse);
-                
-                game.setPlayer_02(nickname_oponent);
-
-                game.setDefaultCloseOperation(HIDE_ON_CLOSE);
-                game.StartGame(socket, firstResponse);
-
-                this.jLabelProgress.setText("");
-                this.spinnerProgressLoad.setValue(0);
-                this.spinnerProgressLoad.setIndeterminate(false);
-
-            } catch (UnknownHostException ex) {
-                System.out.println("Server not found: " + ex.getMessage());
-            } catch (IOException ex) {
-                System.out.println("I/O error: " + ex.getMessage());
+            int nRead;
+            while ((nRead = input.read(data, 0, data.length)) != -1) {
+                buffer.write(data, 0, nRead);
+                if (input.available() == 0) {
+                    break;
+                }
             }
             
+            String response = buffer.toString("UTF-8");
+
+            return response;
         } catch (Exception ex) {
-            System.out.println("MARCOSSSS " + ex);
+            System.out.println("MARCOSSSS 2 " + ex);
         }
+        return null;
     }
-    
+
     public void sendMessage(String message) throws IOException{
-        OutputStream output = socket.getOutputStream();
-        output.write(message.getBytes());
-        output.flush();
-    }
-    
-    public String awaitMessage() throws IOException{
-        InputStream input = socket.getInputStream();
-        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-        
-        int nRead;
-        while ((nRead = input.read(data, 0, data.length)) != -1) {
-            buffer.write(data, 0, nRead);
-            if (input.available() == 0) {
-                break;
-            }
+        try{
+            OutputStream output = socket.getOutputStream();
+            output.write(message.getBytes());
+            output.flush();
+        } catch (Exception ex) {
+            System.out.println("MARCOSSSS 1 " + ex);
         }
-        String response = buffer.toString("UTF-8");
-        
-        return response;
+    }
+
+    public void setSocket(Socket socket) {
+        this.socket = socket;
+    }
+
+    public void setContextScreen(Board contextScreen) {
+        this.contextScreen = contextScreen;
     }
     
-    public void setjLabelProgress(JLabel jLabelProgress) {
-        this.jLabelProgress = jLabelProgress;
+    public void setPosition_x(int position_x) {
+        this.position_x = position_x;
     }
 
-    public void setSpinnerProgressLoad(SpinnerProgress spinnerProgressLoad) {
-        this.spinnerProgressLoad = spinnerProgressLoad;
+    public void setPosition_y(int position_y) {
+        this.position_y = position_y;
     }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
 }
