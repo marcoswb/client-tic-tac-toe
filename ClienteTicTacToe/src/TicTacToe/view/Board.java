@@ -1,10 +1,7 @@
 package TicTacToe.view;
 
 import java.awt.Color;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.*;
 import TicTacToe.controller.BoardController;
 
@@ -15,29 +12,28 @@ public class Board extends javax.swing.JFrame {
     private String playerCharacter = "";
     private final String [][]board = {{"NULO", "NULO", "NULO"}, {"NULO", "NULO", "NULO"}, {"NULO", "NULO", "NULO"}};
     private boolean gameFinished = false;
-    private final byte[] data = new byte[1024];
-    private Socket socket;
-    private final InfoDialog info_window = new InfoDialog();;
-    private final ErrorDialog error_window = new ErrorDialog();
+    public final InfoDialog info_window = new InfoDialog();;
+    public final ErrorDialog error_window = new ErrorDialog();
     private boolean actionInProgress = false;
-    private BoardController boardController = new BoardController();
+    private final BoardController boardController = new BoardController();
     
     public Board() {
         initComponents();
     }
         
-    public void StartGame(Socket socket, String firstResponse) throws IOException{        
-        this.socket = socket;
+    public void StartGame(Socket socket, String firstResponse) throws IOException{
         boardController.setSocket(socket);
         
         this.show();
 
         switch (firstResponse) {
             case "await":
+                boardController.SetPlayerCharacter("X");
                 info_window.SetMessage("Jogador "+this.getPlayer_02()+" irá começar a partida!");
                 boardController.receiveMovementFromOpponent(this);                
                 break;
             case "play":
+                boardController.SetPlayerCharacter("O");
                 info_window.SetMessage("Você começa a partida!");
                 break;
             default:
@@ -46,39 +42,39 @@ public class Board extends javax.swing.JFrame {
         
     }
     
-    public void FillLabel(int x, int y){
-        if(x == 0 && y == 0){
+    public void FillLabel(int x, int y, String playerCharacter){
+        if(x == 1 && y == 1){
             label_x1_y1.setText(playerCharacter);
         }
-        if(x == 0 && y == 1){
+        if(x == 1 && y == 2){
             label_x1_y2.setText(playerCharacter);
         }
-        if(x == 0 && y == 2){
+        if(x == 1 && y == 3){
             label_x1_y3.setText(playerCharacter);
         }
         
-        if(x == 1 && y == 0){
+        if(x == 2 && y == 1){
             label_x2_y1.setText(playerCharacter);
         }
-        if(x == 1 && y == 1){
+        if(x == 2 && y == 2){
             label_x2_y2.setText(playerCharacter);
         }
-        if(x == 1 && y == 2){
+        if(x == 2 && y == 3){
             label_x2_y3.setText(playerCharacter);
         }
         
-        if(x == 2 && y == 0){
+        if(x == 3 && y == 1){
             label_x3_y1.setText(playerCharacter);
         }
-        if(x == 2 && y == 1){
+        if(x == 3 && y == 2){
             label_x3_y2.setText(playerCharacter);
         }
-        if(x == 2 && y == 2){
+        if(x == 3 && y == 3){
             label_x3_y3.setText(playerCharacter);
         }
     }
     
-    private boolean CheckVictory(){
+    public boolean CheckVictory(){
         // checar vitória horizontal
         for(int x = 0; x <= 2; x++){
             if(board[x][0].equals(playerCharacter) & board[x][1].equals(playerCharacter) & board[x][2].equals(playerCharacter)) {
@@ -171,14 +167,6 @@ public class Board extends javax.swing.JFrame {
         actionInProgress = false;
     }
         
-    public void SetPlayerCharacter(String value){
-        playerCharacter = value;
-    }
-    
-    public String GetPlayerCharacter(){
-        return playerCharacter;
-    }
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

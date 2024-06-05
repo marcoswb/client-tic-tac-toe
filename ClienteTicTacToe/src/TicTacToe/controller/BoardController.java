@@ -15,12 +15,16 @@ public class BoardController extends Thread{
     private Board contextScreen;
     private int position_x = 0;
     private int position_y = 0;
+    private String [][]board = {{"NULO", "NULO", "NULO"}, {"NULO", "NULO", "NULO"}, {"NULO", "NULO", "NULO"}};
+    private String playerCharacter = "";
     
     public void receiveMovementFromOpponent(Board context){
         BoardController controller = new BoardController();
         
+        controller.SetPlayerCharacter(this.GetPlayerCharacter());
         controller.setSocket(socket);
         controller.setContextScreen(context);
+        controller.setBoard(this.getBoard());
         
         Thread t = new Thread(controller::awaitMoveOponent);
         t.start();
@@ -29,8 +33,10 @@ public class BoardController extends Thread{
     public void moveAndAwaitOponnet(Board context, int x, int y){
         BoardController controller = new BoardController();
         
+        controller.SetPlayerCharacter(this.GetPlayerCharacter());
         controller.setSocket(socket);
         controller.setContextScreen(context);
+        controller.setBoard(this.getBoard());
         controller.setPosition_x(x);
         controller.setPosition_y(y);
         
@@ -41,34 +47,39 @@ public class BoardController extends Thread{
     private void moveAndAwait(){
         contextScreen.DisableBoard();
         
-        Move(position_x, position_y);
-        this.awaitMoveOponent();
+        boolean valid_mov = Move(position_x, position_y);
+        
+        if(valid_mov){
+            this.awaitMoveOponent();    
+        }
         
         contextScreen.EnableBoard();
     }
     
-    private void Move(int x, int y){        
+    private boolean Move(int x, int y){        
 //        if(gameFinished){
 //            return;
 //        }
 //
 //        x = x - 1;
 //        y = y - 1;
-//
-//        if(board[x][y].equals("NULO")){
-//            board[x][y] = playerCharacter;
-//            this.FillLabel(x, y);
-//
-//            boolean victory = CheckVictory();
+        
+        if(this.BoardIsFree(x, y)){
+            this.FillBoard(this.GetPlayerCharacter(), x, y);
+            
+            this.SendMoveOponent(x, y);
+
+//            boolean victory = contextScreen.CheckVictory();
 //            if(victory){
 //                gameFinished = true;
 //                info_window.SetMessage("Parabéns, você ganhou!");
 //            }
-//        } else {
-//            error_window.SetMessage("Posição ocupada, escolha outro campo");
-//        }
+            return true;
+        } else {
+            contextScreen.error_window.SetMessage("Posição ocupada, escolha outro campo");
+            return false;
+        }
 
-        this.SendMoveOponent(x, y);
     }
     
         
@@ -77,7 +88,10 @@ public class BoardController extends Thread{
             contextScreen.DisableBoard();
             
             String response = this.awaitMessage();
-            System.out.println("RETORNOU: "+response);
+            int x = Integer.parseInt(response.substring(0, 1));
+            int y = Integer.parseInt(response.substring(1, 2));
+            
+            this.FillBoard(this.GetInversePlayerCharacter(), x, y);
             
             contextScreen.EnableBoard();
         } catch (IOException ex) {
@@ -140,4 +154,38 @@ public class BoardController extends Thread{
     public void setPosition_y(int position_y) {
         this.position_y = position_y;
     }
+    
+    public void SetPlayerCharacter(String value){
+        playerCharacter = value;
+    }
+    
+    public String GetPlayerCharacter(){
+        return playerCharacter;
+    }
+    
+    public String GetInversePlayerCharacter(){
+        if(this.GetPlayerCharacter().equals("X")){
+            return "O";
+        } else{
+            return "X";
+        }
+    }
+    
+    public void FillBoard(String character, int x, int y) {
+            board[x-1][y-1] = character;
+            contextScreen.FillLabel(x, y, character);
+    }
+    
+    public boolean BoardIsFree(int x, int y){
+        return board[x-1][y-1].equals("NULO");
+    }
+    
+    public String[][] getBoard() {
+        return board;
+    }
+
+    public void setBoard(String[][] board) {
+        this.board = board;
+    }
+    
 }
