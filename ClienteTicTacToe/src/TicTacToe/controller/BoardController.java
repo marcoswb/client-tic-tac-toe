@@ -32,14 +32,14 @@ public class BoardController extends Thread{
     
     public void moveAndAwaitOponnet(Board context, int x, int y){
         BoardController controller = new BoardController();
-        
+
         controller.SetPlayerCharacter(this.GetPlayerCharacter());
         controller.setSocket(socket);
         controller.setContextScreen(context);
         controller.setBoard(this.getBoard());
         controller.setPosition_x(x);
         controller.setPosition_y(y);
-        
+
         Thread t = new Thread(controller::moveAndAwait);
         t.start();
     }
@@ -56,30 +56,23 @@ public class BoardController extends Thread{
         contextScreen.EnableBoard();
     }
     
-    private boolean Move(int x, int y){        
-//        if(gameFinished){
-//            return;
-//        }
-//
-//        x = x - 1;
-//        y = y - 1;
-        
+    private boolean Move(int x, int y){
         if(this.BoardIsFree(x, y)){
             this.FillBoard(this.GetPlayerCharacter(), x, y);
-            
-            this.SendMoveOponent(x, y);
 
-//            boolean victory = contextScreen.CheckVictory();
-//            if(victory){
-//                gameFinished = true;
-//                info_window.SetMessage("Parabéns, você ganhou!");
-//            }
+            this.SendMoveOponent(x, y);
+                
+            boolean victory = this.CheckVictory();
+            if(victory){
+                contextScreen.setGameFinished(true);
+                this.sendMessage("end_game");
+            }
+            
             return true;
         } else {
             contextScreen.error_window.SetMessage("Posição ocupada, escolha outro campo");
             return false;
         }
-
     }
     
         
@@ -100,11 +93,7 @@ public class BoardController extends Thread{
     }
     
     private void SendMoveOponent(int x, int y){
-        try{
-            this.sendMessage(String.valueOf(x) + String.valueOf(y));   
-        } catch (IOException ex) {
-            System.out.println("ERROOOOOOOOOO2 "+ex);
-        }
+        this.sendMessage(String.valueOf(x) + String.valueOf(y));
     }
     
     private String awaitMessage() throws IOException{
@@ -129,14 +118,46 @@ public class BoardController extends Thread{
         return null;
     }
 
-    public void sendMessage(String message) throws IOException{
+    public void sendMessage(String message){
         try{
             OutputStream output = socket.getOutputStream();
             output.write(message.getBytes());
             output.flush();
         } catch (Exception ex) {
             System.out.println("MARCOSSSS 1 " + ex);
+        } 
+    }
+    
+    private boolean CheckVictory(){
+        // checar vitória horizontal
+        for(int x = 0; x <= 2; x++){
+            if(board[x][0].equals(playerCharacter) & board[x][1].equals(playerCharacter) & board[x][2].equals(playerCharacter)) {
+                contextScreen.FillVictoryPositions(x, 0, x, 1, x, 2);
+                return true;
+            }
         }
+        
+        // checar vitória vertical
+        for(int y = 0; y <= 2; y++){
+            if(board[0][y].equals(playerCharacter) & board[1][y].equals(playerCharacter) & board[2][y].equals(playerCharacter)) {
+                contextScreen.FillVictoryPositions(0, y, 1, y, 2, y);
+                return true;
+            }
+        }
+        
+        // checar vitória diagonal principal
+        if(board[0][0].equals(playerCharacter) & board[1][1].equals(playerCharacter) & board[2][2].equals(playerCharacter)){
+            contextScreen.FillVictoryPositions(0, 0, 1, 1, 2, 2);
+            return true;
+        }
+        
+        // checar vitória diagonal secundária
+        if(board[0][2].equals(playerCharacter) & board[1][1].equals(playerCharacter) & board[2][0].equals(playerCharacter)){
+            contextScreen.FillVictoryPositions(0, 2, 1, 1, 2, 0);
+            return true;
+        }
+        
+        return false;
     }
 
     public void setSocket(Socket socket) {

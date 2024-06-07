@@ -9,13 +9,11 @@ public class Board extends javax.swing.JFrame {
     
     private String player_01;
     private String player_02;
-    private String playerCharacter = "";
-    private final String [][]board = {{"NULO", "NULO", "NULO"}, {"NULO", "NULO", "NULO"}, {"NULO", "NULO", "NULO"}};
-    private boolean gameFinished = false;
     public final InfoDialog info_window = new InfoDialog();;
     public final ErrorDialog error_window = new ErrorDialog();
     private boolean actionInProgress = false;
     private final BoardController boardController = new BoardController();
+    private boolean gameFinished = false;
     
     public Board() {
         initComponents();
@@ -73,43 +71,13 @@ public class Board extends javax.swing.JFrame {
             label_x3_y3.setText(playerCharacter);
         }
     }
-    
-    public boolean CheckVictory(){
-        // checar vitória horizontal
-        for(int x = 0; x <= 2; x++){
-            if(board[x][0].equals(playerCharacter) & board[x][1].equals(playerCharacter) & board[x][2].equals(playerCharacter)) {
-                FillVictoryPositions(x, 0, x, 1, x, 2);
-                return true;
-            }
-        }
         
-        // checar vitória vertical
-        for(int y = 0; y <= 2; y++){
-            if(board[0][y].equals(playerCharacter) & board[1][y].equals(playerCharacter) & board[2][y].equals(playerCharacter)) {
-                FillVictoryPositions(0, y, 1, y, 2, y);
-                return true;
-            }
-        }
-        
-        // checar vitória diagonal principal
-        if(board[0][0].equals(playerCharacter) & board[1][1].equals(playerCharacter) & board[2][2].equals(playerCharacter)){
-            FillVictoryPositions(0, 0, 1, 1, 2, 2);
-            return true;
-        }
-        
-        // checar vitória diagonal secundária
-        if(board[0][2].equals(playerCharacter) & board[1][1].equals(playerCharacter) & board[2][0].equals(playerCharacter)){
-            FillVictoryPositions(0, 2, 1, 1, 2, 0);
-            return true;
-        }
-        
-        return false;
-    }
-    
-    private void FillVictoryPositions(int x1, int y1, int x2, int y2, int x3, int y3){
+    public void FillVictoryPositions(int x1, int y1, int x2, int y2, int x3, int y3){
         FillForeground(x1, y1);
         FillForeground(x2, y2);
         FillForeground(x3, y3);
+        
+        info_window.SetMessage("Parabéns, você ganhou!");
     }
     
     private void FillForeground(int x, int y){
@@ -333,7 +301,7 @@ public class Board extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void label_x1_y1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_x1_y1MouseClicked
-        if(actionInProgress){
+        if(actionInProgress || this.isGameFinished()){
             return;
         }
         
@@ -341,7 +309,7 @@ public class Board extends javax.swing.JFrame {
     }//GEN-LAST:event_label_x1_y1MouseClicked
 
     private void label_x2_y1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_x2_y1MouseClicked
-       if(actionInProgress){
+       if(actionInProgress || this.isGameFinished()){
             return;
         }
         
@@ -349,7 +317,7 @@ public class Board extends javax.swing.JFrame {
     }//GEN-LAST:event_label_x2_y1MouseClicked
 
     private void label_x3_y1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_x3_y1MouseClicked
-        if(actionInProgress){
+        if(actionInProgress || this.isGameFinished()){
             return;
         }
         
@@ -357,7 +325,7 @@ public class Board extends javax.swing.JFrame {
     }//GEN-LAST:event_label_x3_y1MouseClicked
 
     private void label_x2_y2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_x2_y2MouseClicked
-        if(actionInProgress){
+        if(actionInProgress || this.isGameFinished()){
             return;
         }
         
@@ -365,7 +333,7 @@ public class Board extends javax.swing.JFrame {
     }//GEN-LAST:event_label_x2_y2MouseClicked
 
     private void label_x1_y2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_x1_y2MouseClicked
-        if(actionInProgress){
+        if(actionInProgress || this.isGameFinished()){
             return;
         }
         
@@ -373,7 +341,7 @@ public class Board extends javax.swing.JFrame {
     }//GEN-LAST:event_label_x1_y2MouseClicked
 
     private void label_x2_y3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_x2_y3MouseClicked
-        if(actionInProgress){
+        if(actionInProgress || this.isGameFinished()){
             return;
         }
         
@@ -381,7 +349,7 @@ public class Board extends javax.swing.JFrame {
     }//GEN-LAST:event_label_x2_y3MouseClicked
 
     private void label_x3_y2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_x3_y2MouseClicked
-        if(actionInProgress){
+        if(actionInProgress || this.isGameFinished()){
             return;
         }
         
@@ -389,7 +357,7 @@ public class Board extends javax.swing.JFrame {
     }//GEN-LAST:event_label_x3_y2MouseClicked
 
     private void label_x1_y3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_x1_y3MouseClicked
-        if(actionInProgress){
+        if(actionInProgress || this.isGameFinished()){
             return;
         }
         
@@ -397,7 +365,7 @@ public class Board extends javax.swing.JFrame {
     }//GEN-LAST:event_label_x1_y3MouseClicked
 
     private void label_x3_y3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_x3_y3MouseClicked
-        if(actionInProgress){
+        if(actionInProgress || this.isGameFinished()){
             return;
         }
         
@@ -449,6 +417,14 @@ public class Board extends javax.swing.JFrame {
 
     public void setPlayer_02(String player_02) {
         this.player_02 = player_02;
+    }
+    
+    public boolean isGameFinished() {
+        return gameFinished;
+    }
+
+    public void setGameFinished(boolean gameFinished) {
+        this.gameFinished = gameFinished;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
