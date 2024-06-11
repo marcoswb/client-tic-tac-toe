@@ -230,6 +230,7 @@ public class MainScreen extends javax.swing.JFrame {
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         try {
+            this.setVisible(false);
             API api = new API();
             api.Logout(this.getNickname());            
         } catch (Exception ex) {

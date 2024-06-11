@@ -1,7 +1,9 @@
 
 package TicTacToe.controller;
 
+import TicTacToe.utils.JsonData;
 import TicTacToe.view.Board;
+import TicTacToe.utils.ResponseModel;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -59,13 +61,13 @@ public class BoardController extends Thread{
     private boolean Move(int x, int y){
         if(this.BoardIsFree(x, y)){
             this.FillBoard(this.GetPlayerCharacter(), x, y);
-
-            this.SendMoveOponent(x, y);
                 
             boolean victory = this.CheckVictory();
             if(victory){
                 contextScreen.setGameFinished(true);
-                this.sendMessage("end_game");
+                this.SendMoveOponent(x, y, "end_game");
+            } else{
+                this.SendMoveOponent(x, y, "play");
             }
             
             return true;
@@ -80,11 +82,22 @@ public class BoardController extends Thread{
         try {
             contextScreen.DisableBoard();
             
-            String response = this.awaitMessage();
-            int x = Integer.parseInt(response.substring(0, 1));
-            int y = Integer.parseInt(response.substring(1, 2));
+            String responseString = this.awaitMessage();
+            ResponseModel responseJson = new ResponseModel();
+            String message = responseJson.getMessageKey(responseString, "message");
+            String action = responseJson.getMessageKey(responseString, "action");
             
-            this.FillBoard(this.GetInversePlayerCharacter(), x, y);
+            if(action.equals("play")){
+                String position_x_oponent = message.substring(0, 1);
+                String position_y_oponent = message.substring(1, 2);
+
+                int x = Integer.parseInt(position_x_oponent);
+                int y = Integer.parseInt(position_y_oponent);
+
+                this.FillBoard(this.GetInversePlayerCharacter(), x, y);
+            } else if(action.equals("end_game")){
+                System.out.println("ACABOUUUU O JOGO");
+            }
             
             contextScreen.EnableBoard();
         } catch (IOException ex) {
@@ -92,8 +105,13 @@ public class BoardController extends Thread{
         }
     }
     
-    private void SendMoveOponent(int x, int y){
-        this.sendMessage(String.valueOf(x) + String.valueOf(y));
+    private void SendMoveOponent(int x, int y, String action){
+        JsonData json = new JsonData();
+        
+        json.addKeyJson("message", String.valueOf(x) + String.valueOf(y));
+        json.addKeyJson("action", action);
+        
+        this.sendMessage(json.getJson());
     }
     
     private String awaitMessage() throws IOException{
