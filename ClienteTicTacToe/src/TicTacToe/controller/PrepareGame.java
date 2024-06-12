@@ -1,5 +1,7 @@
 package TicTacToe.controller;
 
+import TicTacToe.utils.JsonData;
+import TicTacToe.utils.ResponseModel;
 import javax.swing.JLabel;
 import raven.swing.spinner.SpinnerProgress;
 import static javax.swing.WindowConstants.HIDE_ON_CLOSE;
@@ -35,7 +37,6 @@ public class PrepareGame implements Runnable{
         try{
 //            API api = new API();
 //            String nickname_oponent = api.GetFreeUser(this.getNickname());
-            String nickname_oponent = "marcos2";
                       
             Board game = new Board();
             game.setPlayer_01(this.getNickname());
@@ -44,15 +45,24 @@ public class PrepareGame implements Runnable{
             try{
                 socket = new Socket(host, port);
                 
-                this.sendMessage("entrar");
+                // autenticação
+                JsonData json = new JsonData();
+
+                json.addKeyJson("message", "entrar");
+                json.addKeyJson("player", this.getNickname());
                 
-                String firstResponse = this.awaitMessage();
-                System.out.println("Server first response: " + firstResponse);
+                this.sendMessage(json.getJson());
+                
+                // recuperar quem joga primeiro e o nome do adversário
+                String responseString = this.awaitMessage();     
+                ResponseModel responseJson = new ResponseModel();
+                String message = responseJson.getMessageKey(responseString, "message");
+                String nickname_oponent = responseJson.getMessageKey(responseString, "player");          
                 
                 game.setPlayer_02(nickname_oponent);
 
                 game.setDefaultCloseOperation(HIDE_ON_CLOSE);
-                game.StartGame(socket, firstResponse);
+                game.StartGame(socket, message);
 
                 this.jLabelProgress.setText("");
                 this.spinnerProgressLoad.setValue(0);
