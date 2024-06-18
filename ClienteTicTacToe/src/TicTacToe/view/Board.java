@@ -14,6 +14,7 @@ public class Board extends javax.swing.JFrame {
     private boolean actionInProgress = false;
     private final BoardController boardController = new BoardController();
     private boolean gameFinished = false;
+    private Color foreground = Color.GREEN;
     
     public Board() {
         initComponents();
@@ -73,6 +74,8 @@ public class Board extends javax.swing.JFrame {
     }
         
     public void FillVictoryPositions(int x1, int y1, int x2, int y2, int x3, int y3){
+        this.setForeground(Color.GREEN);
+        
         FillForeground(x1, y1);
         FillForeground(x2, y2);
         FillForeground(x3, y3);
@@ -80,18 +83,31 @@ public class Board extends javax.swing.JFrame {
         info_window.SetMessage("Parabéns, você ganhou!");
     }
     
+    public void DrawGame(){
+        this.setForeground(Color.orange);
+        
+        for(int x = 0; x <= 2; x++){
+            for(int y = 0; y <= 2; y++){
+                FillForeground(x, y);
+            }
+        }
+
+        
+        info_window.SetMessage("Empate!");
+    }
+    
     private void FillForeground(int x, int y){
         switch(x){
             case 0: {
                 switch(y){
                     case 0:
-                        label_x1_y1.setForeground(Color.GREEN);
+                        label_x1_y1.setForeground(this.getForeground());
                         break;
                     case 1:
-                        label_x1_y2.setForeground(Color.GREEN);
+                        label_x1_y2.setForeground(this.getForeground());
                         break;
                     case 2:
-                        label_x1_y3.setForeground(Color.GREEN);
+                        label_x1_y3.setForeground(this.getForeground());
                         break;
                 }
                 break;
@@ -99,13 +115,13 @@ public class Board extends javax.swing.JFrame {
             case 1: {
                 switch(y){
                     case 0:
-                        label_x2_y1.setForeground(Color.GREEN);
+                        label_x2_y1.setForeground(this.getForeground());
                         break;
                     case 1:
-                        label_x2_y2.setForeground(Color.GREEN);
+                        label_x2_y2.setForeground(this.getForeground());
                         break;
                     case 2:
-                        label_x2_y3.setForeground(Color.GREEN);
+                        label_x2_y3.setForeground(this.getForeground());
                         break;
                 }
                 break;
@@ -113,13 +129,13 @@ public class Board extends javax.swing.JFrame {
             case 2: {
                 switch(y){
                     case 0:
-                        label_x3_y1.setForeground(Color.GREEN);
+                        label_x3_y1.setForeground(this.getForeground());
                         break;
                     case 1:
-                        label_x3_y2.setForeground(Color.GREEN);
+                        label_x3_y2.setForeground(this.getForeground());
                         break;
                     case 2:
-                        label_x3_y3.setForeground(Color.GREEN);
+                        label_x3_y3.setForeground(this.getForeground());
                         break;
                 }
                 break;
@@ -432,6 +448,14 @@ public class Board extends javax.swing.JFrame {
 
     public void setGameFinished(boolean gameFinished) {
         this.gameFinished = gameFinished;
+    }
+
+    public Color getForeground() {
+        return foreground;
+    }
+
+    public void setForeground(Color foreground) {
+        this.foreground = foreground;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

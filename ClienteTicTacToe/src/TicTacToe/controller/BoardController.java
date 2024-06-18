@@ -65,15 +65,20 @@ public class BoardController extends Thread{
             this.FillBoard(this.GetPlayerCharacter(), x, y);
                 
             boolean victory = this.CheckVictory();
+            boolean draw = this.CheckDraw();
+            
             if(victory){
                 contextScreen.setGameFinished(true);
                 this.SendMoveOponent(x, y, "end_game");
                 return false;
-            } else{
+            } else if(draw){
+                contextScreen.setGameFinished(true);
+                this.SendMoveOponent(x, y, "end_game");
+                return false;
+            }else{
                 this.SendMoveOponent(x, y, "play");
                 return true;
             }
-            
         } else {
             contextScreen.error_window.SetMessage("Posição ocupada, escolha outro campo");
             return false;
@@ -179,6 +184,19 @@ public class BoardController extends Thread{
         }
         
         return false;
+    }
+    
+    private boolean CheckDraw(){
+        for(int x = 0; x <= 2; x++){
+            for(int y = 0; y <= 2; y++){
+                if(board[x][y].equals("NULO")){
+                    return false;
+                }
+            }
+        }
+        
+        contextScreen.DrawGame();
+        return true;
     }
 
     public void setSocket(Socket socket) {
