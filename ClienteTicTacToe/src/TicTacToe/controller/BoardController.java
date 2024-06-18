@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class BoardController extends Thread{    
     
@@ -66,11 +68,12 @@ public class BoardController extends Thread{
             if(victory){
                 contextScreen.setGameFinished(true);
                 this.SendMoveOponent(x, y, "end_game");
+                return false;
             } else{
                 this.SendMoveOponent(x, y, "play");
+                return true;
             }
             
-            return true;
         } else {
             contextScreen.error_window.SetMessage("Posição ocupada, escolha outro campo");
             return false;
@@ -225,6 +228,14 @@ public class BoardController extends Thread{
 
     public void setBoard(String[][] board) {
         this.board = board;
+    }
+    
+    public void closeSocket(){
+        try {
+            this.socket.close();
+        } catch (IOException ex) {
+            System.out.println("ERROOOOOOOO" + ex);
+        }
     }
     
 }
