@@ -9,8 +9,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class BoardController extends Thread{    
     
@@ -64,16 +62,16 @@ public class BoardController extends Thread{
         if(this.BoardIsFree(x, y)){
             this.FillBoard(this.GetPlayerCharacter(), x, y);
                 
-            boolean victory = this.CheckVictory();
+            boolean victory = this.CheckVictory(playerCharacter);
             boolean draw = this.CheckDraw();
             
             if(victory){
                 contextScreen.setGameFinished(true);
-                this.SendMoveOponent(x, y, "end_game");
+                this.SendMoveOponent(x, y, "victory");
                 return false;
             } else if(draw){
                 contextScreen.setGameFinished(true);
-                this.SendMoveOponent(x, y, "end_game");
+                this.SendMoveOponent(x, y, "draw");
                 return false;
             }else{
                 this.SendMoveOponent(x, y, "play");
@@ -103,8 +101,18 @@ public class BoardController extends Thread{
                 int y = Integer.parseInt(position_y_oponent);
 
                 this.FillBoard(this.GetInversePlayerCharacter(), x, y);
+            }else if(action.equals("victory")){
+                this.closeSocket();
+                this.CheckVictory(this.GetInversePlayerCharacter());
+                contextScreen.setGameFinished(true);
+            }  else if(action.equals("draw")){
+                this.closeSocket();
+                contextScreen.DrawGame();
+                contextScreen.setGameFinished(true);
             } else if(action.equals("end_game")){
-                System.out.println("ACABOUUUU O JOGO");
+                this.closeSocket();
+                contextScreen.EndGame();
+                contextScreen.setGameFinished(true);
             }
             
             contextScreen.EnableBoard();
@@ -154,10 +162,10 @@ public class BoardController extends Thread{
         } 
     }
     
-    private boolean CheckVictory(){
+    private boolean CheckVictory(String character){
         // checar vitória horizontal
         for(int x = 0; x <= 2; x++){
-            if(board[x][0].equals(playerCharacter) & board[x][1].equals(playerCharacter) & board[x][2].equals(playerCharacter)) {
+            if(board[x][0].equals(character) & board[x][1].equals(character) & board[x][2].equals(character)) {
                 contextScreen.FillVictoryPositions(x, 0, x, 1, x, 2);
                 return true;
             }
@@ -165,20 +173,20 @@ public class BoardController extends Thread{
         
         // checar vitória vertical
         for(int y = 0; y <= 2; y++){
-            if(board[0][y].equals(playerCharacter) & board[1][y].equals(playerCharacter) & board[2][y].equals(playerCharacter)) {
+            if(board[0][y].equals(character) & board[1][y].equals(character) & board[2][y].equals(character)) {
                 contextScreen.FillVictoryPositions(0, y, 1, y, 2, y);
                 return true;
             }
         }
         
         // checar vitória diagonal principal
-        if(board[0][0].equals(playerCharacter) & board[1][1].equals(playerCharacter) & board[2][2].equals(playerCharacter)){
+        if(board[0][0].equals(character) & board[1][1].equals(character) & board[2][2].equals(character)){
             contextScreen.FillVictoryPositions(0, 0, 1, 1, 2, 2);
             return true;
         }
         
         // checar vitória diagonal secundária
-        if(board[0][2].equals(playerCharacter) & board[1][1].equals(playerCharacter) & board[2][0].equals(playerCharacter)){
+        if(board[0][2].equals(character) & board[1][1].equals(character) & board[2][0].equals(character)){
             contextScreen.FillVictoryPositions(0, 2, 1, 1, 2, 0);
             return true;
         }

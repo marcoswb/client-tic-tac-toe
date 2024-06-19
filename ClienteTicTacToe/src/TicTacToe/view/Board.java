@@ -92,8 +92,19 @@ public class Board extends javax.swing.JFrame {
             }
         }
 
-        
         info_window.SetMessage("Empate!");
+    }
+    
+    public void EndGame(){
+        this.setForeground(Color.orange);
+        
+        for(int x = 0; x <= 2; x++){
+            for(int y = 0; y <= 2; y++){
+                FillForeground(x, y);
+            }
+        }
+
+        info_window.SetMessage("Adversário finalizou o jogo!");
     }
     
     private void FillForeground(int x, int y){
