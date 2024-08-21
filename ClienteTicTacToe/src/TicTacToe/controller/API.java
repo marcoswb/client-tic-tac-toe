@@ -58,6 +58,13 @@ public class API {
         return response;
     }
     
+    public ResponseModel UserStatus() throws Exception {
+        setEndpoint("/users/status");
+        ResponseModel response = SendGetRequest("status");
+        
+        return response;
+    }
+    
     private ResponseModel SendPostRequest(JsonData json)  throws Exception {        
         try{
             ResponseModel response = new ResponseModel();
@@ -122,7 +129,7 @@ public class API {
                                 responseText.append(responseLine);
                             }
                             
-                            response.setData(responseText.toString(), "users");
+                            response.setData(responseText.toString(), recoverKey);
                         }
                 }
 

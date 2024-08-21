@@ -4,17 +4,28 @@ import TicTacToe.controller.API;
 import javax.swing.table.DefaultTableModel;
 import TicTacToe.utils.Functions;
 import TicTacToe.controller.PrepareGame;
+import TicTacToe.utils.ResponseModel;
+import java.util.Iterator;
+import java.util.Vector;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
-public class MainScreen extends javax.swing.JFrame {
+public final class MainScreen extends javax.swing.JFrame {
     
     private String nickname;
     public Functions functions = new Functions();
     
-    public MainScreen() {
+    public MainScreen(String nickname) {
         initComponents();
+        
+        this.setNickname(nickname);
         
         fillTablePlayers();
         fillTableHistory();
+    }
+
+    private MainScreen() {
+        
     }
     
     @SuppressWarnings("unchecked")
@@ -186,12 +197,36 @@ public class MainScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonStartGameActionPerformed
     
     private void fillTablePlayers(){
-        String data[][] = {{"marcos", "Jogando"}, {"joao", "Online"}};
-        
-        DefaultTableModel tblPlayers = (DefaultTableModel) jTablePlayers.getModel();
-        
-        for(String[] line: data){
-            tblPlayers.addRow(line);
+        try {
+            API api = new API();
+            ResponseModel response = api.UserStatus();      
+
+            if(response.getResponseCode() == 200){
+                DefaultTableModel tblPlayers = (DefaultTableModel) jTablePlayers.getModel();
+                
+                String responseText = response.getResponseText().toString();
+                JSONObject jsonData = new JSONObject(responseText);
+
+                Iterator iterator = jsonData.keys();
+                while (iterator.hasNext()){
+                    String status = iterator.next().toString();
+                    JSONArray options = jsonData.getJSONArray(status);
+                    
+                    for(int index = 0; index < options.length(); index++){
+                        String nickname_user = options.get(index).toString();
+                        
+                        if(!nickname_user.equals(this.getNickname())){
+                            String line[] = {nickname_user, status};
+                            tblPlayers.addRow(line);
+                        }
+                    }
+                }
+            } else{
+                InfoDialog info_window = new InfoDialog();
+                info_window.SetMessage("Erro ao realizar Login!\n"+response.getResponseText());
+            }
+        } catch (Exception ex) {
+            System.out.println("TESTEEEEEEE" + ex);
         }
     }
     
