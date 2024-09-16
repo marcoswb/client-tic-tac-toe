@@ -8,6 +8,7 @@ import static javax.swing.WindowConstants.HIDE_ON_CLOSE;
 import java.io.*;
 import java.net.*;
 import TicTacToe.view.Board;
+import TicTacToe.view.MainScreen;
 
 
 public class PrepareGame implements Runnable{
@@ -19,12 +20,17 @@ public class PrepareGame implements Runnable{
     private final int port = 8000;
     private final byte[] data = new byte[1024];
     private Socket socket;
+    private final MainScreen mainContext;
     
-    public void startGame(JLabel label, SpinnerProgress spinner){
+    public PrepareGame(MainScreen mainContext) {
+        this.mainContext = mainContext;
+    }
+
+    public void startGame(){
         
-        PrepareGame board = new PrepareGame();
-        board.setjLabelProgress(label);
-        board.setSpinnerProgressLoad(spinner);
+        PrepareGame board = new PrepareGame(mainContext);
+        board.setjLabelProgress(mainContext.getjLabelProgress());
+        board.setSpinnerProgressLoad(mainContext.getSpinnerProgressLoad());
         board.setNickname(this.getNickname());
         
         Thread thread = new Thread(board, "board");
@@ -35,10 +41,7 @@ public class PrepareGame implements Runnable{
     @Override
     public void run(){
         try{
-//            API api = new API();
-//            String nickname_oponent = api.GetFreeUser(this.getNickname());
-                      
-            Board game = new Board();
+            Board game = new Board(mainContext);
             game.setPlayer_01(this.getNickname());
 
             

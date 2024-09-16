@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class BoardController extends Thread{    
     
@@ -19,9 +21,13 @@ public class BoardController extends Thread{
     private int position_y = 0;
     private String [][]board = {{"NULO", "NULO", "NULO"}, {"NULO", "NULO", "NULO"}, {"NULO", "NULO", "NULO"}};
     private String playerCharacter = "";
+    private String player_01;
+    private String player_02;
     
     public void receiveMovementFromOpponent(Board context){
         BoardController controller = new BoardController();
+        controller.setPlayer_01(player_01);
+        controller.setPlayer_02(player_02);
         
         controller.SetPlayerCharacter(this.GetPlayerCharacter());
         controller.setSocket(socket);
@@ -34,6 +40,8 @@ public class BoardController extends Thread{
     
     public void moveAndAwaitOponnet(Board context, int x, int y){
         BoardController controller = new BoardController();
+        controller.setPlayer_01(player_01);
+        controller.setPlayer_02(player_02);
 
         controller.SetPlayerCharacter(this.GetPlayerCharacter());
         controller.setSocket(socket);
@@ -49,16 +57,21 @@ public class BoardController extends Thread{
     private void moveAndAwait(){
         contextScreen.DisableBoard();
         
-        boolean valid_mov = Move(position_x, position_y);
+        boolean valid_mov;
+        try {
+            valid_mov = Move(position_x, position_y);
         
-        if(valid_mov){
-            this.awaitMoveOponent();    
+            if(valid_mov){
+                this.awaitMoveOponent();    
+            }
+
+            contextScreen.EnableBoard();
+        } catch (Exception ex) {
+            Logger.getLogger(BoardController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        contextScreen.EnableBoard();
     }
     
-    private boolean Move(int x, int y){
+    private boolean Move(int x, int y) throws Exception{
         if(this.BoardIsFree(x, y)){
             this.FillBoard(this.GetPlayerCharacter(), x, y);
                 
@@ -66,11 +79,11 @@ public class BoardController extends Thread{
             boolean draw = this.CheckDraw();
             
             if(victory){
-                contextScreen.setGameFinished(true);
+                closeGame("Vitória");
                 this.SendMoveOponent(x, y, "victory");
                 return false;
             } else if(draw){
-                contextScreen.setGameFinished(true);
+                closeGame("Empate");
                 this.SendMoveOponent(x, y, "draw");
                 return false;
             }else{
@@ -104,15 +117,15 @@ public class BoardController extends Thread{
             }else if(action.equals("victory")){
                 this.closeSocket();
                 this.CheckVictory(this.GetInversePlayerCharacter());
-                contextScreen.setGameFinished(true);
+                closeGame("Vitória");
             }  else if(action.equals("draw")){
                 this.closeSocket();
                 contextScreen.DrawGame();
-                contextScreen.setGameFinished(true);
+                closeGame("Empate");
             } else if(action.equals("end_game")){
                 this.closeSocket();
                 contextScreen.EndGame();
-                contextScreen.setGameFinished(true);
+                closeGame("Empate");
             }
             
             contextScreen.EnableBoard();
@@ -194,6 +207,11 @@ public class BoardController extends Thread{
         return false;
     }
     
+    public void saveGame(String result) throws Exception{
+            API api = new API();
+            api.saveHistory(getPlayer_01(), getPlayer_02(), result);
+    }
+    
     private boolean CheckDraw(){
         for(int x = 0; x <= 2; x++){
             for(int y = 0; y <= 2; y++){
@@ -205,6 +223,15 @@ public class BoardController extends Thread{
         
         contextScreen.DrawGame();
         return true;
+    }
+    
+    private void closeGame(String status){
+        contextScreen.setGameFinished(true);
+        try {
+            saveGame(status);
+        } catch (Exception ex) {
+            Logger.getLogger(BoardController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void setSocket(Socket socket) {
@@ -254,6 +281,22 @@ public class BoardController extends Thread{
 
     public void setBoard(String[][] board) {
         this.board = board;
+    }
+
+    public String getPlayer_01() {
+        return player_01;
+    }
+
+    public void setPlayer_01(String player_01) {
+        this.player_01 = player_01;
+    }
+
+    public String getPlayer_02() {
+        return player_02;
+    }
+
+    public void setPlayer_02(String player_02) {
+        this.player_02 = player_02;
     }
     
     public void closeSocket(){

@@ -65,6 +65,25 @@ public class API {
         return response;
     }
     
+    public ResponseModel getHistoryUser(String nickname) throws Exception {
+        setEndpoint("/history?nickname="+nickname);
+        ResponseModel response = SendGetRequest("history");
+        
+        return response;
+    }
+    
+    public ResponseModel saveHistory(String nickname, String oponent, String result) throws Exception {
+        JsonData json = new JsonData();
+        json.addKeyJson("nickname", nickname);
+        json.addKeyJson("oponent", oponent);
+        json.addKeyJson("result", result);
+        
+        setEndpoint("/history");
+        ResponseModel response = SendPostRequest(json);
+        
+        return response;
+    }
+    
     private ResponseModel SendPostRequest(JsonData json)  throws Exception {        
         try{
             ResponseModel response = new ResponseModel();

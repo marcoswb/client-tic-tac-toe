@@ -15,13 +15,21 @@ public class Board extends javax.swing.JFrame {
     private final BoardController boardController = new BoardController();
     private boolean gameFinished = false;
     private Color foreground = Color.GREEN;
+    private final MainScreen mainContext;
     
-    public Board() {
+    public Board(MainScreen mainContext) {
         initComponents();
+        this.mainContext = mainContext;
+    }
+
+    private Board() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
         
     public void StartGame(Socket socket, String firstResponse) throws IOException{
         boardController.setSocket(socket);
+        boardController.setPlayer_01(player_01);
+        boardController.setPlayer_02(player_02);
         
         this.show();
 
@@ -403,11 +411,12 @@ public class Board extends javax.swing.JFrame {
     }//GEN-LAST:event_label_x3_y3MouseClicked
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_formWindowClosed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         boardController.closeSocket();
+        mainContext.fillTableHistory();
     }//GEN-LAST:event_formWindowClosing
      
     

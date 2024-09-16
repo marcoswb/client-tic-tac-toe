@@ -6,9 +6,10 @@ import TicTacToe.utils.Functions;
 import TicTacToe.controller.PrepareGame;
 import TicTacToe.utils.ResponseModel;
 import java.util.Iterator;
-import java.util.Vector;
+import javax.swing.JLabel;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import raven.swing.spinner.SpinnerProgress;
 
 public final class MainScreen extends javax.swing.JFrame {
     
@@ -196,7 +197,7 @@ public final class MainScreen extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonStartGameActionPerformed
     
-    private void fillTablePlayers(){
+    public void fillTablePlayers(){
         try {
             API api = new API();
             ResponseModel response = api.UserStatus();      
@@ -223,20 +224,42 @@ public final class MainScreen extends javax.swing.JFrame {
                 }
             } else{
                 InfoDialog info_window = new InfoDialog();
-                info_window.SetMessage("Erro ao realizar Login!\n"+response.getResponseText());
+                info_window.SetMessage("Erro ao recuperar dados!\n"+response.getResponseText());
             }
         } catch (Exception ex) {
             System.out.println("TESTEEEEEEE" + ex);
         }
     }
     
-    private void fillTableHistory(){
-        String data[][] = {{"marcos", "Vitória"}, {"joao", "Empate"}};
-        
-        DefaultTableModel tblHistory = (DefaultTableModel) jTableHistory.getModel();
-        
-        for(String[] line: data){
-            tblHistory.addRow(line);
+    public void fillTableHistory(){
+        try {
+            API api = new API();
+            ResponseModel response = api.getHistoryUser(getNickname());
+            
+            if(response.getResponseCode() == 200){
+                DefaultTableModel tblPlayers = (DefaultTableModel) jTableHistory.getModel();
+                tblPlayers.setRowCount(0);
+                
+                String responseText = response.getResponseText().toString();
+                JSONObject jsonData = new JSONObject(responseText);
+
+                Iterator iterator = jsonData.keys();
+                while (iterator.hasNext()){
+                    String result = iterator.next().toString();
+                    JSONArray options = jsonData.getJSONArray(result);
+                    
+                    for(int index = 0; index < options.length(); index++){
+                        String oponent = options.get(index).toString();
+                        String line[] = {oponent, result};
+                        tblPlayers.addRow(line);
+                    }
+                }
+            } else{
+                InfoDialog info_window = new InfoDialog();
+                info_window.SetMessage("Erro ao recuperar dados!\n"+response.getResponseText());
+            }
+        } catch (Exception ex) {
+            System.out.println("TESTEEEEEEE" + ex);
         }
     }
     
@@ -246,9 +269,9 @@ public final class MainScreen extends javax.swing.JFrame {
             spinnerProgressLoad.setValue(50);
             spinnerProgressLoad.setIndeterminate(true);
             
-            PrepareGame board = new PrepareGame();
+            PrepareGame board = new PrepareGame(this);
             board.setNickname(this.getNickname());
-            board.startGame(jLabelProgress, spinnerProgressLoad);
+            board.startGame();
 
         } catch (Exception ex) {
             System.out.println("TESTEEEEEEE" + ex);
@@ -318,4 +341,20 @@ public final class MainScreen extends javax.swing.JFrame {
     private javax.swing.JTable jTablePlayers;
     private raven.swing.spinner.SpinnerProgress spinnerProgressLoad;
     // End of variables declaration//GEN-END:variables
+
+    public JLabel getjLabelProgress() {
+        return jLabelProgress;
+    }
+
+    public void setjLabelProgress(JLabel jLabelProgress) {
+        this.jLabelProgress = jLabelProgress;
+    }
+
+    public SpinnerProgress getSpinnerProgressLoad() {
+        return spinnerProgressLoad;
+    }
+
+    public void setSpinnerProgressLoad(SpinnerProgress spinnerProgressLoad) {
+        this.spinnerProgressLoad = spinnerProgressLoad;
+    }
 }
