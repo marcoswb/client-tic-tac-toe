@@ -239,21 +239,20 @@ public final class MainScreen extends javax.swing.JFrame {
             if(response.getResponseCode() == 200){
                 DefaultTableModel tblPlayers = (DefaultTableModel) jTableHistory.getModel();
                 tblPlayers.setRowCount(0);
+                jTableHistory.setAutoCreateRowSorter(true);
                 
                 String responseText = response.getResponseText().toString();
-                JSONObject jsonData = new JSONObject(responseText);
+                JSONArray jsonData = new JSONArray(responseText);
 
-                Iterator iterator = jsonData.keys();
-                while (iterator.hasNext()){
-                    String result = iterator.next().toString();
-                    JSONArray options = jsonData.getJSONArray(result);
-                    
-                    for(int index = 0; index < options.length(); index++){
-                        String oponent = options.get(index).toString();
+                    for(int index = 0; index < jsonData.length(); index++){
+                        JSONObject data = new JSONObject(jsonData.get(index).toString());
+                        
+                        String result = data.get("result").toString();
+                        String oponent = data.get("oponent").toString();
+                        
                         String line[] = {oponent, result};
                         tblPlayers.addRow(line);
                     }
-                }
             } else{
                 InfoDialog info_window = new InfoDialog();
                 info_window.SetMessage("Erro ao recuperar dados!\n"+response.getResponseText());
