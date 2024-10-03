@@ -13,8 +13,10 @@ import java.util.concurrent.Executors;
 import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
 import com.amazonaws.services.sqs.model.ReceiveMessageRequest;
+import com.amazonaws.services.sqs.model.MessageAttributeValue;
 import com.amazonaws.services.sqs.model.Message;
 import com.amazonaws.regions.Regions;
+import java.util.Map;
 
 public final class MainScreen extends javax.swing.JFrame {
 
@@ -272,37 +274,31 @@ public final class MainScreen extends javax.swing.JFrame {
     private void checkInvites() {
 
         String SQS_QUEUE_URL = "https://sqs.us-east-2.amazonaws.com/606600291685/tictactoeinvites";
-//        AmazonSQS sqsClient = AmazonSQSClientBuilder.standard().withRegion(Regions.US_EAST_2).build();
-//
-//        ReceiveMessageRequest receiveRequest = new ReceiveMessageRequest(SQS_QUEUE_URL);
-//        receiveRequest.setMaxNumberOfMessages(10);
+        AmazonSQS sqsClient = AmazonSQSClientBuilder.standard().withRegion(Regions.US_EAST_2).build();
+
+        ReceiveMessageRequest receiveRequest = new ReceiveMessageRequest()
+                .withQueueUrl(SQS_QUEUE_URL)
+                .withMessageAttributeNames("All")
+                .withMaxNumberOfMessages(1);
 
         executor.submit(() -> {
             while (true) {
                 if (this.isStartCheck()) {
                     try {
 
-//                        for (Message message : sqsClient.receiveMessage(receiveRequest).getMessages()) {
-//                            System.out.println("Mensagem recebida: " + message.getBody());
-//
-//                            sqsClient.deleteMessage(SQS_QUEUE_URL, message.getReceiptHandle());
-//                        }
-//                        
-//                        Thread.sleep(5000);
-//}
-//
-//                        
-////                        API api = new API();
-////                        ResponseModel response = api.getInvites(getNickname());
-////
-////                        if(response.getResponseCode() == 200){
-////                            System.out.println(response.getResponseText());
-////                        } else{
-////                            InfoDialog info_window = new InfoDialog();
-////                            info_window.SetMessage("Erro ao recuperar dados!\n"+response.getResponseText());
-////                        }
-////
-//                        Thread.sleep(5000);
+                        for (Message message : sqsClient.receiveMessage(receiveRequest).getMessages()) {
+
+                            Map<String, MessageAttributeValue> messageAttributes = message.getMessageAttributes();
+                            String opponent = messageAttributes.get("nickname").getStringValue();
+                            String challenged = messageAttributes.get("oponent").getStringValue();
+                            
+                            System.out.println(opponent);
+                            System.out.println(challenged);
+
+                            sqsClient.deleteMessage(SQS_QUEUE_URL, message.getReceiptHandle());
+                        }
+                        
+                        Thread.sleep(5000);
                     } catch (Exception e) {
                         Thread.currentThread().interrupt();
                         break;
