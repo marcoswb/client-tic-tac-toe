@@ -50,7 +50,21 @@ public class Board extends javax.swing.JFrame {
 
     }
 
-    public void FillLabel(int x, int y, String playerCharacter) {
+    public void FillLabelPlayer1(int x, int y, String playerCharacter) {        
+        setForeground(new Color(120, 94, 134));
+        FillForeground(x-1, y-1);
+        setCharacterInLabel(x, y, playerCharacter);
+        
+    }
+    
+    public void FillLabelPlayer2(int x, int y, String playerCharacter) {        
+        setForeground(new Color(243, 203, 43));
+        FillForeground(x-1, y-1);
+        setCharacterInLabel(x, y, playerCharacter);
+        
+    }
+    
+    private void setCharacterInLabel(int x, int y, String playerCharacter){
         if (x == 1 && y == 1) {
             label_x1_y1.setText(playerCharacter);
         }
@@ -83,7 +97,7 @@ public class Board extends javax.swing.JFrame {
     }
 
     public void FillVictoryPositions(int x1, int y1, int x2, int y2, int x3, int y3) {
-        this.setForeground(Color.GREEN);
+        setForeground(new Color(152, 251, 152));
 
         FillForeground(x1, y1);
         FillForeground(x2, y2);
@@ -93,7 +107,7 @@ public class Board extends javax.swing.JFrame {
     }
     
     public void FillDefeatPositions(int x1, int y1, int x2, int y2, int x3, int y3) {
-        this.setForeground(Color.RED);
+        setForeground(new Color(255, 99, 71));
 
         FillForeground(x1, y1);
         FillForeground(x2, y2);
@@ -103,14 +117,14 @@ public class Board extends javax.swing.JFrame {
     }
 
     public void DrawGame() {
-        this.setForeground(Color.orange);
+        setForeground(new Color(244, 164, 96));
 
         for (int x = 0; x <= 2; x++) {
             for (int y = 0; y <= 2; y++) {
                 FillForeground(x, y);
             }
         }
-
+        
         info_window.SetMessage("Empate!");
     }
 
@@ -208,16 +222,17 @@ public class Board extends javax.swing.JFrame {
                 formWindowClosed(evt);
             }
         });
-        getContentPane().setLayout(new java.awt.GridLayout(1, 1, 1, 1));
+        getContentPane().setLayout(new java.awt.GridLayout(1, 1));
 
         jPanel1.setForeground(new java.awt.Color(0, 0, 0));
         jPanel1.setLayout(new java.awt.GridLayout(3, 3));
 
-        label_x1_y1.setBackground(new java.awt.Color(51, 51, 51));
+        label_x1_y1.setBackground(new java.awt.Color(44, 62, 80));
         label_x1_y1.setFont(new java.awt.Font("Dialog", 0, 48)); // NOI18N
         label_x1_y1.setForeground(new java.awt.Color(255, 255, 255));
         label_x1_y1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         label_x1_y1.setAlignmentY(0.0F);
+        label_x1_y1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(52, 73, 94)));
         label_x1_y1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         label_x1_y1.setOpaque(true);
         label_x1_y1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -227,11 +242,11 @@ public class Board extends javax.swing.JFrame {
         });
         jPanel1.add(label_x1_y1);
 
-        label_x2_y1.setBackground(new java.awt.Color(51, 51, 51));
+        label_x2_y1.setBackground(new java.awt.Color(44, 62, 80));
         label_x2_y1.setFont(new java.awt.Font("Dialog", 0, 48)); // NOI18N
         label_x2_y1.setForeground(new java.awt.Color(255, 255, 255));
         label_x2_y1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        label_x2_y1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        label_x2_y1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(52, 73, 94)));
         label_x2_y1.setOpaque(true);
         label_x2_y1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -240,11 +255,11 @@ public class Board extends javax.swing.JFrame {
         });
         jPanel1.add(label_x2_y1);
 
-        label_x3_y1.setBackground(new java.awt.Color(51, 51, 51));
+        label_x3_y1.setBackground(new java.awt.Color(44, 62, 80));
         label_x3_y1.setFont(new java.awt.Font("Dialog", 0, 48)); // NOI18N
         label_x3_y1.setForeground(new java.awt.Color(255, 255, 255));
         label_x3_y1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        label_x3_y1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        label_x3_y1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(52, 73, 94)));
         label_x3_y1.setOpaque(true);
         label_x3_y1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -257,11 +272,11 @@ public class Board extends javax.swing.JFrame {
 
         jPanel2.setLayout(new java.awt.GridLayout(3, 3));
 
-        label_x1_y2.setBackground(new java.awt.Color(51, 51, 51));
+        label_x1_y2.setBackground(new java.awt.Color(44, 62, 80));
         label_x1_y2.setFont(new java.awt.Font("Dialog", 0, 48)); // NOI18N
         label_x1_y2.setForeground(new java.awt.Color(255, 255, 255));
         label_x1_y2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        label_x1_y2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        label_x1_y2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(52, 73, 94)));
         label_x1_y2.setOpaque(true);
         label_x1_y2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -270,12 +285,12 @@ public class Board extends javax.swing.JFrame {
         });
         jPanel2.add(label_x1_y2);
 
-        label_x2_y2.setBackground(new java.awt.Color(51, 51, 51));
+        label_x2_y2.setBackground(new java.awt.Color(44, 62, 80));
         label_x2_y2.setFont(new java.awt.Font("Dialog", 0, 48)); // NOI18N
         label_x2_y2.setForeground(new java.awt.Color(255, 255, 255));
         label_x2_y2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         label_x2_y2.setAlignmentY(0.0F);
-        label_x2_y2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        label_x2_y2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(52, 73, 94)));
         label_x2_y2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         label_x2_y2.setOpaque(true);
         label_x2_y2.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -285,11 +300,11 @@ public class Board extends javax.swing.JFrame {
         });
         jPanel2.add(label_x2_y2);
 
-        label_x3_y2.setBackground(new java.awt.Color(51, 51, 51));
+        label_x3_y2.setBackground(new java.awt.Color(44, 62, 80));
         label_x3_y2.setFont(new java.awt.Font("Dialog", 0, 48)); // NOI18N
         label_x3_y2.setForeground(new java.awt.Color(255, 255, 255));
         label_x3_y2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        label_x3_y2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        label_x3_y2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(52, 73, 94)));
         label_x3_y2.setOpaque(true);
         label_x3_y2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -302,11 +317,11 @@ public class Board extends javax.swing.JFrame {
 
         jPanel3.setLayout(new java.awt.GridLayout(3, 3));
 
-        label_x1_y3.setBackground(new java.awt.Color(51, 51, 51));
+        label_x1_y3.setBackground(new java.awt.Color(44, 62, 80));
         label_x1_y3.setFont(new java.awt.Font("Dialog", 0, 48)); // NOI18N
         label_x1_y3.setForeground(new java.awt.Color(255, 255, 255));
         label_x1_y3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        label_x1_y3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        label_x1_y3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(52, 73, 94)));
         label_x1_y3.setOpaque(true);
         label_x1_y3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -315,12 +330,12 @@ public class Board extends javax.swing.JFrame {
         });
         jPanel3.add(label_x1_y3);
 
-        label_x2_y3.setBackground(new java.awt.Color(51, 51, 51));
+        label_x2_y3.setBackground(new java.awt.Color(44, 62, 80));
         label_x2_y3.setFont(new java.awt.Font("Dialog", 0, 48)); // NOI18N
         label_x2_y3.setForeground(new java.awt.Color(255, 255, 255));
         label_x2_y3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         label_x2_y3.setAlignmentY(0.0F);
-        label_x2_y3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        label_x2_y3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(52, 73, 94)));
         label_x2_y3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         label_x2_y3.setOpaque(true);
         label_x2_y3.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -330,11 +345,11 @@ public class Board extends javax.swing.JFrame {
         });
         jPanel3.add(label_x2_y3);
 
-        label_x3_y3.setBackground(new java.awt.Color(51, 51, 51));
+        label_x3_y3.setBackground(new java.awt.Color(44, 62, 80));
         label_x3_y3.setFont(new java.awt.Font("Dialog", 0, 48)); // NOI18N
         label_x3_y3.setForeground(new java.awt.Color(255, 255, 255));
         label_x3_y3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        label_x3_y3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        label_x3_y3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(52, 73, 94)));
         label_x3_y3.setOpaque(true);
         label_x3_y3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {

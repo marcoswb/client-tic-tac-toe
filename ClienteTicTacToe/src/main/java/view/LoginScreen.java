@@ -6,7 +6,7 @@ import utils.Functions;
 import utils.ResponseModel;
 
 public class LoginScreen extends javax.swing.JFrame {
-
+    
     public Functions functions = new Functions();
 
     public LoginScreen() {
@@ -109,15 +109,16 @@ public class LoginScreen extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jButtonLoginMouseClicked(evt);
             }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                jButtonLoginMouseExited(evt);
-            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 jButtonLoginMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButtonLoginMouseExited(evt);
             }
         });
 
         jLabelSignOn.setForeground(java.awt.Color.blue);
+        jLabelSignOn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelSignOn.setText("Cadastrar-se");
         jLabelSignOn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jLabelSignOn.setOpaque(true);
@@ -125,11 +126,11 @@ public class LoginScreen extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabelSignOnMouseClicked(evt);
             }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                jLabelSignOnMouseExited(evt);
-            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 jLabelSignOnMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabelSignOnMouseExited(evt);
             }
         });
 
@@ -140,14 +141,11 @@ public class LoginScreen extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(49, 49, 49)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelSignOn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jFieldUser)
                     .addComponent(jFieldPassword)
                     .addComponent(jButtonLogin, javax.swing.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE))
                 .addGap(42, 42, 42))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabelSignOn)
-                .addGap(108, 108, 108))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

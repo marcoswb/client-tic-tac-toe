@@ -283,7 +283,12 @@ public class BoardController extends Thread {
 
     public void FillBoard(String character, int x, int y) {
         board[x - 1][y - 1] = character;
-        contextScreen.FillLabel(x, y, character);
+        if(character.equals("X")){
+            contextScreen.FillLabelPlayer1(x, y, character);
+        } else {
+            contextScreen.FillLabelPlayer2(x, y, character);
+        }
+        
     }
 
     public boolean BoardIsFree(int x, int y) {
