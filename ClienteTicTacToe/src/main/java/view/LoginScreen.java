@@ -185,7 +185,7 @@ public class LoginScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabelSignOnMouseClicked
 
     private void jLabelSignOnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelSignOnMouseEntered
-        jLabelSignOn.setForeground(new Color(243, 203, 43));
+        jLabelSignOn.setForeground(Color.lightGray);
         jLabelSignOn.setBackground(new Color(44, 62, 80));
     }//GEN-LAST:event_jLabelSignOnMouseEntered
 

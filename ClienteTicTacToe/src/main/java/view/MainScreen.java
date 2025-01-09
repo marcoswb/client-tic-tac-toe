@@ -8,6 +8,9 @@ import java.util.Iterator;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import controller.MainController;
+import java.awt.Color;
+import javax.swing.JLabel;
+import javax.swing.table.DefaultTableCellRenderer;
 
 public final class MainScreen extends javax.swing.JFrame {
 
@@ -18,6 +21,7 @@ public final class MainScreen extends javax.swing.JFrame {
     
     public MainScreen(String nickname) {
         initComponents();
+        stylesheetScreen();
 
         setNickname(nickname);
         fillTablePlayers();
@@ -37,19 +41,18 @@ public final class MainScreen extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTableHistory = new javax.swing.JTable();
-        jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        jButtonStartRandonGame = new javax.swing.JButton();
-        jButtonStartGameWithMachine = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTablePlayers = new javax.swing.JTable();
+        jButtonStartRandonGame = new javax.swing.JButton();
+        jButtonStartGameWithMachine = new javax.swing.JButton();
         jButtonStartGame = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTableHistory = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Jogo da Velha");
+        setBackground(new java.awt.Color(44, 62, 80));
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -57,6 +60,89 @@ public final class MainScreen extends javax.swing.JFrame {
             }
         });
 
+        jScrollPane3.setForeground(new java.awt.Color(44, 62, 80));
+
+        jTablePlayers.setBackground(new java.awt.Color(52, 73, 94));
+        jTablePlayers.setForeground(new java.awt.Color(236, 240, 241));
+        jTablePlayers.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Jogadores"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTablePlayers.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jTablePlayers.getTableHeader().setReorderingAllowed(false);
+        jScrollPane3.setViewportView(jTablePlayers);
+        if (jTablePlayers.getColumnModel().getColumnCount() > 0) {
+            jTablePlayers.getColumnModel().getColumn(0).setResizable(false);
+        }
+
+        jButtonStartRandonGame.setBackground(new java.awt.Color(236, 240, 241));
+        jButtonStartRandonGame.setForeground(new java.awt.Color(0, 0, 0));
+        jButtonStartRandonGame.setText("Iniciar partida aleatória");
+        jButtonStartRandonGame.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButtonStartRandonGameMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButtonStartRandonGameMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButtonStartRandonGameMouseExited(evt);
+            }
+        });
+
+        jButtonStartGameWithMachine.setBackground(new java.awt.Color(236, 240, 241));
+        jButtonStartGameWithMachine.setForeground(new java.awt.Color(0, 0, 0));
+        jButtonStartGameWithMachine.setText("Jogar contra o PC");
+        jButtonStartGameWithMachine.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButtonStartGameWithMachineMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButtonStartGameWithMachineMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButtonStartGameWithMachineMouseExited(evt);
+            }
+        });
+
+        jButtonStartGame.setBackground(new java.awt.Color(236, 240, 241));
+        jButtonStartGame.setForeground(new java.awt.Color(0, 0, 0));
+        jButtonStartGame.setText("Iniciar partida");
+        jButtonStartGame.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButtonStartGameMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButtonStartGameMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButtonStartGameMouseExited(evt);
+            }
+        });
+
+        jScrollPane1.setForeground(new java.awt.Color(44, 62, 80));
+
+        jTableHistory.setBackground(new java.awt.Color(52, 73, 94));
+        jTableHistory.setForeground(new java.awt.Color(236, 240, 241));
         jTableHistory.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -65,124 +151,91 @@ public final class MainScreen extends javax.swing.JFrame {
                 "Adversário", "Resultado"
             }
         ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class
+            };
             boolean[] canEdit = new boolean [] {
                 false, false
             };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
+        jTableHistory.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(jTableHistory);
         if (jTableHistory.getColumnModel().getColumnCount() > 0) {
             jTableHistory.getColumnModel().getColumn(0).setResizable(false);
             jTableHistory.getColumnModel().getColumn(1).setResizable(false);
         }
 
-        jButtonStartRandonGame.setText("Iniciar partida aleatória");
-        jButtonStartRandonGame.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButtonStartRandonGameMouseClicked(evt);
-            }
-        });
-
-        jButtonStartGameWithMachine.setText("Jogar contra o PC");
-        jButtonStartGameWithMachine.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButtonStartGameWithMachineMouseClicked(evt);
-            }
-        });
-
-        jTablePlayers.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Jogador"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane3.setViewportView(jTablePlayers);
-
-        jButtonStartGame.setText("Iniciar partida");
-        jButtonStartGame.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButtonStartGameMouseClicked(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 493, Short.MAX_VALUE))
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(149, 149, 149)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButtonStartGameWithMachine, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-                            .addComponent(jButtonStartRandonGame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButtonStartGame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(226, 226, 226)
-                        .addComponent(jLabel1)))
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(7, 7, 7)
-                .addComponent(jButtonStartRandonGame)
-                .addGap(18, 18, 18)
-                .addComponent(jButtonStartGameWithMachine)
-                .addGap(18, 18, 18)
-                .addComponent(jButtonStartGame)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(79, 79, 79)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
+        jLabel1.setBackground(new java.awt.Color(44, 62, 80));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 453, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jButtonStartRandonGame, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
+                        .addComponent(jButtonStartGame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButtonStartGameWithMachine, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(32, 32, 32)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButtonStartRandonGame, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButtonStartGameWithMachine)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                        .addComponent(jButtonStartGame)
+                        .addGap(26, 26, 26)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    private void stylesheetScreen(){
+        getContentPane().setBackground(new Color(44, 62, 80));
+        
+        jTableHistory.setBackground(new Color(81, 100, 120));
+        jTableHistory.setOpaque(false);
+        jTableHistory.getTableHeader().setBackground(new Color(54, 54, 54));
+        jTableHistory.getTableHeader().setForeground(new Color(236, 240, 241));
+        
+        jTablePlayers.setBackground(new Color(81, 100, 120));
+        jTablePlayers.setForeground(new Color(81, 100, 120));
+        jTablePlayers.setOpaque(false);
+        jTablePlayers.getTableHeader().setBackground(new Color(54, 54, 54));
+        jTablePlayers.getTableHeader().setForeground(new Color(236, 240, 241));
+        
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER );
+        jTableHistory.setDefaultRenderer(String.class, centerRenderer);
+        jTablePlayers.setDefaultRenderer(String.class, centerRenderer);
+        
+    }
     public void fillTablePlayers() {
         try {
             API api = new API();
@@ -251,15 +304,6 @@ public final class MainScreen extends javax.swing.JFrame {
         }
     }
 
-    private void jButtonStartRandonGameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonStartRandonGameMouseClicked
-        try {
-            startLoading();
-            mainController.startGame();
-        } catch (Exception ex) {
-            System.out.println("TESTEEEEEEE" + ex);
-        }
-    }//GEN-LAST:event_jButtonStartRandonGameMouseClicked
-
     private void logout() throws Exception {
         API api = new API();
         api.Logout(this.getNickname());
@@ -272,10 +316,6 @@ public final class MainScreen extends javax.swing.JFrame {
         mainController.checking();
     }
 
-    private void jButtonStartGameWithMachineMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonStartGameWithMachineMouseClicked
-        System.out.println("Iniciar partida contra o computador");
-    }//GEN-LAST:event_jButtonStartGameWithMachineMouseClicked
-
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         try {
             setVisible(false);
@@ -284,6 +324,14 @@ public final class MainScreen extends javax.swing.JFrame {
             System.out.println("ERRROOOOOO 1: " + ex.toString());
         }
     }//GEN-LAST:event_formWindowClosing
+
+    private void jButtonStartGameMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonStartGameMouseExited
+        jButtonStartGame.setBackground(new Color(236, 240, 241));
+    }//GEN-LAST:event_jButtonStartGameMouseExited
+
+    private void jButtonStartGameMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonStartGameMouseEntered
+        jButtonStartGame.setBackground(Color.lightGray);
+    }//GEN-LAST:event_jButtonStartGameMouseEntered
 
     private void jButtonStartGameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonStartGameMouseClicked
         try {
@@ -300,8 +348,36 @@ public final class MainScreen extends javax.swing.JFrame {
         } catch (Exception ex) {
             System.out.println("TESTEEEEEEE" + ex);
         }
-
     }//GEN-LAST:event_jButtonStartGameMouseClicked
+
+    private void jButtonStartGameWithMachineMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonStartGameWithMachineMouseExited
+        jButtonStartGameWithMachine.setBackground(new Color(236, 240, 241));
+    }//GEN-LAST:event_jButtonStartGameWithMachineMouseExited
+
+    private void jButtonStartGameWithMachineMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonStartGameWithMachineMouseEntered
+        jButtonStartGameWithMachine.setBackground(Color.lightGray);
+    }//GEN-LAST:event_jButtonStartGameWithMachineMouseEntered
+
+    private void jButtonStartGameWithMachineMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonStartGameWithMachineMouseClicked
+        System.out.println("Iniciar partida contra o computador");
+    }//GEN-LAST:event_jButtonStartGameWithMachineMouseClicked
+
+    private void jButtonStartRandonGameMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonStartRandonGameMouseExited
+        jButtonStartRandonGame.setBackground(new Color(236, 240, 241));
+    }//GEN-LAST:event_jButtonStartRandonGameMouseExited
+
+    private void jButtonStartRandonGameMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonStartRandonGameMouseEntered
+        jButtonStartRandonGame.setBackground(Color.lightGray);
+    }//GEN-LAST:event_jButtonStartRandonGameMouseEntered
+
+    private void jButtonStartRandonGameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonStartRandonGameMouseClicked
+        try {
+            startLoading();
+            mainController.startGame();
+        } catch (Exception ex) {
+            System.out.println("TESTEEEEEEE" + ex);
+        }
+    }//GEN-LAST:event_jButtonStartRandonGameMouseClicked
 
     public static void main(String args[]) {
         try {
@@ -341,8 +417,6 @@ public final class MainScreen extends javax.swing.JFrame {
     private javax.swing.JButton jButtonStartGameWithMachine;
     private javax.swing.JButton jButtonStartRandonGame;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTableHistory;
