@@ -157,7 +157,7 @@ public class MainController {
     
     private void acceptInvite(String challenger, String challenged){
         sendAcceptInvitation(challenger, challenged);
-        startGame(challenger);
+        startGame(challenged);
     }
     
     private void sendAcceptInvitation(String challenger, String challenged){

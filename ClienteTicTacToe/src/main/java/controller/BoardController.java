@@ -103,8 +103,12 @@ public class BoardController extends Thread {
             ResponseModel responseJson = new ResponseModel();
             String message = responseJson.getMessageKey(responseString, "message");
             String action = responseJson.getMessageKey(responseString, "action");
-
-            if (action.equals("play")) {
+            
+            if(action.equals("end_game")) {
+                this.closeSocket();
+                contextScreen.EndGame();
+                closeGame("Vitória");
+            } else {
                 String position_x_oponent = message.substring(0, 1);
                 String position_y_oponent = message.substring(1, 2);
 
@@ -112,18 +116,16 @@ public class BoardController extends Thread {
                 int y = Integer.parseInt(position_y_oponent);
 
                 this.FillBoard(this.GetInversePlayerCharacter(), x, y);
-            } else if (action.equals("victory")) {
-                this.closeSocket();
-                this.CheckVictory(this.GetInversePlayerCharacter());
-                closeGame("Vitória");
-            } else if (action.equals("draw")) {
-                this.closeSocket();
-                contextScreen.DrawGame();
-                closeGame("Empate");
-            } else if (action.equals("end_game")) {
-                this.closeSocket();
-                contextScreen.EndGame();
-                closeGame("Empate");
+                
+                if(action.equals("victory")) {
+                    this.closeSocket();
+                    this.CheckVictory(this.GetInversePlayerCharacter());
+                    closeGame("Vitória");
+                } else if (action.equals("draw")) {
+                    this.closeSocket();
+                    contextScreen.DrawGame();
+                    closeGame("Empate");
+                }
             }
 
             contextScreen.EnableBoard();
@@ -177,7 +179,11 @@ public class BoardController extends Thread {
         // checar vitória horizontal
         for (int x = 0; x <= 2; x++) {
             if (board[x][0].equals(character) & board[x][1].equals(character) & board[x][2].equals(character)) {
-                contextScreen.FillVictoryPositions(x, 0, x, 1, x, 2);
+                if(character.equals(this.GetPlayerCharacter())){
+                    contextScreen.FillVictoryPositions(x, 0, x, 1, x, 2);
+                } else {
+                    contextScreen.FillDefeatPositions(x, 0, x, 1, x, 2);
+                }
                 return true;
             }
         }
@@ -185,20 +191,32 @@ public class BoardController extends Thread {
         // checar vitória vertical
         for (int y = 0; y <= 2; y++) {
             if (board[0][y].equals(character) & board[1][y].equals(character) & board[2][y].equals(character)) {
-                contextScreen.FillVictoryPositions(0, y, 1, y, 2, y);
+                if(character.equals(this.GetPlayerCharacter())){
+                    contextScreen.FillVictoryPositions(0, y, 1, y, 2, y);
+                } else {
+                    contextScreen.FillDefeatPositions(0, y, 1, y, 2, y);
+                }
                 return true;
             }
         }
 
         // checar vitória diagonal principal
         if (board[0][0].equals(character) & board[1][1].equals(character) & board[2][2].equals(character)) {
-            contextScreen.FillVictoryPositions(0, 0, 1, 1, 2, 2);
+            if(character.equals(this.GetPlayerCharacter())){
+                contextScreen.FillVictoryPositions(0, 0, 1, 1, 2, 2);
+            } else {
+                contextScreen.FillDefeatPositions(0, 0, 1, 1, 2, 2);
+            }
             return true;
         }
 
         // checar vitória diagonal secundária
         if (board[0][2].equals(character) & board[1][1].equals(character) & board[2][0].equals(character)) {
-            contextScreen.FillVictoryPositions(0, 2, 1, 1, 2, 0);
+            if(character.equals(this.GetPlayerCharacter())){
+                contextScreen.FillVictoryPositions(0, 2, 1, 1, 2, 0);
+            } else {
+                contextScreen.FillDefeatPositions(0, 2, 1, 1, 2, 0);
+            }
             return true;
         }
 

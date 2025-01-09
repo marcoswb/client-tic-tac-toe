@@ -13,6 +13,7 @@ import view.MainScreen;
 public class PrepareGame implements Runnable{
     
     private String nickname;
+    private String opponent;
     private final String host = "127.0.0.1";
     private final int port = 8000;
     private final byte[] data = new byte[1024];
@@ -24,7 +25,6 @@ public class PrepareGame implements Runnable{
     }
 
     public void startGame(){
-        
         PrepareGame board = new PrepareGame(mainContext);
         board.setNickname(this.getNickname());
         
@@ -32,9 +32,13 @@ public class PrepareGame implements Runnable{
         thread.start();
     }
     
-    public void startGame(String opponent){
-        System.out.println("Precisa iniciar um jogo com o usuário");
-        System.out.println(opponent);
+    public void startGame(String opponent){        
+        PrepareGame board = new PrepareGame(mainContext);
+        board.setNickname(this.getNickname());
+        board.setOpponent(opponent);
+        
+        Thread thread = new Thread(board, "board");
+        thread.start();
     }
     
     
@@ -43,30 +47,32 @@ public class PrepareGame implements Runnable{
         try{
             Board game = new Board(mainContext);
             game.setPlayer_01(this.getNickname());
-
             
             try{
                 socket = new Socket(host, port);
-                
-                // autenticação
                 JsonData json = new JsonData();
-
                 json.addKeyJson("message", "entrar");
                 json.addKeyJson("player", this.getNickname());
                 
+                if(this.getOpponent() == null){
+                    json.addKeyJson("opponent", "random");
+                } else {
+                    json.addKeyJson("opponent", this.getOpponent());
+                }
+
                 this.sendMessage(json.getJson());
-                
-                // recuperar quem joga primeiro e o nome do adversário
+
+                // recuperar nome do adversário e quem joga primeiro
                 String responseString = this.awaitMessage();     
                 ResponseModel responseJson = new ResponseModel();
                 String message = responseJson.getMessageKey(responseString, "message");
                 String nickname_oponent = responseJson.getMessageKey(responseString, "player");          
-                
+
                 game.setPlayer_02(nickname_oponent);
 
                 game.setDefaultCloseOperation(HIDE_ON_CLOSE);
                 game.StartGame(socket, message);
-
+                
                 mainContext.stopLoading();
 
             } catch (UnknownHostException ex) {
@@ -110,5 +116,12 @@ public class PrepareGame implements Runnable{
         this.nickname = nickname;
     }
 
+    public String getOpponent() {
+        return opponent;
+    }
+
+    public void setOpponent(String opponent) {
+        this.opponent = opponent;
+    }
 }
 

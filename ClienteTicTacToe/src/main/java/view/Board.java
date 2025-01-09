@@ -91,6 +91,16 @@ public class Board extends javax.swing.JFrame {
 
         info_window.SetMessage("Parabéns, você ganhou!");
     }
+    
+    public void FillDefeatPositions(int x1, int y1, int x2, int y2, int x3, int y3) {
+        this.setForeground(Color.RED);
+
+        FillForeground(x1, y1);
+        FillForeground(x2, y2);
+        FillForeground(x3, y3);
+
+        info_window.SetMessage("Você perdeu, boa sorte no próximo jogo!");
+    }
 
     public void DrawGame() {
         this.setForeground(Color.orange);
