@@ -97,6 +97,7 @@ public class Board extends javax.swing.JFrame {
     }
 
     public void FillVictoryPositions(int x1, int y1, int x2, int y2, int x3, int y3) {
+        FillAllBoard(new Color(244, 164, 96));
         setForeground(new Color(152, 251, 152));
 
         FillForeground(x1, y1);
@@ -107,6 +108,7 @@ public class Board extends javax.swing.JFrame {
     }
     
     public void FillDefeatPositions(int x1, int y1, int x2, int y2, int x3, int y3) {
+        FillAllBoard(new Color(244, 164, 96));
         setForeground(new Color(255, 99, 71));
 
         FillForeground(x1, y1);
@@ -117,27 +119,22 @@ public class Board extends javax.swing.JFrame {
     }
 
     public void DrawGame() {
-        setForeground(new Color(244, 164, 96));
-
-        for (int x = 0; x <= 2; x++) {
-            for (int y = 0; y <= 2; y++) {
-                FillForeground(x, y);
-            }
-        }
-        
+        FillAllBoard(new Color(244, 164, 96));
         info_window.SetMessage("Empate!");
     }
 
     public void EndGame() {
-        this.setForeground(Color.orange);
-
+        FillAllBoard(new Color(244, 164, 96));
+        info_window.SetMessage("Adversário finalizou o jogo!");
+    }
+    
+    private void FillAllBoard(Color color){
+        setForeground(color);
         for (int x = 0; x <= 2; x++) {
             for (int y = 0; y <= 2; y++) {
                 FillForeground(x, y);
             }
         }
-
-        info_window.SetMessage("Adversário finalizou o jogo!");
     }
 
     private void FillForeground(int x, int y) {
