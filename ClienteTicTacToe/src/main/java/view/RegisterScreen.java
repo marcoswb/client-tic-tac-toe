@@ -11,6 +11,7 @@ public class RegisterScreen extends javax.swing.JFrame {
 
     public RegisterScreen() {
         initComponents();
+        getContentPane().setBackground(new Color(44, 62, 80));
 
         jFieldName.setForeground(Color.GRAY);
         jFieldName.setText("Informe seu nome...");
@@ -35,6 +36,7 @@ public class RegisterScreen extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sign On");
+        setBackground(new java.awt.Color(44, 62, 80));
         setResizable(false);
 
         jFieldUser.setForeground(new java.awt.Color(204, 204, 204));
@@ -54,18 +56,18 @@ public class RegisterScreen extends javax.swing.JFrame {
             }
         });
 
-        jButtonSignOn.setBackground(new java.awt.Color(204, 204, 204));
+        jButtonSignOn.setBackground(new java.awt.Color(236, 240, 241));
         jButtonSignOn.setForeground(new java.awt.Color(0, 0, 0));
         jButtonSignOn.setText("Sign On");
         jButtonSignOn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jButtonSignOnMouseClicked(evt);
             }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                jButtonSignOnMouseExited(evt);
-            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 jButtonSignOnMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButtonSignOnMouseExited(evt);
             }
         });
         jButtonSignOn.addActionListener(new java.awt.event.ActionListener() {
@@ -88,17 +90,18 @@ public class RegisterScreen extends javax.swing.JFrame {
             }
         });
 
-        jLabelLogin.setForeground(java.awt.Color.blue);
+        jLabelLogin.setBackground(new java.awt.Color(44, 62, 80));
+        jLabelLogin.setForeground(new java.awt.Color(120, 94, 134));
         jLabelLogin.setText("Login");
         jLabelLogin.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabelLoginMouseClicked(evt);
             }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                jLabelLoginMouseExited(evt);
-            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 jLabelLoginMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabelLoginMouseExited(evt);
             }
         });
 
@@ -168,19 +171,21 @@ public class RegisterScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonSignOnActionPerformed
 
     private void jLabelLoginMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelLoginMouseEntered
-        jLabelLogin.setForeground(Color.red);
+        jLabelLogin.setForeground(new Color(243, 203, 43));
+        jLabelLogin.setBackground(new Color(44, 62, 80));
     }//GEN-LAST:event_jLabelLoginMouseEntered
 
     private void jLabelLoginMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelLoginMouseExited
-        jLabelLogin.setForeground(Color.BLUE);
+        jLabelLogin.setForeground(new Color(120, 94, 134));
+        jLabelLogin.setBackground(new Color(44, 62, 80));
     }//GEN-LAST:event_jLabelLoginMouseExited
 
     private void jButtonSignOnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonSignOnMouseEntered
-        jButtonSignOn.setBackground(Color.gray);
+        jButtonSignOn.setBackground(Color.lightGray);
     }//GEN-LAST:event_jButtonSignOnMouseEntered
 
     private void jButtonSignOnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonSignOnMouseExited
-        jButtonSignOn.setBackground(Color.lightGray);
+        jButtonSignOn.setBackground(new Color(236, 240, 241));
     }//GEN-LAST:event_jButtonSignOnMouseExited
 
     private void jFieldNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFieldNameActionPerformed

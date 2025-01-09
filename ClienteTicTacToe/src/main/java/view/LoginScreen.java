@@ -11,6 +11,7 @@ public class LoginScreen extends javax.swing.JFrame {
 
     public LoginScreen() {
         initComponents();
+        getContentPane().setBackground(new Color(44, 62, 80));
 
         jFieldUser.setForeground(Color.GRAY);
         jFieldUser.setText("Informe seu usuário...");
@@ -65,6 +66,8 @@ public class LoginScreen extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Login");
+        setBackground(new java.awt.Color(44, 62, 80));
+        setForeground(new java.awt.Color(44, 62, 80));
         setResizable(false);
 
         jFieldUser.setToolTipText("");
@@ -102,7 +105,7 @@ public class LoginScreen extends javax.swing.JFrame {
             }
         });
 
-        jButtonLogin.setBackground(new java.awt.Color(204, 204, 204));
+        jButtonLogin.setBackground(new java.awt.Color(236, 240, 241));
         jButtonLogin.setForeground(new java.awt.Color(0, 0, 0));
         jButtonLogin.setLabel("Login");
         jButtonLogin.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -117,7 +120,8 @@ public class LoginScreen extends javax.swing.JFrame {
             }
         });
 
-        jLabelSignOn.setForeground(java.awt.Color.blue);
+        jLabelSignOn.setBackground(new java.awt.Color(44, 62, 80));
+        jLabelSignOn.setForeground(new java.awt.Color(120, 94, 134));
         jLabelSignOn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelSignOn.setText("Cadastrar-se");
         jLabelSignOn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -181,11 +185,13 @@ public class LoginScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabelSignOnMouseClicked
 
     private void jLabelSignOnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelSignOnMouseEntered
-        jLabelSignOn.setForeground(Color.red);
+        jLabelSignOn.setForeground(new Color(243, 203, 43));
+        jLabelSignOn.setBackground(new Color(44, 62, 80));
     }//GEN-LAST:event_jLabelSignOnMouseEntered
 
     private void jLabelSignOnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelSignOnMouseExited
-        jLabelSignOn.setForeground(Color.blue);
+        jLabelSignOn.setForeground(new Color(120, 94, 134));
+        jLabelSignOn.setBackground(new Color(44, 62, 80));
     }//GEN-LAST:event_jLabelSignOnMouseExited
 
     private void jButtonLoginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonLoginMouseClicked
@@ -193,11 +199,11 @@ public class LoginScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonLoginMouseClicked
 
     private void jButtonLoginMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonLoginMouseEntered
-        jButtonLogin.setBackground(Color.gray);
+        jButtonLogin.setBackground(Color.lightGray);
     }//GEN-LAST:event_jButtonLoginMouseEntered
 
     private void jButtonLoginMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonLoginMouseExited
-        jButtonLogin.setBackground(Color.lightGray);
+        jButtonLogin.setBackground(new Color(236, 240, 241));
     }//GEN-LAST:event_jButtonLoginMouseExited
 
     private void jFieldUserFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFieldUserFocusGained
