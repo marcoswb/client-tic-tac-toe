@@ -92,7 +92,7 @@ public class MainController {
                             }
                         }
                         
-                        Thread.sleep(5000);
+                        Thread.sleep(2000);
                     } catch (Exception e) {
                         System.out.println("Erro 2 MainController.java " + e);
                         Thread.currentThread().interrupt();
@@ -100,7 +100,7 @@ public class MainController {
                     }
                 } else {
                     try {
-                        Thread.sleep(5000);
+                        Thread.sleep(2000);
                     }catch (Exception e) {
                         System.out.println("Erro 3 MainController.java " + e);
                         Thread.currentThread().interrupt();
@@ -136,7 +136,7 @@ public class MainController {
                             }
                         }
                         
-                        Thread.sleep(5000);
+                        Thread.sleep(2000);
                     } catch (Exception e) {
                         System.out.println("Erro 4 MainController.java " + e);
                         Thread.currentThread().interrupt();
@@ -144,7 +144,7 @@ public class MainController {
                     }
                 } else {
                     try {
-                        Thread.sleep(5000);
+                        Thread.sleep(2000);
                     }catch (Exception e) {
                         System.out.println("Erro 5 MainController.java " + e);
                         Thread.currentThread().interrupt();
@@ -157,7 +157,7 @@ public class MainController {
     
     private void acceptInvite(String challenger, String challenged){
         sendAcceptInvitation(challenger, challenged);
-        startGame(challenged);
+        startGame(challenger);
     }
     
     private void sendAcceptInvitation(String challenger, String challenged){
@@ -181,10 +181,10 @@ public class MainController {
         mainContext.setStartCheck(false);
     }
     
-    public void startGame(String challenged){
+    public void startGame(String opponent){
         PrepareGame board = new PrepareGame(mainContext);
-        board.setNickname(challenged);
-        board.startGame(challenged);
+        board.setNickname(mainContext.getNickname());
+        board.startGame(opponent);
         mainContext.setStartCheck(false);
     }
 }
