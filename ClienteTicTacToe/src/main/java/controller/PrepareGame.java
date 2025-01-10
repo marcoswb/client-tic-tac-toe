@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import view.Board;
 import view.MainScreen;
 import utils.Config;
+import view.InfoDialog;
 
 
 public class PrepareGame implements Runnable{
@@ -54,7 +55,7 @@ public class PrepareGame implements Runnable{
         
             socket = new Socket(host, port);
             JsonData json = new JsonData();
-            json.addKeyJson("message", "entrar");
+            json.addKeyJson("socket_key", mainContext.getSocketKey());
             json.addKeyJson("player", this.getNickname());
 
             if(this.getOpponent() == null){
@@ -68,13 +69,18 @@ public class PrepareGame implements Runnable{
             // recuperar nome do adversário e quem joga primeiro
             String responseString = this.awaitMessage();     
             ResponseModel responseJson = new ResponseModel();
-            String message = responseJson.getMessageKey(responseString, "message");
-            String nickname_oponent = responseJson.getMessageKey(responseString, "player");          
+            
+            if(!responseString.isEmpty()){
+                String message = responseJson.getMessageKey(responseString, "message");
+                String nickname_oponent = responseJson.getMessageKey(responseString, "player");          
 
-            game.setPlayer_02(nickname_oponent);
+                game.setPlayer_02(nickname_oponent);
 
-            game.setDefaultCloseOperation(HIDE_ON_CLOSE);
-            game.StartGame(socket, message);
+                game.setDefaultCloseOperation(HIDE_ON_CLOSE);
+                game.StartGame(socket, message);
+            } else {
+                new InfoDialog().SetMessage("Falha na comunição com o servidor!");
+            }
 
             mainContext.stopLoading();
 

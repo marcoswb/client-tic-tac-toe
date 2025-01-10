@@ -101,12 +101,12 @@ public class API {
                     byte[] input = json.getJson().getBytes("utf-8");
                     os.write(input, 0, input.length);
                 }
-
+                
                 response.setResponseCode(connection.getResponseCode());
-
+                
                 // Aqui começamos a ler o corpo da resposta
-                StringBuilder responseText = new StringBuilder();
                 if (response.getResponseCode() >= HttpURLConnection.HTTP_BAD_REQUEST) {
+                    StringBuilder responseText = new StringBuilder();
                     try (BufferedReader br = new BufferedReader(
                             new InputStreamReader(connection.getErrorStream(), "utf-8"))) {
                         String responseLine = null;
@@ -114,6 +114,17 @@ public class API {
                             responseText.append(responseLine.trim());
                         }
                         response.setResponseText(responseText.toString());
+                    }
+                } else {
+                    StringBuilder responseText = new StringBuilder();
+                    try (BufferedReader br = new BufferedReader(
+                            new InputStreamReader(connection.getInputStream(), "utf-8"))) {
+
+                        String responseLine = null;
+                        while ((responseLine = br.readLine()) != null) {
+                            responseText.append(responseLine.trim());
+                        }
+                        response.setBody(responseText.toString());
                     }
                 }
             } catch (Exception ex) {

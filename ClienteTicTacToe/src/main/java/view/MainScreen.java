@@ -21,6 +21,7 @@ public final class MainScreen extends javax.swing.JFrame {
     private volatile boolean startCheck = false;
     private final MainController mainController;
     private static final Logger LOGGER = LogManager.getLogger();
+    private String socketKey;
     
     public MainScreen(String nickname) {
         initComponents();
@@ -360,7 +361,7 @@ public final class MainScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonStartGameWithMachineMouseEntered
 
     private void jButtonStartGameWithMachineMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonStartGameWithMachineMouseClicked
-        new InfoDialog().SetMessage("Iniciar partida contra o computador");
+        new InfoDialog().SetMessage("Iniciar partida contra o computador");        
     }//GEN-LAST:event_jButtonStartGameWithMachineMouseClicked
 
     private void jButtonStartRandonGameMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonStartRandonGameMouseExited
@@ -413,6 +414,14 @@ public final class MainScreen extends javax.swing.JFrame {
         this.nickname = nickname;
     }
 
+    public String getSocketKey() {
+        return socketKey;
+    }
+
+    public void setSocketKey(String socketKey) {
+        this.socketKey = socketKey;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonStartGame;
     private javax.swing.JButton jButtonStartGameWithMachine;

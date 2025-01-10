@@ -10,6 +10,7 @@ import org.json.JSONObject;
 public class ResponseModel {
     private int responseCode;
     private Object responseText = "";
+    private String body = "";
     private static final Logger LOGGER = LogManager.getLogger();
 
     public void setResponseCode(int responseCode) {
@@ -30,6 +31,14 @@ public class ResponseModel {
 
     public Object getResponseText() {
         return responseText;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
     }
     
     public String getMessageKey(String body, String keySearch){

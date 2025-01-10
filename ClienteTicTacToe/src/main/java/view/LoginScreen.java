@@ -48,16 +48,18 @@ public class LoginScreen extends javax.swing.JFrame {
             ResponseModel response = api.Login(user, password);
 
             if (response.getResponseCode() == 200) {
-                dispose();
+                String socketKey = response.getMessageKey(response.getBody(), "socket_key");
 
+                dispose();
                 MainScreen main_screen = new MainScreen(user);
+                main_screen.setSocketKey(socketKey);
                 main_screen.show();
             } else {
                 InfoDialog info_window = new InfoDialog();
                 info_window.SetMessage("Erro ao realizar Login!\n" + response.getResponseText());
             }
         } catch (Exception ex) {
-            System.out.println("TESTEEEEEEE" + ex);
+            LOGGER.error("Erro na função login `{}`", ex.getMessage());
         } finally {
             this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         }
