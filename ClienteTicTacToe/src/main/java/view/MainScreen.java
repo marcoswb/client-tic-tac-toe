@@ -358,7 +358,7 @@ public final class MainScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonStartGameWithMachineMouseEntered
 
     private void jButtonStartGameWithMachineMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonStartGameWithMachineMouseClicked
-        System.out.println("Iniciar partida contra o computador");
+        new InfoDialog().SetMessage("Iniciar partida contra o computador");
     }//GEN-LAST:event_jButtonStartGameWithMachineMouseClicked
 
     private void jButtonStartRandonGameMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonStartRandonGameMouseExited
@@ -372,7 +372,7 @@ public final class MainScreen extends javax.swing.JFrame {
     private void jButtonStartRandonGameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonStartRandonGameMouseClicked
         try {
             startLoading();
-            mainController.startGame();
+            mainController.startRandomGame();
         } catch (Exception ex) {
             LOGGER.error("Erro na função jButtonStartRandonGameMouseClicked `{}`", ex.getMessage());
         }

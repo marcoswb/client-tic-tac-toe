@@ -20,9 +20,9 @@ public class MainController {
     
     private static final String SQS_URL_INVITES = "https://sqs.us-east-2.amazonaws.com/606600291685/tictactoeinvites";
     private static final String SQS_URL_ACCEPT_INVITATIONS = "https://sqs.us-east-2.amazonaws.com/606600291685/tictactoeacceptinvitations";
-    private final ExecutorService executor1 = Executors.newSingleThreadExecutor();
-    private final ExecutorService executor2 = Executors.newSingleThreadExecutor();
-    private final ExecutorService executor3 = Executors.newSingleThreadExecutor();
+    private final ExecutorService executorActivePlayers = Executors.newSingleThreadExecutor();
+    private final ExecutorService executorCheckInvitation = Executors.newSingleThreadExecutor();
+    private final ExecutorService executorAcceptedInvites = Executors.newSingleThreadExecutor();
     private final MainScreen mainContext;
     private static final Logger LOGGER = LogManager.getLogger();
     
@@ -51,7 +51,7 @@ public class MainController {
     }
     
     private void checkingActivePlayers(){
-        executor1.submit(() -> {
+        executorActivePlayers.submit(() -> {
             while (true) {
                 try {
                     mainContext.fillTablePlayers();
@@ -73,7 +73,7 @@ public class MainController {
                 .withMessageAttributeNames("All")
                 .withMaxNumberOfMessages(10);
         
-        executor2.submit(() -> {
+        executorCheckInvitation.submit(() -> {
             while (true) {
                 if (mainContext.isStartCheck()) {
                     try {
@@ -97,15 +97,15 @@ public class MainController {
                         
                         Thread.sleep(2000);
                     } catch (Exception ex) {
-                        LOGGER.error("Erro na função checkingInvitation `{}`", ex.getMessage());
+                        LOGGER.error("Erro na função checkingInvitation 1 `{}`", ex.getMessage());
                         Thread.currentThread().interrupt();
                         break;
                     }
                 } else {
                     try {
-                        Thread.sleep(2000);
+                        Thread.sleep(5000);
                     }catch (Exception ex) {
-                        LOGGER.error("Erro na função checkingInvitation `{}`", ex.getMessage());
+                        LOGGER.error("Erro na função checkingInvitation 2 `{}`", ex.getMessage());
                         Thread.currentThread().interrupt();
                         break;
                     }
@@ -122,11 +122,10 @@ public class MainController {
                 .withMessageAttributeNames("All")
                 .withMaxNumberOfMessages(10);
         
-        executor3.submit(() -> {
+        executorAcceptedInvites.submit(() -> {
             while (true) {
                 if (mainContext.isStartCheck()) {
                     try {
-
                         for (Message message : sqsClient.receiveMessage(receiveRequest).getMessages()) {
 
                             Map<String, MessageAttributeValue> messageAttributes = message.getMessageAttributes();
@@ -141,15 +140,15 @@ public class MainController {
                         
                         Thread.sleep(2000);
                     } catch (Exception ex) {
-                        LOGGER.error("Erro na função checkingAcceptedInvites `{}`", ex.getMessage());
+                        LOGGER.error("Erro na função checkingAcceptedInvites 1 `{}`", ex.getMessage());
                         Thread.currentThread().interrupt();
                         break;
                     }
                 } else {
                     try {
-                        Thread.sleep(2000);
+                        Thread.sleep(5000);
                     }catch (Exception ex) {
-                        LOGGER.error("Erro na função checkingAcceptedInvites `{}`", ex.getMessage());
+                        LOGGER.error("Erro na função checkingAcceptedInvites 2 `{}`", ex.getMessage());
                         Thread.currentThread().interrupt();
                         break;
                     }
@@ -177,7 +176,7 @@ public class MainController {
         sqsClient.sendMessage(sendRequest);
     }
     
-    public void startGame(){
+    public void startRandomGame(){
         PrepareGame board = new PrepareGame(mainContext);
         board.setNickname(mainContext.getNickname());
         board.startGame();
