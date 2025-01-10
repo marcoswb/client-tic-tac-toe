@@ -225,13 +225,24 @@ public class BoardController extends Thread {
     }
 
     private void closeGame(String status) {
-        contextScreen.setGameFinished(true);
         try {
+            if(contextScreen != null){
+                contextScreen.setGameFinished(true);
+            }
+            
             saveGame(status);
             closeSocket();
         } catch (Exception ex) {
             LOGGER.error("Erro na função closeGame `{}`", ex.getMessage());
         }
+    }
+    
+    public void finishGame(){
+        JsonData json = new JsonData();
+        json.addKeyJson("action", "end_game");
+        this.sendMessage(json.getJson());
+        
+        closeGame("Derrota");
     }
     
     private BoardController replicateInstance(Board context){

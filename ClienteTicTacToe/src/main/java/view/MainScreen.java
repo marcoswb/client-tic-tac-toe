@@ -24,9 +24,9 @@ public final class MainScreen extends javax.swing.JFrame {
     
     public MainScreen(String nickname) {
         initComponents();
-        stylesheetScreen();
-
         setNickname(nickname);
+        
+        stylesheetScreen();
         fillTablePlayers();
         fillTableHistory();
 
@@ -233,6 +233,8 @@ public final class MainScreen extends javax.swing.JFrame {
         centerRenderer.setHorizontalAlignment(JLabel.CENTER );
         jTableHistory.setDefaultRenderer(String.class, centerRenderer);
         jTablePlayers.setDefaultRenderer(String.class, centerRenderer);
+        
+        this.setTitle("Jogo da Velha - jogador "+this.getNickname());
         
     }
     public void fillTablePlayers() {

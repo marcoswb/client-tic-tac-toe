@@ -33,6 +33,7 @@ public class Board extends javax.swing.JFrame {
         boardController.setSocket(socket);
         boardController.setPlayer_01(player_01);
         boardController.setPlayer_02(player_02);
+        this.setTitle("Jogador " + getPlayer_01());
 
         this.show();
 
@@ -128,6 +129,7 @@ public class Board extends javax.swing.JFrame {
     public void EndGame() {
         FillAllBoard(new Color(244, 164, 96));
         info_window.SetMessage("Adversário finalizou o jogo!");
+        setGameFinished(true);
     }
     
     private void FillAllBoard(Color color){
@@ -423,7 +425,9 @@ public class Board extends javax.swing.JFrame {
     }//GEN-LAST:event_label_x3_y3MouseClicked
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        boardController.closeSocket();
+        if(!isGameFinished()){
+            boardController.finishGame();   
+        }
         mainContext.reloadWindow();
     }//GEN-LAST:event_formWindowClosing
 
