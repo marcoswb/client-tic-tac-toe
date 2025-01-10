@@ -27,7 +27,55 @@ public class RegisterScreen extends javax.swing.JFrame {
         jFieldPassword.setEchoChar((char) 0);
         jFieldPassword.setText("Informe sua senha...");
     }
+    
+    private void signOn(){
+        try {
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            
+            String name = jFieldName.getText();
+            String user = jFieldUser.getText();
+            String password = jFieldPassword.getText();
 
+            if (functions.IsNull(name)) {
+                InfoDialog info_window = new InfoDialog();
+                info_window.SetMessage("Preencha o campo de nome do usuário corretamente!");
+                jFieldName.requestFocus();
+                return;
+            } else if (functions.IsNull(user)) {
+                InfoDialog info_window = new InfoDialog();
+                info_window.SetMessage("Preencha o campo de usuário corretamente!");
+                jFieldUser.requestFocus();
+                return;
+            } else if (functions.IsNull(password)) {
+                InfoDialog info_window = new InfoDialog();
+                info_window.SetMessage("Preencha o campo de senha corretamente!");
+                jFieldPassword.requestFocus();
+                return;
+            }
+
+            API api = new API();
+            ResponseModel response = api.CreateUser(name, user, password);
+
+            InfoDialog info_window = new InfoDialog();
+            if (response.getResponseCode() == 200) {
+                info_window.SetMessage("Usuário criado com sucesso!");
+                openLoginScreen();
+            } else {
+                info_window.SetMessage("Erro ao criar usuário!\n" + response.getResponseText());
+            }
+        } catch (Exception ex) {
+            LOGGER.error("Erro na função jButtonSignOnMouseClicked `{}`", ex.getMessage());
+        } finally {
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+        }
+    }
+    
+    private void openLoginScreen(){
+        dispose();
+
+        LoginScreen login_screen = new LoginScreen();
+        login_screen.show();
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -160,56 +208,11 @@ public class RegisterScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonSignOnMouseExited
 
     private void jButtonSignOnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonSignOnMouseClicked
-        try {
-            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-            
-            String name = jFieldName.getText();
-            String user = jFieldUser.getText();
-            String password = jFieldPassword.getText();
-
-            if (functions.IsNull(name)) {
-                InfoDialog info_window = new InfoDialog();
-                info_window.SetMessage("Preencha o campo de nome do usuário corretamente!");
-                jFieldName.requestFocus();
-                return;
-            } else if (functions.IsNull(user)) {
-                InfoDialog info_window = new InfoDialog();
-                info_window.SetMessage("Preencha o campo de usuário corretamente!");
-                jFieldUser.requestFocus();
-                return;
-            } else if (functions.IsNull(password)) {
-                InfoDialog info_window = new InfoDialog();
-                info_window.SetMessage("Preencha o campo de senha corretamente!");
-                jFieldPassword.requestFocus();
-                return;
-            }
-
-            API api = new API();
-            ResponseModel response = api.CreateUser(name, user, password);
-
-            InfoDialog info_window = new InfoDialog();
-            if (response.getResponseCode() == 200) {
-                info_window.SetMessage("Usuário criado com sucesso!");
-                jFieldName.setText("");
-                jFieldUser.setText("");
-                jFieldPassword.setText("");
-            } else {
-                info_window.SetMessage("Erro ao criar usuário!\n" + response.getResponseText());
-            }
-        } catch (Exception ex) {
-            LOGGER.error("Erro na função jButtonSignOnMouseClicked `{}`", ex.getMessage());
-        } finally {
-            this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-        }
-
+        signOn();
     }//GEN-LAST:event_jButtonSignOnMouseClicked
 
     private void jLabelLoginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelLoginMouseClicked
-
-        dispose();
-
-        LoginScreen login_screen = new LoginScreen();
-        login_screen.show();
+        openLoginScreen();
     }//GEN-LAST:event_jLabelLoginMouseClicked
 
     private void jFieldNameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFieldNameFocusGained

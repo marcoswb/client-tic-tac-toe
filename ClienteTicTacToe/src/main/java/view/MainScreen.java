@@ -223,17 +223,11 @@ public final class MainScreen extends javax.swing.JFrame {
     private void stylesheetScreen(){
         getContentPane().setBackground(new Color(44, 62, 80));
         
-//        jTableHistory.setBackground(new Color(81, 100, 120));
-//        jTableHistory.setOpaque(false);
         jTableHistory.getTableHeader().setBackground(new Color(54, 54, 54));
         jTableHistory.getTableHeader().setForeground(new Color(236, 240, 241));
-//        jTableHistory.setForeground(new Color(81, 100, 120));
-        
-//        jTablePlayers.setBackground(new Color(81, 100, 120));
-//        jTablePlayers.setOpaque(false);
+
         jTablePlayers.getTableHeader().setBackground(new Color(54, 54, 54));
         jTablePlayers.getTableHeader().setForeground(new Color(236, 240, 241));
-//        jTablePlayers.setForeground(new Color(81, 100, 120));
         
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER );
