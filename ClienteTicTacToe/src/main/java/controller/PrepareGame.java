@@ -6,6 +6,8 @@ import utils.ResponseModel;
 import static javax.swing.WindowConstants.HIDE_ON_CLOSE;
 import java.io.*;
 import java.net.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import view.Board;
 import view.MainScreen;
 
@@ -19,6 +21,7 @@ public class PrepareGame implements Runnable{
     private final byte[] data = new byte[1024];
     private Socket socket;
     private final MainScreen mainContext;
+    private static final Logger LOGGER = LogManager.getLogger();
     
     public PrepareGame(MainScreen mainContext) {
         this.mainContext = mainContext;
@@ -76,13 +79,13 @@ public class PrepareGame implements Runnable{
                 mainContext.stopLoading();
 
             } catch (UnknownHostException ex) {
-                System.out.println("Server not found: " + ex.getMessage());
+                LOGGER.error("Erro na função run 1 `{}`", ex.getMessage());
             } catch (IOException ex) {
-                System.out.println("I/O error: " + ex.getMessage());
+                LOGGER.error("Erro na função run 2 `{}`", ex.getMessage());
             }
             
         } catch (Exception ex) {
-            System.out.println("MARCOSSSS " + ex);
+            LOGGER.error("Erro na função run 3 `{}`", ex.getMessage());
         }
     }
     

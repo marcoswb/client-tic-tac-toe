@@ -2,12 +2,15 @@ package view;
 
 import controller.API;
 import java.awt.Color;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import utils.Functions;
 import utils.ResponseModel;
 
 public class LoginScreen extends javax.swing.JFrame {
     
     public Functions functions = new Functions();
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public LoginScreen() {
         initComponents();
@@ -80,11 +83,6 @@ public class LoginScreen extends javax.swing.JFrame {
                 jFieldUserFocusLost(evt);
             }
         });
-        jFieldUser.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jFieldUserActionPerformed(evt);
-            }
-        });
 
         jFieldPassword.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -92,11 +90,6 @@ public class LoginScreen extends javax.swing.JFrame {
             }
             public void focusLost(java.awt.event.FocusEvent evt) {
                 jFieldPasswordFocusLost(evt);
-            }
-        });
-        jFieldPassword.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jFieldPasswordActionPerformed(evt);
             }
         });
         jFieldPassword.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -168,14 +161,6 @@ public class LoginScreen extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jFieldUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFieldUserActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jFieldUserActionPerformed
-
-    private void jFieldPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFieldPasswordActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jFieldPasswordActionPerformed
 
     private void jLabelSignOnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelSignOnMouseClicked
         dispose();
@@ -251,7 +236,7 @@ public class LoginScreen extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(LoginScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            LOGGER.error("Erro na função getMessageKey 1 `{}`", ex.getMessage());
         }
         //</editor-fold>
         

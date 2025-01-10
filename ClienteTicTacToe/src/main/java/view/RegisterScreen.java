@@ -3,11 +3,14 @@ package view;
 import java.awt.Color;
 import utils.Functions;
 import controller.API;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import utils.ResponseModel;
 
 public class RegisterScreen extends javax.swing.JFrame {
 
     public Functions functions = new Functions();
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public RegisterScreen() {
         initComponents();
@@ -50,11 +53,6 @@ public class RegisterScreen extends javax.swing.JFrame {
                 jFieldUserFocusLost(evt);
             }
         });
-        jFieldUser.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jFieldUserActionPerformed(evt);
-            }
-        });
 
         jButtonSignOn.setBackground(new java.awt.Color(236, 240, 241));
         jButtonSignOn.setForeground(new java.awt.Color(0, 0, 0));
@@ -70,11 +68,6 @@ public class RegisterScreen extends javax.swing.JFrame {
                 jButtonSignOnMouseExited(evt);
             }
         });
-        jButtonSignOn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonSignOnActionPerformed(evt);
-            }
-        });
 
         jFieldPassword.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -82,11 +75,6 @@ public class RegisterScreen extends javax.swing.JFrame {
             }
             public void focusLost(java.awt.event.FocusEvent evt) {
                 jFieldPasswordFocusLost(evt);
-            }
-        });
-        jFieldPassword.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jFieldPasswordActionPerformed(evt);
             }
         });
 
@@ -106,18 +94,12 @@ public class RegisterScreen extends javax.swing.JFrame {
         });
 
         jFieldName.setForeground(new java.awt.Color(204, 204, 204));
-        jFieldName.setText("Informe seu nome...");
         jFieldName.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 jFieldNameFocusGained(evt);
             }
             public void focusLost(java.awt.event.FocusEvent evt) {
                 jFieldNameFocusLost(evt);
-            }
-        });
-        jFieldName.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jFieldNameActionPerformed(evt);
             }
         });
 
@@ -158,18 +140,6 @@ public class RegisterScreen extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jFieldUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFieldUserActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jFieldUserActionPerformed
-
-    private void jFieldPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFieldPasswordActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jFieldPasswordActionPerformed
-
-    private void jButtonSignOnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSignOnActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonSignOnActionPerformed
-
     private void jLabelLoginMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelLoginMouseEntered
         jLabelLogin.setForeground(Color.lightGray);
         jLabelLogin.setBackground(new Color(44, 62, 80));
@@ -188,17 +158,13 @@ public class RegisterScreen extends javax.swing.JFrame {
         jButtonSignOn.setBackground(new Color(236, 240, 241));
     }//GEN-LAST:event_jButtonSignOnMouseExited
 
-    private void jFieldNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFieldNameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jFieldNameActionPerformed
-
     private void jButtonSignOnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonSignOnMouseClicked
         try {
-            String nameUser = jFieldName.getText();
+            String name = jFieldName.getText();
             String user = jFieldUser.getText();
             String password = jFieldPassword.getText();
 
-            if (functions.IsNull(nameUser)) {
+            if (functions.IsNull(name)) {
                 InfoDialog info_window = new InfoDialog();
                 info_window.SetMessage("Preencha o campo de nome do usuário corretamente!");
                 jFieldName.requestFocus();
@@ -216,7 +182,7 @@ public class RegisterScreen extends javax.swing.JFrame {
             }
 
             API api = new API();
-            ResponseModel response = api.CreateUser(nameUser, user, password);
+            ResponseModel response = api.CreateUser(name, user, password);
 
             InfoDialog info_window = new InfoDialog();
             if (response.getResponseCode() == 200) {
@@ -228,7 +194,7 @@ public class RegisterScreen extends javax.swing.JFrame {
                 info_window.SetMessage("Erro ao criar usuário!\n" + response.getResponseText());
             }
         } catch (Exception ex) {
-            System.out.println("TESTEEEEEEE" + ex);
+            LOGGER.error("Erro na função jButtonSignOnMouseClicked `{}`", ex.getMessage());
         }
 
     }//GEN-LAST:event_jButtonSignOnMouseClicked
@@ -302,13 +268,13 @@ public class RegisterScreen extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(RegisterScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            LOGGER.error("Erro na função main 1 `{}`", ex.getMessage());
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(RegisterScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            LOGGER.error("Erro na função main 2 `{}`", ex.getMessage());
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(RegisterScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            LOGGER.error("Erro na função main 3 `{}`", ex.getMessage());
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(RegisterScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            LOGGER.error("Erro na função main 4 `{}`", ex.getMessage());
         }
         //</editor-fold>
         //</editor-fold>

@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javax.swing.JOptionPane;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import view.MainScreen;
 import view.QuestionDialog;
 
@@ -22,6 +24,7 @@ public class MainController {
     private final ExecutorService executor2 = Executors.newSingleThreadExecutor();
     private final ExecutorService executor3 = Executors.newSingleThreadExecutor();
     private final MainScreen mainContext;
+    private static final Logger LOGGER = LogManager.getLogger();
     
     public MainController(MainScreen mainContext) {
         this.mainContext = mainContext;
@@ -53,8 +56,8 @@ public class MainController {
                 try {
                     mainContext.fillTablePlayers();
                     Thread.sleep(5000);
-                } catch (Exception e) {
-                    System.out.println("Erro 1 MainController.java " + e);
+                } catch (Exception ex) {
+                    LOGGER.error("Erro na função checkingActivePlayers `{}`", ex.getMessage());
                     Thread.currentThread().interrupt();
                     break;
                 }
@@ -93,16 +96,16 @@ public class MainController {
                         }
                         
                         Thread.sleep(2000);
-                    } catch (Exception e) {
-                        System.out.println("Erro 2 MainController.java " + e);
+                    } catch (Exception ex) {
+                        LOGGER.error("Erro na função checkingInvitation `{}`", ex.getMessage());
                         Thread.currentThread().interrupt();
                         break;
                     }
                 } else {
                     try {
                         Thread.sleep(2000);
-                    }catch (Exception e) {
-                        System.out.println("Erro 3 MainController.java " + e);
+                    }catch (Exception ex) {
+                        LOGGER.error("Erro na função checkingInvitation `{}`", ex.getMessage());
                         Thread.currentThread().interrupt();
                         break;
                     }
@@ -137,16 +140,16 @@ public class MainController {
                         }
                         
                         Thread.sleep(2000);
-                    } catch (Exception e) {
-                        System.out.println("Erro 4 MainController.java " + e);
+                    } catch (Exception ex) {
+                        LOGGER.error("Erro na função checkingAcceptedInvites `{}`", ex.getMessage());
                         Thread.currentThread().interrupt();
                         break;
                     }
                 } else {
                     try {
                         Thread.sleep(2000);
-                    }catch (Exception e) {
-                        System.out.println("Erro 5 MainController.java " + e);
+                    }catch (Exception ex) {
+                        LOGGER.error("Erro na função checkingAcceptedInvites `{}`", ex.getMessage());
                         Thread.currentThread().interrupt();
                         break;
                     }

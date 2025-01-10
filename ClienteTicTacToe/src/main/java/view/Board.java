@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.io.IOException;
 import java.net.*;
 import controller.BoardController;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Board extends javax.swing.JFrame {
 
@@ -17,6 +19,7 @@ public class Board extends javax.swing.JFrame {
     private boolean gameFinished = false;
     private Color foreground = Color.GREEN;
     private final MainScreen mainContext;
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public Board(MainScreen mainContext) {
         initComponents();
@@ -451,7 +454,7 @@ public class Board extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Board.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            LOGGER.error("Erro na função main `{}`", ex.getMessage());
         }
         //</editor-fold>
         

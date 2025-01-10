@@ -24,6 +24,9 @@
                   <classpathPrefix>lib/</classpathPrefix>
                   <mainClass>com.mycompany.clientetictactoe.ClienteTicTacToe</mainClass>
                 </manifest>
+                <manifestEntries>
+                    <Multi-Release>true</Multi-Release>
+                </manifestEntries>
               </archive>
             </configuration>
           </plugin>
@@ -42,6 +45,9 @@
                 <manifest>
                     <mainClass>com.mycompany.clientetictactoe.ClienteTicTacToe</mainClass>
                 </manifest>
+                <manifestEntries>
+                    <Multi-Release>true</Multi-Release>
+                </manifestEntries>
               </archive>
               <descriptorRefs>
                 <descriptorRef>jar-with-dependencies</descriptorRef>
@@ -85,6 +91,16 @@
             <groupId>com.formdev</groupId>
             <artifactId>flatlaf-extras</artifactId>
             <version>3.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.24.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.24.3</version>
         </dependency>
     </dependencies>
 </project>

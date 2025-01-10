@@ -11,6 +11,8 @@ import controller.MainController;
 import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.table.DefaultTableCellRenderer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public final class MainScreen extends javax.swing.JFrame {
 
@@ -18,6 +20,7 @@ public final class MainScreen extends javax.swing.JFrame {
     public Functions functions = new Functions();
     private volatile boolean startCheck = false;
     private final MainController mainController;
+    private static final Logger LOGGER = LogManager.getLogger();
     
     public MainScreen(String nickname) {
         initComponents();
@@ -269,7 +272,7 @@ public final class MainScreen extends javax.swing.JFrame {
                 info_window.SetMessage("Erro ao recuperar dados!\n" + response.getResponseText());
             }
         } catch (Exception ex) {
-            System.out.println("TESTEEEEEEE" + ex);
+            LOGGER.error("Erro na função fillTablePlayers `{}`", ex.getMessage());
         }
     }
 
@@ -300,7 +303,7 @@ public final class MainScreen extends javax.swing.JFrame {
                 info_window.SetMessage("Erro ao recuperar dados!\n" + response.getResponseText());
             }
         } catch (Exception ex) {
-            System.out.println("TESTEEEEEEE" + ex);
+            LOGGER.error("Erro na função fillTableHistory `{}`", ex.getMessage());
         }
     }
 
@@ -321,7 +324,7 @@ public final class MainScreen extends javax.swing.JFrame {
             setVisible(false);
             logout();
         } catch (Exception ex) {
-            System.out.println("ERRROOOOOO 1: " + ex.toString());
+            LOGGER.error("Erro na função formWindowClosing `{}`", ex.getMessage());
         }
     }//GEN-LAST:event_formWindowClosing
 
@@ -346,7 +349,7 @@ public final class MainScreen extends javax.swing.JFrame {
             mainController.invitePlayer(getNickname(), opponent);
             new InfoDialog().SetMessage("Convite enviado!");
         } catch (Exception ex) {
-            System.out.println("TESTEEEEEEE" + ex);
+            LOGGER.error("Erro na função jButtonStartGameMouseClicked `{}`", ex.getMessage());
         }
     }//GEN-LAST:event_jButtonStartGameMouseClicked
 
@@ -375,7 +378,7 @@ public final class MainScreen extends javax.swing.JFrame {
             startLoading();
             mainController.startGame();
         } catch (Exception ex) {
-            System.out.println("TESTEEEEEEE" + ex);
+            LOGGER.error("Erro na função jButtonStartRandonGameMouseClicked `{}`", ex.getMessage());
         }
     }//GEN-LAST:event_jButtonStartRandonGameMouseClicked
 
@@ -388,13 +391,13 @@ public final class MainScreen extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            LOGGER.error("Erro na função main 1 `{}`", ex.getMessage());
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            LOGGER.error("Erro na função main 2 `{}`", ex.getMessage());
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            LOGGER.error("Erro na função main 3 `{}`", ex.getMessage());
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            LOGGER.error("Erro na função main 4 `{}`", ex.getMessage());
         }
 
         java.awt.EventQueue.invokeLater(new Runnable() {

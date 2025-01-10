@@ -8,8 +8,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class BoardController extends Thread {
 
@@ -22,6 +22,7 @@ public class BoardController extends Thread {
     private String playerCharacter = "";
     private String player_01;
     private String player_02;
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public void receiveMovementFromOpponent(Board context) {
         BoardController controller = new BoardController();
@@ -66,7 +67,7 @@ public class BoardController extends Thread {
 
             contextScreen.EnableBoard();
         } catch (Exception ex) {
-            Logger.getLogger(BoardController.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.error("Erro na função moveAndAwait `{}`", ex.getMessage());
         }
     }
 
@@ -129,7 +130,7 @@ public class BoardController extends Thread {
 
             contextScreen.EnableBoard();
         } catch (IOException ex) {
-            System.out.println("ERROOOOOOOOOO2 " + ex);
+            LOGGER.error("Erro na função awaitMoveOponent `{}`", ex.getMessage());
         }
     }
 
@@ -159,7 +160,7 @@ public class BoardController extends Thread {
 
             return response;
         } catch (Exception ex) {
-            System.out.println("MARCOSSSS 2 " + ex);
+            LOGGER.error("Erro na função awaitMessage `{}`", ex.getMessage());
         }
         return null;
     }
@@ -170,7 +171,7 @@ public class BoardController extends Thread {
             output.write(message.getBytes());
             output.flush();
         } catch (Exception ex) {
-            System.out.println("MARCOSSSS 1 " + ex);
+            LOGGER.error("Erro na função sendMessage `{}`", ex.getMessage());
         }
     }
 
@@ -245,7 +246,7 @@ public class BoardController extends Thread {
         try {
             saveGame(status);
         } catch (Exception ex) {
-            Logger.getLogger(BoardController.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.error("Erro na função closeGame `{}`", ex.getMessage());
         }
     }
 
@@ -323,7 +324,7 @@ public class BoardController extends Thread {
         try {
             this.socket.close();
         } catch (IOException ex) {
-            System.out.println("ERROOOOOOOO" + ex);
+            LOGGER.error("Erro na função closeSocket `{}`", ex.getMessage());
         }
     }
 

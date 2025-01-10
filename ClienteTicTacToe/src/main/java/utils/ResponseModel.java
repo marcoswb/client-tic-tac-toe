@@ -1,8 +1,8 @@
 package utils;
 
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -10,6 +10,7 @@ import org.json.JSONObject;
 public class ResponseModel {
     private int responseCode;
     private Object responseText = "";
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public void setResponseCode(int responseCode) {
         this.responseCode = responseCode;
@@ -37,12 +38,12 @@ public class ResponseModel {
         try {
             obj = new JSONObject(body);
         } catch (JSONException ex) {
-            Logger.getLogger(ResponseModel.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.error("Erro na função getMessageKey 1 `{}`", ex.getMessage());
         }
         try {
             message = obj.get(keySearch).toString();
         } catch (JSONException ex) {
-            Logger.getLogger(ResponseModel.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.error("Erro na função getMessageKey 2 `{}`", ex.getMessage());
         }
         
         return message;

@@ -8,12 +8,14 @@ import java.net.URL;
 import utils.ResponseModel;
 import utils.JsonData;
 import java.io.IOException;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 public class API {
 
     private static final String BASE_URL = "http://127.0.0.1:5000";
     private String endpoint = "";
-    BufferedReader wr;
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public ResponseModel CreateUser(String name, String nickname, String password) throws Exception {
         JsonData json = new JsonData();
@@ -132,9 +134,8 @@ public class API {
                         response.setResponseText(responseText.toString());
                     }
                 }
-
             } catch (Exception ex) {
-                System.out.println("AAAAAAAAAAAAAA" + ex);
+                LOGGER.error("Erro na função SendPostRequest `{}`", ex.getMessage());
             }
 
             connection.disconnect();
@@ -172,7 +173,7 @@ public class API {
                 }
 
             } catch (Exception ex) {
-                System.out.println("AAAAAAAAAAAAAA" + ex);
+                LOGGER.error("Erro na função SendGetRequest `{}`", ex.getMessage());
             }
 
             connection.disconnect();
