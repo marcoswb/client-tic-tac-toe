@@ -3,6 +3,7 @@ package view;
 import java.awt.Color;
 import utils.Functions;
 import controller.API;
+import java.awt.Cursor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utils.ResponseModel;
@@ -160,6 +161,8 @@ public class RegisterScreen extends javax.swing.JFrame {
 
     private void jButtonSignOnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonSignOnMouseClicked
         try {
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            
             String name = jFieldName.getText();
             String user = jFieldUser.getText();
             String password = jFieldPassword.getText();
@@ -195,6 +198,8 @@ public class RegisterScreen extends javax.swing.JFrame {
             }
         } catch (Exception ex) {
             LOGGER.error("Erro na função jButtonSignOnMouseClicked `{}`", ex.getMessage());
+        } finally {
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         }
 
     }//GEN-LAST:event_jButtonSignOnMouseClicked
@@ -262,7 +267,7 @@ public class RegisterScreen extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("GTK+".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }

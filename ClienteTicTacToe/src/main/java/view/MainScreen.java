@@ -65,8 +65,8 @@ public final class MainScreen extends javax.swing.JFrame {
 
         jScrollPane3.setForeground(new java.awt.Color(44, 62, 80));
 
-        jTablePlayers.setBackground(new java.awt.Color(52, 73, 94));
-        jTablePlayers.setForeground(new java.awt.Color(236, 240, 241));
+        jTablePlayers.setBackground(new java.awt.Color(236, 240, 241));
+        jTablePlayers.setForeground(new java.awt.Color(0, 0, 0));
         jTablePlayers.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -144,8 +144,8 @@ public final class MainScreen extends javax.swing.JFrame {
 
         jScrollPane1.setForeground(new java.awt.Color(44, 62, 80));
 
-        jTableHistory.setBackground(new java.awt.Color(52, 73, 94));
-        jTableHistory.setForeground(new java.awt.Color(236, 240, 241));
+        jTableHistory.setBackground(new java.awt.Color(236, 240, 241));
+        jTableHistory.setForeground(new java.awt.Color(0, 0, 0));
         jTableHistory.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -177,6 +177,7 @@ public final class MainScreen extends javax.swing.JFrame {
         }
 
         jLabel1.setBackground(new java.awt.Color(44, 62, 80));
+        jLabel1.setForeground(new java.awt.Color(236, 240, 241));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -222,16 +223,17 @@ public final class MainScreen extends javax.swing.JFrame {
     private void stylesheetScreen(){
         getContentPane().setBackground(new Color(44, 62, 80));
         
-        jTableHistory.setBackground(new Color(81, 100, 120));
-        jTableHistory.setOpaque(false);
+//        jTableHistory.setBackground(new Color(81, 100, 120));
+//        jTableHistory.setOpaque(false);
         jTableHistory.getTableHeader().setBackground(new Color(54, 54, 54));
         jTableHistory.getTableHeader().setForeground(new Color(236, 240, 241));
+//        jTableHistory.setForeground(new Color(81, 100, 120));
         
-        jTablePlayers.setBackground(new Color(81, 100, 120));
-        jTablePlayers.setForeground(new Color(81, 100, 120));
-        jTablePlayers.setOpaque(false);
+//        jTablePlayers.setBackground(new Color(81, 100, 120));
+//        jTablePlayers.setOpaque(false);
         jTablePlayers.getTableHeader().setBackground(new Color(54, 54, 54));
         jTablePlayers.getTableHeader().setForeground(new Color(236, 240, 241));
+//        jTablePlayers.setForeground(new Color(81, 100, 120));
         
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER );
@@ -385,7 +387,7 @@ public final class MainScreen extends javax.swing.JFrame {
     public static void main(String args[]) {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("GTK+".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }

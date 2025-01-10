@@ -2,6 +2,7 @@ package view;
 
 import controller.API;
 import java.awt.Color;
+import java.awt.Cursor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utils.Functions;
@@ -15,7 +16,7 @@ public class LoginScreen extends javax.swing.JFrame {
     public LoginScreen() {
         initComponents();
         getContentPane().setBackground(new Color(44, 62, 80));
-
+        
         jFieldUser.setForeground(Color.GRAY);
         jFieldUser.setText("Informe seu usuário...");
 
@@ -26,6 +27,8 @@ public class LoginScreen extends javax.swing.JFrame {
 
     private void login() {
         try {
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            
             String user = jFieldUser.getText();
             String password = jFieldPassword.getText();
 
@@ -55,6 +58,8 @@ public class LoginScreen extends javax.swing.JFrame {
             }
         } catch (Exception ex) {
             System.out.println("TESTEEEEEEE" + ex);
+        } finally {
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         }
     }
 
@@ -230,7 +235,7 @@ public class LoginScreen extends javax.swing.JFrame {
     public static void main(String args[]) {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Windows".equals(info.getName())) {
+                if ("GTK+".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
