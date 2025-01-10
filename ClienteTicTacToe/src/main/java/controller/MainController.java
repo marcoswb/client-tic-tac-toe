@@ -1,5 +1,6 @@
 package controller;
 
+import com.amazonaws.SDKGlobalConfiguration;
 import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
 import com.amazonaws.services.sqs.model.Message;
@@ -28,11 +29,11 @@ public class MainController {
     
     public MainController(MainScreen mainContext) {
         this.mainContext = mainContext;
+        System.setProperty(SDKGlobalConfiguration.DISABLE_CERT_CHECKING_SYSTEM_PROPERTY, "true");
     }
     
     public void invitePlayer(String challenger, String challenged){
         AmazonSQS sqsClient = AmazonSQSClientBuilder.defaultClient();
-        
         Map<String, MessageAttributeValue> messageAttributes = new HashMap<>();
         messageAttributes.put("challenger", new MessageAttributeValue().withStringValue(challenger).withDataType("String"));
         messageAttributes.put("challenged", new MessageAttributeValue().withStringValue(challenged).withDataType("String"));

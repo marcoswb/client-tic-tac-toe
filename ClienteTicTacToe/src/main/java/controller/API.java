@@ -8,6 +8,13 @@ import java.net.URL;
 import utils.ResponseModel;
 import utils.JsonData;
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.X509Certificate;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import utils.Config;
@@ -90,7 +97,7 @@ public class API {
     private ResponseModel SendPostRequest(JsonData json) throws Exception {
         try {
             ResponseModel response = new ResponseModel();
-            HttpURLConnection connection = createConnection();
+            HttpsURLConnection connection = createConnection();
 
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type", "application/json");
@@ -143,7 +150,7 @@ public class API {
     private ResponseModel SendGetRequest(String recoverKey) throws Exception {
         try {
             ResponseModel response = new ResponseModel();
-            HttpURLConnection connection = createConnection();
+            HttpsURLConnection connection = createConnection();
             connection.setDoOutput(true);
 
             try {
@@ -176,9 +183,30 @@ public class API {
         }
     }
 
-    private HttpURLConnection createConnection() throws IOException {
+    private HttpsURLConnection createConnection() throws Exception {           
         URL urlObj = new URL(BASE_URL + getEndpoint());
-        HttpURLConnection connection = (HttpURLConnection) urlObj.openConnection();
+        
+        TrustManager[] trustAllCerts = new TrustManager[]{
+            new X509TrustManager() {
+                public X509Certificate[] getAcceptedIssuers() { return null; }
+                public void checkClientTrusted(X509Certificate[] certs, String authType) {}
+                public void checkServerTrusted(X509Certificate[] certs, String authType) {}
+            }
+        };
+
+        SSLContext sc = SSLContext.getInstance("TLS");
+        sc.init(null, trustAllCerts, new java.security.SecureRandom());
+        HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+        HttpsURLConnection.setDefaultHostnameVerifier((hostname, session) -> true);
+        
+        System.setProperty("https.protocols", "TLSv1.2");
+        System.setProperty("javax.net.ssl.keyStore", Config.CERT_PATH);
+        System.setProperty("javax.net.ssl.keyStorePassword", Config.CERT_PASSWORD);
+        System.setProperty("javax.net.ssl.trustStore", Config.CERT_PATH);
+        System.setProperty("javax.net.ssl.trustStorePassword", Config.CERT_PASSWORD);
+        System.setProperty("javax.net.debug", "all");
+        
+        HttpsURLConnection connection = (HttpsURLConnection) urlObj.openConnection();
 
         return connection;
     }
