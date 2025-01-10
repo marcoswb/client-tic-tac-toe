@@ -3,6 +3,7 @@
 /home/marcoswb/Projects/client-tic-tac-toe/ClienteTicTacToe/src/main/java/controller/BoardController.java
 /home/marcoswb/Projects/client-tic-tac-toe/ClienteTicTacToe/src/main/java/controller/MainController.java
 /home/marcoswb/Projects/client-tic-tac-toe/ClienteTicTacToe/src/main/java/controller/PrepareGame.java
+/home/marcoswb/Projects/client-tic-tac-toe/ClienteTicTacToe/src/main/java/utils/Config.java
 /home/marcoswb/Projects/client-tic-tac-toe/ClienteTicTacToe/src/main/java/utils/Functions.java
 /home/marcoswb/Projects/client-tic-tac-toe/ClienteTicTacToe/src/main/java/utils/JsonData.java
 /home/marcoswb/Projects/client-tic-tac-toe/ClienteTicTacToe/src/main/java/utils/ResponseModel.java

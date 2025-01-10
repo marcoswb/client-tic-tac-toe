@@ -12,7 +12,6 @@ public class Board extends javax.swing.JFrame {
     private String player_01;
     private String player_02;
     public final InfoDialog info_window = new InfoDialog();
-    ;
     public final ErrorDialog error_window = new ErrorDialog();
     private boolean actionInProgress = false;
     private final BoardController boardController = new BoardController();
@@ -194,6 +193,14 @@ public class Board extends javax.swing.JFrame {
     public void EnableBoard() {
         actionInProgress = false;
     }
+    
+    private boolean actionIsEnabled(){
+        if (actionInProgress || this.isGameFinished()) {
+            return false;
+        }
+        
+        return true;
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -217,9 +224,6 @@ public class Board extends javax.swing.JFrame {
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
-            }
-            public void windowClosed(java.awt.event.WindowEvent evt) {
-                formWindowClosed(evt);
             }
         });
         getContentPane().setLayout(new java.awt.GridLayout(1, 1));
@@ -365,80 +369,58 @@ public class Board extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void label_x1_y1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_x1_y1MouseClicked
-        if (actionInProgress || this.isGameFinished()) {
-            return;
+        if(actionIsEnabled()){
+            boardController.moveAndAwaitOponnet(this, 1, 1);
         }
-
-        boardController.moveAndAwaitOponnet(this, 1, 1);
     }//GEN-LAST:event_label_x1_y1MouseClicked
 
     private void label_x2_y1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_x2_y1MouseClicked
-        if (actionInProgress || this.isGameFinished()) {
-            return;
+        if(actionIsEnabled()){
+            boardController.moveAndAwaitOponnet(this, 2, 1);
         }
-
-        boardController.moveAndAwaitOponnet(this, 2, 1);
     }//GEN-LAST:event_label_x2_y1MouseClicked
 
     private void label_x3_y1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_x3_y1MouseClicked
-        if (actionInProgress || this.isGameFinished()) {
-            return;
+        if(actionIsEnabled()){
+            boardController.moveAndAwaitOponnet(this, 3, 1);
         }
-
-        boardController.moveAndAwaitOponnet(this, 3, 1);
     }//GEN-LAST:event_label_x3_y1MouseClicked
 
     private void label_x2_y2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_x2_y2MouseClicked
-        if (actionInProgress || this.isGameFinished()) {
-            return;
+        if(actionIsEnabled()){
+            boardController.moveAndAwaitOponnet(this, 2, 2);
         }
-
-        boardController.moveAndAwaitOponnet(this, 2, 2);
     }//GEN-LAST:event_label_x2_y2MouseClicked
 
     private void label_x1_y2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_x1_y2MouseClicked
-        if (actionInProgress || this.isGameFinished()) {
-            return;
+        if(actionIsEnabled()){
+            boardController.moveAndAwaitOponnet(this, 1, 2);
         }
-
-        boardController.moveAndAwaitOponnet(this, 1, 2);
     }//GEN-LAST:event_label_x1_y2MouseClicked
 
     private void label_x2_y3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_x2_y3MouseClicked
-        if (actionInProgress || this.isGameFinished()) {
-            return;
+        if(actionIsEnabled()){
+            boardController.moveAndAwaitOponnet(this, 2, 3);
         }
-
-        boardController.moveAndAwaitOponnet(this, 2, 3);
     }//GEN-LAST:event_label_x2_y3MouseClicked
 
     private void label_x3_y2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_x3_y2MouseClicked
-        if (actionInProgress || this.isGameFinished()) {
-            return;
+        if(actionIsEnabled()){
+            boardController.moveAndAwaitOponnet(this, 3, 2);
         }
-
-        boardController.moveAndAwaitOponnet(this, 3, 2);
     }//GEN-LAST:event_label_x3_y2MouseClicked
 
     private void label_x1_y3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_x1_y3MouseClicked
-        if (actionInProgress || this.isGameFinished()) {
-            return;
+        if(actionIsEnabled()){
+            boardController.moveAndAwaitOponnet(this, 1, 3);
         }
-
-        boardController.moveAndAwaitOponnet(this, 1, 3);
     }//GEN-LAST:event_label_x1_y3MouseClicked
 
     private void label_x3_y3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_x3_y3MouseClicked
-        if (actionInProgress || this.isGameFinished()) {
-            return;
+        if(actionIsEnabled()){
+            boardController.moveAndAwaitOponnet(this, 3, 3);
         }
-
-        boardController.moveAndAwaitOponnet(this, 3, 3);
     }//GEN-LAST:event_label_x3_y3MouseClicked
-
-    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-
-    }//GEN-LAST:event_formWindowClosed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         boardController.closeSocket();

@@ -10,10 +10,11 @@ import java.io.OutputStream;
 import java.net.Socket;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import utils.Config;
 
 public class BoardController extends Thread {
 
-    private final byte[] data = new byte[1024];
+    private final byte[] data = new byte[Config.SOCKET_LENGTH_DATA];
     private Socket socket;
     private Board contextScreen;
     private int position_x = 0;
@@ -25,28 +26,14 @@ public class BoardController extends Thread {
     private static final Logger LOGGER = LogManager.getLogger();
 
     public void receiveMovementFromOpponent(Board context) {
-        BoardController controller = new BoardController();
-        controller.setPlayer_01(player_01);
-        controller.setPlayer_02(player_02);
-
-        controller.SetPlayerCharacter(this.GetPlayerCharacter());
-        controller.setSocket(socket);
-        controller.setContextScreen(context);
-        controller.setBoard(this.getBoard());
+        BoardController controller = replicateInstance(context);
 
         Thread t = new Thread(controller::awaitMoveOponent);
         t.start();
     }
 
     public void moveAndAwaitOponnet(Board context, int x, int y) {
-        BoardController controller = new BoardController();
-        controller.setPlayer_01(player_01);
-        controller.setPlayer_02(player_02);
-
-        controller.SetPlayerCharacter(this.GetPlayerCharacter());
-        controller.setSocket(socket);
-        controller.setContextScreen(context);
-        controller.setBoard(this.getBoard());
+        BoardController controller = replicateInstance(context);
         controller.setPosition_x(x);
         controller.setPosition_y(y);
 
@@ -57,17 +44,16 @@ public class BoardController extends Thread {
     private void moveAndAwait() {
         contextScreen.DisableBoard();
 
-        boolean valid_mov;
         try {
-            valid_mov = Move(position_x, position_y);
+            boolean valid_mov = Move(position_x, position_y);
 
             if (valid_mov) {
                 this.awaitMoveOponent();
             }
-
-            contextScreen.EnableBoard();
         } catch (Exception ex) {
             LOGGER.error("Erro na função moveAndAwait `{}`", ex.getMessage());
+        } finally {
+            contextScreen.EnableBoard();
         }
     }
 
@@ -76,13 +62,13 @@ public class BoardController extends Thread {
             this.FillBoard(this.GetPlayerCharacter(), x, y);
 
             if (this.CheckVictory(playerCharacter)) {
-                closeGame("Vitória");
                 this.SendMoveOponent(x, y, "victory");
+                closeGame("Vitória");
                 return false;
             } else {
                 if(this.CheckDraw()) {
-                    closeGame("Empate");
                     this.SendMoveOponent(x, y, "draw");
+                    closeGame("Empate");
                     return false;
                 } else {
                     this.SendMoveOponent(x, y, "play");
@@ -90,7 +76,7 @@ public class BoardController extends Thread {
                 }
             }
         } else {
-            contextScreen.error_window.SetMessage("Posição ocupada, escolha outro campo");
+            contextScreen.error_window.SetMessage("Posição ocupada, escolha outro campo!");
             return false;
         }
     }
@@ -105,7 +91,6 @@ public class BoardController extends Thread {
             String action = responseJson.getMessageKey(responseString, "action");
             
             if(action.equals("end_game")) {
-                this.closeSocket();
                 contextScreen.EndGame();
                 closeGame("Vitória");
             } else {
@@ -118,19 +103,17 @@ public class BoardController extends Thread {
                 this.FillBoard(this.GetInversePlayerCharacter(), x, y);
                 
                 if(action.equals("victory")) {
-                    this.closeSocket();
-                    this.CheckVictory(this.GetInversePlayerCharacter());
+                    CheckVictory(GetInversePlayerCharacter());
                     closeGame("Derrota");
                 } else if (action.equals("draw")) {
-                    this.closeSocket();
                     contextScreen.DrawGame();
                     closeGame("Empate");
                 }
             }
-
-            contextScreen.EnableBoard();
         } catch (IOException ex) {
             LOGGER.error("Erro na função awaitMoveOponent `{}`", ex.getMessage());
+        } finally {
+            contextScreen.EnableBoard();
         }
     }
 
@@ -245,9 +228,23 @@ public class BoardController extends Thread {
         contextScreen.setGameFinished(true);
         try {
             saveGame(status);
+            closeSocket();
         } catch (Exception ex) {
             LOGGER.error("Erro na função closeGame `{}`", ex.getMessage());
         }
+    }
+    
+    private BoardController replicateInstance(Board context){
+        BoardController controller = new BoardController();
+        controller.setPlayer_01(player_01);
+        controller.setPlayer_02(player_02);
+
+        controller.SetPlayerCharacter(this.GetPlayerCharacter());
+        controller.setSocket(socket);
+        controller.setContextScreen(context);
+        controller.setBoard(this.getBoard());
+        
+        return controller;
     }
 
     public void setSocket(Socket socket) {

@@ -10,10 +10,11 @@ import utils.JsonData;
 import java.io.IOException;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import utils.Config;
 
 public class API {
 
-    private static final String BASE_URL = "http://127.0.0.1:5000";
+    private static final String BASE_URL = Config.API_HOST;
     private String endpoint = "";
     private static final Logger LOGGER = LogManager.getLogger();
 
@@ -74,13 +75,6 @@ public class API {
         return response;
     }
 
-    public ResponseModel getInvites(String nickname) throws Exception {
-        setEndpoint("/invite?nickname=" + nickname);
-        ResponseModel response = SendGetRequest("invites");
-
-        return response;
-    }
-
     public ResponseModel saveHistory(String nickname, String oponent, String result) throws Exception {
         JsonData json = new JsonData();
         json.addKeyJson("nickname", nickname);
@@ -88,18 +82,6 @@ public class API {
         json.addKeyJson("result", result);
 
         setEndpoint("/history");
-        ResponseModel response = SendPostRequest(json);
-
-        return response;
-    }
-
-    public ResponseModel inviteGame(String nickname, String oponent) throws Exception {
-        JsonData json = new JsonData();
-
-        json.addKeyJson("nickname", nickname);
-        json.addKeyJson("oponent", oponent);
-
-        setEndpoint("/invite");
         ResponseModel response = SendPostRequest(json);
 
         return response;
@@ -135,12 +117,13 @@ public class API {
                     }
                 }
             } catch (Exception ex) {
-                LOGGER.error("Erro na função SendPostRequest `{}`", ex.getMessage());
+                LOGGER.error("Erro na função SendPostRequest 1 `{}`", ex.getMessage());
             }
 
             connection.disconnect();
             return response;
         } catch (Exception ex) {
+            LOGGER.error("Erro na função SendPostRequest 2 `{}`", ex.getMessage());
             ResponseModel response = new ResponseModel();
             return response;
         }
@@ -150,11 +133,9 @@ public class API {
         try {
             ResponseModel response = new ResponseModel();
             HttpURLConnection connection = createConnection();
-
             connection.setDoOutput(true);
 
             try {
-
                 response.setResponseCode(connection.getResponseCode());
 
                 // Aqui começamos a ler o corpo da resposta
@@ -171,14 +152,14 @@ public class API {
                         response.setData(responseText.toString(), recoverKey);
                     }
                 }
-
             } catch (Exception ex) {
-                LOGGER.error("Erro na função SendGetRequest `{}`", ex.getMessage());
+                LOGGER.error("Erro na função SendGetRequest 1 `{}`", ex.getMessage());
             }
 
             connection.disconnect();
             return response;
         } catch (Exception ex) {
+            LOGGER.error("Erro na função SendGetRequest 2 `{}`", ex.getMessage());
             ResponseModel response = new ResponseModel();
             return response;
         }

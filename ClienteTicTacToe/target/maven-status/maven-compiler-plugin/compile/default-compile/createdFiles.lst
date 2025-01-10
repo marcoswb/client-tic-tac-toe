@@ -17,6 +17,7 @@ view/MainScreen$2.class
 view/RegisterScreen$3.class
 view/Board$9.class
 controller/MainController.class
+utils/Config.class
 view/RegisterScreen$4.class
 view/LoginScreen$3.class
 view/MainScreen$4.class

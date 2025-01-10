@@ -10,15 +10,16 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import view.Board;
 import view.MainScreen;
+import utils.Config;
 
 
 public class PrepareGame implements Runnable{
     
     private String nickname;
     private String opponent;
-    private final String host = "127.0.0.1";
-    private final int port = 8000;
-    private final byte[] data = new byte[1024];
+    private String host = Config.SOCKET_HOST;
+    private int port = Config.SOCKET_PORT;
+    private byte[] data = new byte[Config.SOCKET_LENGTH_DATA];
     private Socket socket;
     private final MainScreen mainContext;
     private static final Logger LOGGER = LogManager.getLogger();
@@ -50,40 +51,37 @@ public class PrepareGame implements Runnable{
         try{
             Board game = new Board(mainContext);
             game.setPlayer_01(this.getNickname());
-            
-            try{
-                socket = new Socket(host, port);
-                JsonData json = new JsonData();
-                json.addKeyJson("message", "entrar");
-                json.addKeyJson("player", this.getNickname());
-                
-                if(this.getOpponent() == null){
-                    json.addKeyJson("opponent", "random");
-                } else {
-                    json.addKeyJson("opponent", this.getOpponent());
-                }
+        
+            socket = new Socket(host, port);
+            JsonData json = new JsonData();
+            json.addKeyJson("message", "entrar");
+            json.addKeyJson("player", this.getNickname());
 
-                this.sendMessage(json.getJson());
-
-                // recuperar nome do adversário e quem joga primeiro
-                String responseString = this.awaitMessage();     
-                ResponseModel responseJson = new ResponseModel();
-                String message = responseJson.getMessageKey(responseString, "message");
-                String nickname_oponent = responseJson.getMessageKey(responseString, "player");          
-
-                game.setPlayer_02(nickname_oponent);
-
-                game.setDefaultCloseOperation(HIDE_ON_CLOSE);
-                game.StartGame(socket, message);
-                
-                mainContext.stopLoading();
-
-            } catch (UnknownHostException ex) {
-                LOGGER.error("Erro na função run 1 `{}`", ex.getMessage());
-            } catch (IOException ex) {
-                LOGGER.error("Erro na função run 2 `{}`", ex.getMessage());
+            if(this.getOpponent() == null){
+                json.addKeyJson("opponent", "random");
+            } else {
+                json.addKeyJson("opponent", this.getOpponent());
             }
-            
+
+            this.sendMessage(json.getJson());
+
+            // recuperar nome do adversário e quem joga primeiro
+            String responseString = this.awaitMessage();     
+            ResponseModel responseJson = new ResponseModel();
+            String message = responseJson.getMessageKey(responseString, "message");
+            String nickname_oponent = responseJson.getMessageKey(responseString, "player");          
+
+            game.setPlayer_02(nickname_oponent);
+
+            game.setDefaultCloseOperation(HIDE_ON_CLOSE);
+            game.StartGame(socket, message);
+
+            mainContext.stopLoading();
+
+        } catch (UnknownHostException ex) {
+            LOGGER.error("Erro na função run 1 `{}`", ex.getMessage());
+        } catch (IOException ex) {
+            LOGGER.error("Erro na função run 2 `{}`", ex.getMessage());
         } catch (Exception ex) {
             LOGGER.error("Erro na função run 3 `{}`", ex.getMessage());
         }
