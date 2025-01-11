@@ -1,7 +1,9 @@
 package view;
 
+import java.awt.Color;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 public class InfoDialog {
     
@@ -19,6 +21,11 @@ public class InfoDialog {
     }
     
     private void showMessage(){
+        UIManager.put("OptionPane.background", new Color(44, 62, 80));
+        UIManager.put("Panel.background", new Color(44, 62, 80));
+        UIManager.put("Button.background", new Color(236, 240, 241));
+        UIManager.put("OptionPane.messageForeground", new Color(236, 240, 241));
+        
         JOptionPane.showMessageDialog(new JFrame(), message, "Info", JOptionPane.INFORMATION_MESSAGE);
     }
 }
