@@ -11,6 +11,7 @@ public class Board extends javax.swing.JFrame {
 
     private String player_01;
     private String player_02;
+    private String level;
     public final InfoDialog info_window = new InfoDialog();
     public final ErrorDialog error_window = new ErrorDialog();
     private boolean actionInProgress = false;
@@ -51,6 +52,18 @@ public class Board extends javax.swing.JFrame {
                 break;
         }
 
+    }
+    
+    public void StartGameComputer() {
+        boardController.setPlayer_01(player_01);
+        boardController.setPlayer_02(player_02);
+        boardController.setLevel(getLevel());
+        
+        this.setTitle("Jogador " + getPlayer_01());
+        this.show();
+        
+        boardController.SetPlayerCharacter("O");
+        info_window.SetMessage("Você começa a partida!");
     }
 
     public void FillLabelPlayer1(int x, int y, String playerCharacter) {        
@@ -483,6 +496,14 @@ public class Board extends javax.swing.JFrame {
     @Override
     public void setForeground(Color foreground) {
         this.foreground = foreground;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

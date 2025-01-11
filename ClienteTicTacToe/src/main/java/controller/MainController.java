@@ -190,4 +190,11 @@ public class MainController {
         board.startGame(opponent);
         mainContext.setStartCheck(false);
     }
+    
+    public void startGameComputer(String level){
+        PrepareGame board = new PrepareGame(mainContext);
+        board.setNickname(mainContext.getNickname());
+        board.startGameComputer(level);
+        mainContext.setStartCheck(false);
+    }
 }

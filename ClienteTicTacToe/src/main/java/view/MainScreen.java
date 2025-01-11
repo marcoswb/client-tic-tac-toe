@@ -361,7 +361,16 @@ public final class MainScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonStartGameWithMachineMouseEntered
 
     private void jButtonStartGameWithMachineMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonStartGameWithMachineMouseClicked
-        new InfoDialog().SetMessage("Iniciar partida contra o computador");        
+        DialogChooseLevel question = new DialogChooseLevel();
+        int response = question.ShowMessage();
+
+        if(response == 0){
+            mainController.startGameComputer("facil");
+        } else if(response == 1){
+            mainController.startGameComputer("medio");
+        } else if(response == 2){
+            mainController.startGameComputer("dificil");
+        }
     }//GEN-LAST:event_jButtonStartGameWithMachineMouseClicked
 
     private void jButtonStartRandonGameMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonStartRandonGameMouseExited

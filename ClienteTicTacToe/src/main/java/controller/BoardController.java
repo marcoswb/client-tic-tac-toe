@@ -19,10 +19,11 @@ public class BoardController extends Thread {
     private Board contextScreen;
     private int position_x = 0;
     private int position_y = 0;
-    private String[][] board = {{"NULO", "NULO", "NULO"}, {"NULO", "NULO", "NULO"}, {"NULO", "NULO", "NULO"}};
+    public String[][] board = {{"NULO", "NULO", "NULO"}, {"NULO", "NULO", "NULO"}, {"NULO", "NULO", "NULO"}};
     private String playerCharacter = "";
     private String player_01;
     private String player_02;
+    private String level;
     private static final Logger LOGGER = LogManager.getLogger();
 
     public void receiveMovementFromOpponent(Board context) {
@@ -59,7 +60,7 @@ public class BoardController extends Thread {
 
     private boolean Move(int x, int y) throws Exception {
         if (this.BoardIsFree(x, y)) {
-            this.FillBoard(this.GetPlayerCharacter(), x, y);
+            this.FillBoard(GetPlayerCharacter(), x, y);
 
             if (this.CheckVictory(playerCharacter)) {
                 this.SendMoveOponent(x, y, "victory");
@@ -84,33 +85,45 @@ public class BoardController extends Thread {
     private void awaitMoveOponent() {
         try {
             contextScreen.DisableBoard();
-
-            String responseString = this.awaitMessage();
-            ResponseModel responseJson = new ResponseModel();
-            String message = responseJson.getMessageKey(responseString, "message");
-            String action = responseJson.getMessageKey(responseString, "action");
-            
-            if(action.equals("end_game")) {
-                contextScreen.EndGame();
-                closeGame("Vitória");
-            } else {
-                String position_x_oponent = message.substring(0, 1);
-                String position_y_oponent = message.substring(1, 2);
-
-                int x = Integer.parseInt(position_x_oponent);
-                int y = Integer.parseInt(position_y_oponent);
-
-                this.FillBoard(this.GetInversePlayerCharacter(), x, y);
+            if(getPlayer_02() == "computador"){
+                ComputerPlayer computer = new ComputerPlayer(this);
+                int[] positions = computer.getMove();
                 
-                if(action.equals("victory")) {
-                    CheckVictory(GetInversePlayerCharacter());
+                FillBoard(GetInversePlayerCharacter(), positions[0], positions[1]);
+                if (CheckVictory(GetInversePlayerCharacter())) {
                     closeGame("Derrota");
-                } else if (action.equals("draw")) {
+                } else if(CheckDraw()) {
                     contextScreen.DrawGame();
                     closeGame("Empate");
                 }
+            } else {
+                String responseString = awaitMessage();
+                ResponseModel responseJson = new ResponseModel();
+                String message = responseJson.getMessageKey(responseString, "message");
+                String action = responseJson.getMessageKey(responseString, "action");
+
+                if(action.equals("end_game")) {
+                    contextScreen.EndGame();
+                    closeGame("Vitória");
+                } else {
+                    String position_x_oponent = message.substring(0, 1);
+                    String position_y_oponent = message.substring(1, 2);
+
+                    int x = Integer.parseInt(position_x_oponent);
+                    int y = Integer.parseInt(position_y_oponent);
+
+                    this.FillBoard(GetInversePlayerCharacter(), x, y);
+
+                    if(action.equals("victory")) {
+                        CheckVictory(GetInversePlayerCharacter());
+                        closeGame("Derrota");
+                    } else if (action.equals("draw")) {
+                        contextScreen.DrawGame();
+                        closeGame("Empate");
+                    }
+                }
             }
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             LOGGER.error("Erro na função awaitMoveOponent `{}`", ex.getMessage());
         } finally {
             contextScreen.EnableBoard();
@@ -150,12 +163,43 @@ public class BoardController extends Thread {
 
     public void sendMessage(String message) {
         try {
-            OutputStream output = socket.getOutputStream();
-            output.write(message.getBytes());
-            output.flush();
+            
+            if(getPlayer_02() != "computador"){
+                OutputStream output = socket.getOutputStream();
+                output.write(message.getBytes());
+                output.flush();
+            }
         } catch (Exception ex) {
             LOGGER.error("Erro na função sendMessage `{}`", ex.getMessage());
         }
+    }
+    
+    public boolean playerWin(String character){
+        // checar vitória horizontal
+        for (int x = 0; x <= 2; x++) {
+            if (board[x][0].equals(character) & board[x][1].equals(character) & board[x][2].equals(character)) {
+                return true;
+            }
+        }
+
+        // checar vitória vertical
+        for (int y = 0; y <= 2; y++) {
+            if (board[0][y].equals(character) & board[1][y].equals(character) & board[2][y].equals(character)) {
+                return true;
+            }
+        }
+
+        // checar vitória diagonal principal
+        if (board[0][0].equals(character) & board[1][1].equals(character) & board[2][2].equals(character)) {
+            return true;
+        }
+
+        // checar vitória diagonal secundária
+        if (board[0][2].equals(character) & board[1][1].equals(character) & board[2][0].equals(character)) {
+            return true;
+        }
+
+        return false;
     }
 
     private boolean CheckVictory(String character) {
@@ -205,13 +249,16 @@ public class BoardController extends Thread {
 
         return false;
     }
-
-    public void saveGame(String result) throws Exception {
-        API api = new API();
-        api.saveHistory(getPlayer_01(), getPlayer_02(), result);
+    
+    public boolean simuleVictory(String character, int x, int y){
+        board[x-1][y-1] = character;
+        boolean victory = playerWin(character);
+        
+        board[x-1][y-1] = "NULO";
+        return victory;
     }
 
-    private boolean CheckDraw() {
+    public boolean isBoardFull() {
         for (int x = 0; x <= 2; x++) {
             for (int y = 0; y <= 2; y++) {
                 if (board[x][y].equals("NULO")) {
@@ -219,9 +266,22 @@ public class BoardController extends Thread {
                 }
             }
         }
-
-        contextScreen.DrawGame();
+        
         return true;
+    }
+
+    public void saveGame(String result) throws Exception {
+        API api = new API();
+        api.saveHistory(getPlayer_01(), getPlayer_02(), result);
+    }
+
+    private boolean CheckDraw() {
+        if(isBoardFull()){
+            contextScreen.DrawGame();
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private void closeGame(String status) {
@@ -253,7 +313,8 @@ public class BoardController extends Thread {
         controller.SetPlayerCharacter(this.GetPlayerCharacter());
         controller.setSocket(socket);
         controller.setContextScreen(context);
-        controller.setBoard(this.getBoard());
+        controller.setBoard(getBoard());
+        controller.setLevel(getLevel());
         
         return controller;
     }
@@ -328,10 +389,20 @@ public class BoardController extends Thread {
         this.player_02 = player_02;
     }
 
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
     public void closeSocket() {
         try {
-            this.socket.close();
-        } catch (IOException ex) {
+            if(getPlayer_02() == "computador"){
+                this.socket.close();
+            }
+        } catch (Exception ex) {
             LOGGER.error("Erro na função closeSocket `{}`", ex.getMessage());
         }
     }

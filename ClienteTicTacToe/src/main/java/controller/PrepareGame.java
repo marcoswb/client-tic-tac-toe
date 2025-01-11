@@ -46,6 +46,17 @@ public class PrepareGame implements Runnable{
         thread.start();
     }
     
+    public void startGameComputer(String level){        
+        Board game = new Board(mainContext);
+        game.setPlayer_01(this.getNickname());
+        game.setPlayer_02("computador");
+        game.setLevel(level);
+        game.setDefaultCloseOperation(HIDE_ON_CLOSE);
+        
+        Thread t = new Thread(game::StartGameComputer);
+        t.start();
+    }
+    
     
     @Override
     public void run(){
